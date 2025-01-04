@@ -47,11 +47,11 @@ export function Full_name_input() {
             value={temp_full_name}
             onChange={(e) => setTemp_full_name(e.target.value)}
           />
-          <img src="./public/people.svg" alt="" className="h-[20px]" />
+          <img src="/people.svg" alt="" className="h-[20px]" />
         </div>
         {disable_full_name_input ? (
           <img
-            src="./public/edit-pen.svg"
+            src="/edit-pen.svg"
             className="cursor-pointer h-[25px]"
             onClick={() => setDisable_full_name_input(false)}
           />
@@ -61,12 +61,12 @@ export function Full_name_input() {
         {!disable_full_name_input ? (
           <div className="flex gap-2">
             <img
-              src="./public/save.svg"
+              src="/save.svg"
               className="cursor-pointer h-[25px]"
               onClick={save_edited_full_name}
             />
             <img
-              src="./public/close.svg"
+              src="/close.svg"
               className="cursor-pointer h-[25px]"
               onClick={cancel_edited_full_name}
             />
