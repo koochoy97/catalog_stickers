@@ -6,8 +6,7 @@ export function Full_name_input() {
   const [temp_full_name, setTemp_full_name] = useState("");
   const [full_name, setFull_name] = useState("");
 
-  const { user_data, edit_user_data } =
-    useContext < DataContextType > DataContext;
+  const { user_data, edit_user_data } = useContext(DataContext);
   useEffect(() => {
     return () => {
       setFull_name("");

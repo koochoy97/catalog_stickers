@@ -1,19 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "./Context/DataContext";
-
-type DataContextType = {
-  error: any;
-  setError: React.Dispatch<React.SetStateAction<null>>;
-};
-
 export function Error_message() {
-  const context = useContext<DataContextType | null>(DataContext);
-
-  if (!context) {
-    return null;
-  }
-
-  const { error, setError } = context;
+  const { error, setError } = useContext(DataContext);
 
   useEffect(() => {
     setError(null);

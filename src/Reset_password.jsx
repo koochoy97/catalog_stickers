@@ -1,9 +1,9 @@
 import { useContext, useState, useEffect } from "react";
-import { DataContex } from "./Context/DataContext";
+import { DataContext } from "./Context/DataContext";
 import { useNavigate } from "react-router";
 export function Reset_password() {
   const { user_logged, reset_password, loading_reset_password, reset_success } =
-    useContext(DataContex);
+    useContext(DataContext);
   const [email, setEmail] = useState("");
 
   let navigate = useNavigate();

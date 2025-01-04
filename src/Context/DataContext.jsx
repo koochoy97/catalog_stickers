@@ -28,7 +28,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
-export const DataContext = createContext(null);
+export const DataContext = createContext("");
 
 const provider = new GoogleAuthProvider();
 
