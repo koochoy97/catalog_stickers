@@ -28,6 +28,8 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
+const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+
 export const DataContext = createContext("");
 
 const provider = new GoogleAuthProvider();
@@ -35,7 +37,7 @@ const provider = new GoogleAuthProvider();
 export function DataContextProvider(props) {
   // Your web app's Firebase configuration
   const firebaseConfig = {
-    apiKey: "AIzaSyDFezDC5DErhy2vsg-zClyhiin1sTihZi8",
+    apiKey: googleApiKey,
     authDomain: "auth-f1f04.firebaseapp.com",
     projectId: "auth-f1f04",
     storageBucket: "auth-f1f04.firebasestorage.app",
