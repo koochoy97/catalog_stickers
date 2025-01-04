@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import { DataContext } from "./Context/DataContext";
 import { Warning_modal } from "./Warning_modal";
 import { Full_name_input } from "./Full_name_input";
-import { DataContextType } from "./Context/DataContext";
 
 export function Welcome() {
   const {
@@ -17,7 +16,7 @@ export function Welcome() {
     setUser,
     setUser_data,
     loading_reset_password,
-  } = useContext<DataContextType>(DataContext);
+  } = useContext(DataContext);
   const [loading, setLoading] = useState(true);
   const [mail, setMail] = useState("");
   const [open_modal, setOpen_modal] = useState(false);

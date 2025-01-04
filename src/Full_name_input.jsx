@@ -1,21 +1,13 @@
 import { useEffect, useState, useContext } from "react";
 import { DataContext } from "./Context/DataContext";
 
-type DataContextType = {
-  user_data: {
-    full_name: string | null;
-    UID: string;
-  };
-  edit_user_data: React.Dispatch<React.SetStateAction<{}>>;
-};
-
 export function Full_name_input() {
   const [disable_full_name_input, setDisable_full_name_input] = useState(true);
   const [temp_full_name, setTemp_full_name] = useState("");
   const [full_name, setFull_name] = useState("");
 
   const { user_data, edit_user_data } =
-    useContext<DataContextType>(DataContext);
+    useContext < DataContextType > DataContext;
   useEffect(() => {
     return () => {
       setFull_name("");

@@ -28,57 +28,11 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
-export type DataContextType = {
-  login_user: (email: string, password: string) => Promise<void>;
-  check_user: () => void;
-  user: User | null;
-  user_logged: boolean | null;
-  log_out: () => void;
-  loading_auth: boolean;
-  setLoading_auth: (loading: boolean) => void;
-  create_user: (
-    email: string,
-    password: string,
-    full_name: string
-  ) => Promise<void>;
-  error: any;
-  setError: (error: any) => void;
-  reset_password: (email: string) => void;
-  firebase_create_new_password: (
-    actionCode: string,
-    newPassword: string
-  ) => void;
-  delete_user: () => void;
-  getUserData: () => void;
-  user_data: UserData | {};
-  setUser_data: (data: UserData | {}) => void;
-  db_document_id: string;
-  edit_user_data: (new_name: string) => Promise<void>;
-  setUser: (user: User | null) => void;
-  create_user_data: (
-    new_name: string | null,
-    user_uid: string
-  ) => Promise<void>;
-  loading_reset_password: boolean;
-  google_sign_in: () => void;
-  reset_success: boolean;
-};
-
-type UserData = {
-  full_name: string | null;
-  UID: string;
-};
-
-export const DataContext = createContext<DataContextType | null>(null);
+export const DataContext = createContext(null);
 
 const provider = new GoogleAuthProvider();
 
-type User = {
-  email: string | null;
-  uid: string;
-};
-
-export function DataContextProvider(props: any) {
+export function DataContextProvider(props) {
   // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyDFezDC5DErhy2vsg-zClyhiin1sTihZi8",
@@ -97,8 +51,8 @@ export function DataContextProvider(props: any) {
 
   const auth = getAuth();
 
-  const [user, setUser] = useState<User | null>({ email: "", uid: "" });
-  const [user_logged, setUser_logged] = useState<boolean | null>(null);
+  const [user, setUser] = useState({ email: "", uid: "" });
+  const [user_logged, setUser_logged] = useState(null);
   const [error, setError] = useState(null);
   const [loading_auth, setLoading_auth] = useState(false);
   const [user_data, setUser_data] = useState({});
@@ -106,11 +60,7 @@ export function DataContextProvider(props: any) {
   const [loading_reset_password, setLoading_reset_password] = useState(false);
   const [reset_success, setReset_success] = useState(false);
 
-  async function create_user(
-    email: string,
-    password: string,
-    full_name: string
-  ) {
+  async function create_user(email, password, full_name) {
     setLoading_auth(true);
 
     if (auth) {
@@ -130,7 +80,7 @@ export function DataContextProvider(props: any) {
     }
   }
 
-  async function login_user(email: string, password: string) {
+  async function login_user(email, password) {
     setLoading_auth(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -168,7 +118,7 @@ export function DataContextProvider(props: any) {
       });
   }
 
-  function reset_password(email: string) {
+  function reset_password(email) {
     setLoading_reset_password(true);
     sendPasswordResetEmail(auth, email)
       .then(() => {
@@ -182,10 +132,7 @@ export function DataContextProvider(props: any) {
       });
   }
 
-  function firebase_create_new_password(
-    actionCode: string,
-    newPassword: string
-  ) {
+  function firebase_create_new_password(actionCode, newPassword) {
     setLoading_reset_password(true);
     verifyPasswordResetCode(auth, actionCode)
       .then((email) => {
@@ -243,7 +190,7 @@ export function DataContextProvider(props: any) {
       });
   }
 
-  async function edit_user_data(new_name: string) {
+  async function edit_user_data(new_name) {
     try {
       await setDoc(
         doc(db, "users_data", db_document_id),
@@ -260,7 +207,7 @@ export function DataContextProvider(props: any) {
     }
   }
 
-  async function create_user_data(new_name: string | null, user_uid: string) {
+  async function create_user_data(new_name, user_uid) {
     try {
       await addDoc(collection(db, "users_data"), {
         full_name: new_name,

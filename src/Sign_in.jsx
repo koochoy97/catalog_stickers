@@ -1,13 +1,11 @@
-import { useContext, useState, useRef, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import { DataContext } from "./Context/DataContext";
 import { useNavigate } from "react-router";
 import { Error_message } from "./Error_message";
-import { DataContextType } from "./Context/DataContext";
 
-export function Sign_up() {
-  const { user_logged, loading_auth, create_user, check_user, google_sign_in } =
-    useContext<DataContextType>(DataContext);
-  const [full_name, setFull_name] = useState("");
+export function Sign_in() {
+  const { login_user, user_logged, loading_auth, check_user, google_sign_in } =
+    useContext(DataContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,7 +13,7 @@ export function Sign_up() {
   let navigate = useNavigate();
 
   const handle_submit = () => {
-    create_user(email, password, full_name);
+    login_user(email, password);
   };
 
   useEffect(() => {
@@ -37,27 +35,10 @@ export function Sign_up() {
       <div className="w-full flex flex-col h-full items-center font-['Plus_Jakarta_Sans'] px-6 max-w-[480px]">
         <img src="./public/Logo.png" className="w-[120px]" alt="" />
         <div className="header text-center">
-          <h1 className="text-3xl font-bold">Sign Up For Free.</h1>
+          <h1 className="text-3xl font-bold">Log In to your account</h1>
           <p className="text-[#475569] font-light mt-2">
             Unleash your inner sloth 4.0 right now.
           </p>
-        </div>
-
-        <div className="flex flex-col justify-center items-start w-full mt-6">
-          <label className="text-sm font-bold" htmlFor="email">
-            Full Name
-          </label>
-          <div className="border w-full py-3 px-6 rounded-full mt-2 bg-white flex gap-2 items-center">
-            <img src="./public/mail.svg" alt="" />
-            <input
-              type="text"
-              className="bg-white w-full focus:outline-none"
-              onChange={(e) => {
-                setFull_name(e.target.value);
-              }}
-              value={full_name}
-            />
-          </div>
         </div>
 
         <div className="flex flex-col justify-center items-start w-full mt-6">
@@ -118,7 +99,7 @@ export function Sign_up() {
             <img src="./public/loader.gif" alt="" className="w-[20px]" />
           ) : (
             <span className="flex gap-2 items-center">
-              Sign Up
+              Log In
               <span>
                 <img src="./public/singin.svg" alt="" />
               </span>
@@ -130,10 +111,19 @@ export function Sign_up() {
         <div className="create_account flex flex-col justify-center items-center mt-3">
           <div
             className="row_1 flex justify-center items-center gap-1 text-sm font-bold cursor-pointer"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/sign_up")}
           >
-            <p>Already have an account?</p>
-            <p className="text-[#4F46E5]">Sign In</p>
+            <p>Don't have an account?</p>
+            <p className="text-[#4F46E5]">Sign Up</p>
+          </div>
+
+          <div className="row_2 flex justify-center items-center gap-1 text-sm font-bold">
+            <p
+              className="text-[#4F46E5] mt-2 cursor-pointer"
+              onClick={() => navigate("/reset_password")}
+            >
+              Forgot your password?
+            </p>
           </div>
         </div>
 
@@ -153,7 +143,7 @@ export function Sign_up() {
             className="w-[22px] mr-2"
             alt=""
           />
-          Sign Up With Google
+          Sign In With Google
         </button>
       </div>
     );

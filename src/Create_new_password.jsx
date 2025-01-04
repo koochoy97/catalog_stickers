@@ -2,20 +2,12 @@ import { useContext, useState, useEffect } from "react";
 import { DataContext } from "./Context/DataContext";
 import { useNavigate, useSearchParams } from "react-router";
 
-type DataContextType = {
-  firebase_create_new_password: (
-    actionCode: string,
-    newPassword: string
-  ) => void;
-  loading_reset_password: boolean;
-  reset_success: boolean;
-};
 export function Create_new_password() {
   const {
     firebase_create_new_password,
     loading_reset_password,
     reset_success,
-  } = useContext<DataContextType>(DataContext);
+  } = useContext(DataContext);
   const [hide, setHide] = useState(true);
   const [password, setPassword] = useState("");
 
