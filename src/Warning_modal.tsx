@@ -1,13 +1,20 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import { DataContext } from "./Context/DataContext";
+import { DataContextType } from "./Context/DataContext";
+
+type Props = {
+  open_modal: boolean;
+  setOpen_modal: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 export function Warning_modal(props) {
-  const handle_click_outside = (e) => {
+  const handle_click_outside = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     props.setOpen_modal(false);
   };
 
-  const { loading_auth, delete_user } = useContext(DataContext);
+  const { loading_auth, delete_user } =
+    useContext<DataContextType>(DataContext);
 
   return (
     <div

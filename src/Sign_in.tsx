@@ -2,23 +2,18 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { DataContext } from "./Context/DataContext";
 import { useNavigate } from "react-router";
 import { Error_message } from "./Error_message";
+import { DataContextType } from "./Context/DataContext";
 
 export function Sign_in() {
-  const {
-    login_user,
-    user,
-    user_logged,
-    loading_auth,
-    check_user,
-    google_sign_in,
-  } = useContext(DataContext);
+  const { login_user, user_logged, loading_auth, check_user, google_sign_in } =
+    useContext<DataContextType>(DataContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [hide, setHide] = useState(true);
   let navigate = useNavigate();
 
-  const handle_submit = (e) => {
+  const handle_submit = () => {
     login_user(email, password);
   };
 
