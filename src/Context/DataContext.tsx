@@ -163,7 +163,9 @@ export function DataContextProvider(props: any) {
   function log_out() {
     signOut(auth)
       .then(() => {})
-      .catch((error) => {});
+      .catch((error) => {
+        console.log("Error Message:", error.message);
+      });
   }
 
   function reset_password(email: string) {
@@ -187,9 +189,10 @@ export function DataContextProvider(props: any) {
     setLoading_reset_password(true);
     verifyPasswordResetCode(auth, actionCode)
       .then((email) => {
+        console.log("Email:", email);
         confirmPasswordReset(auth, actionCode, newPassword)
           .then((resp) => {
-            console.log("Password updated");
+            console.log(resp);
             setLoading_reset_password(false);
             toast.success("Password successfully changed");
             setReset_success(true);
@@ -274,6 +277,7 @@ export function DataContextProvider(props: any) {
       signInWithPopup(auth, provider).then((result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential?.accessToken;
+        console.log(token);
         setUser(result.user);
 
         const users_collection = collection(db, "users_data");
