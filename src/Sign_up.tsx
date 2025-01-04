@@ -2,10 +2,11 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { DataContext } from "./Context/DataContext";
 import { useNavigate } from "react-router";
 import { Error_message } from "./Error_message";
+import { DataContextType } from "./Context/DataContext";
 
 export function Sign_up() {
   const { user_logged, loading_auth, create_user, check_user, google_sign_in } =
-    useContext(DataContext);
+    useContext<DataContextType>(DataContext);
   const [full_name, setFull_name] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,7 +14,7 @@ export function Sign_up() {
   const [hide, setHide] = useState(true);
   let navigate = useNavigate();
 
-  const handle_submit = (e) => {
+  const handle_submit = () => {
     create_user(email, password, full_name);
   };
 
