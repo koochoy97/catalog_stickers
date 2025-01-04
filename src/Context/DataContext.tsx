@@ -28,11 +28,57 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
-export const DataContext = createContext("");
+type DataContextType = {
+  login_user: (email: string, password: string) => Promise<void>;
+  check_user: () => void;
+  user: User | null;
+  user_logged: boolean | null;
+  log_out: () => void;
+  loading_auth: boolean;
+  setLoading_auth: (loading: boolean) => void;
+  create_user: (
+    email: string,
+    password: string,
+    full_name: string
+  ) => Promise<void>;
+  error: any;
+  setError: (error: any) => void;
+  reset_password: (email: string) => void;
+  firebase_create_new_password: (
+    actionCode: string,
+    newPassword: string
+  ) => void;
+  delete_user: () => void;
+  getUserData: () => void;
+  user_data: UserData | {};
+  setUser_data: (data: UserData | {}) => void;
+  db_document_id: string;
+  edit_user_data: (new_name: string) => Promise<void>;
+  setUser: (user: User | null) => void;
+  create_user_data: (
+    new_name: string | null,
+    user_uid: string
+  ) => Promise<void>;
+  loading_reset_password: boolean;
+  google_sign_in: () => void;
+  reset_success: boolean;
+};
+
+type UserData = {
+  full_name: string | null;
+  UID: string;
+};
+
+export const DataContext = createContext<DataContextType | null>(null);
 
 const provider = new GoogleAuthProvider();
 
-export function DataContextProvider(props) {
+type User = {
+  email: string | null;
+  uid: string;
+};
+
+export function DataContextProvider(props: any) {
   // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyDFezDC5DErhy2vsg-zClyhiin1sTihZi8",
@@ -51,8 +97,8 @@ export function DataContextProvider(props) {
 
   const auth = getAuth();
 
-  const [user, setUser] = useState({ email: "", uid: "" });
-  const [user_logged, setUser_logged] = useState(null);
+  const [user, setUser] = useState<User | null>({ email: "", uid: "" });
+  const [user_logged, setUser_logged] = useState<boolean | null>(null);
   const [error, setError] = useState(null);
   const [loading_auth, setLoading_auth] = useState(false);
   const [user_data, setUser_data] = useState({});
@@ -60,7 +106,11 @@ export function DataContextProvider(props) {
   const [loading_reset_password, setLoading_reset_password] = useState(false);
   const [reset_success, setReset_success] = useState(false);
 
-  async function create_user(email, password, full_name) {
+  async function create_user(
+    email: string,
+    password: string,
+    full_name: string
+  ) {
     setLoading_auth(true);
 
     if (auth) {
@@ -80,7 +130,7 @@ export function DataContextProvider(props) {
     }
   }
 
-  async function login_user(email, password) {
+  async function login_user(email: string, password: string) {
     setLoading_auth(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -116,7 +166,7 @@ export function DataContextProvider(props) {
       .catch((error) => {});
   }
 
-  function reset_password(email) {
+  function reset_password(email: string) {
     setLoading_reset_password(true);
     sendPasswordResetEmail(auth, email)
       .then(() => {
@@ -130,7 +180,10 @@ export function DataContextProvider(props) {
       });
   }
 
-  function firebase_create_new_password(actionCode, newPassword) {
+  function firebase_create_new_password(
+    actionCode: string,
+    newPassword: string
+  ) {
     setLoading_reset_password(true);
     verifyPasswordResetCode(auth, actionCode)
       .then((email) => {
@@ -155,16 +208,18 @@ export function DataContextProvider(props) {
   function delete_user() {
     setLoading_auth(true);
     const user = auth.currentUser;
-    deleteUser(user)
-      .then(() => {
-        setLoading_auth(false);
-        setUser_logged(false);
-        console.log("User deleted.");
-        toast("User deleted");
-      })
-      .catch((error) => {
-        console.log("Error Message:", error.message);
-      });
+    if (user) {
+      deleteUser(user)
+        .then(() => {
+          setLoading_auth(false);
+          setUser_logged(false);
+          console.log("User deleted.");
+          toast("User deleted");
+        })
+        .catch((error) => {
+          console.log("Error Message:", error.message);
+        });
+    }
   }
 
   function getUserData() {
@@ -185,7 +240,7 @@ export function DataContextProvider(props) {
       });
   }
 
-  async function edit_user_data(new_name) {
+  async function edit_user_data(new_name: string) {
     try {
       await setDoc(
         doc(db, "users_data", db_document_id),
@@ -194,7 +249,7 @@ export function DataContextProvider(props) {
         },
         { merge: true }
       );
-      setUser_data({ full_name: new_name, UID: user.uid });
+      setUser_data({ full_name: new_name, UID: user?.uid });
       console.log("Document successfully written!");
       toast.success("Field updated");
     } catch (e) {
@@ -202,7 +257,7 @@ export function DataContextProvider(props) {
     }
   }
 
-  async function create_user_data(new_name, user_uid) {
+  async function create_user_data(new_name: string | null, user_uid: string) {
     try {
       await addDoc(collection(db, "users_data"), {
         full_name: new_name,
@@ -218,7 +273,7 @@ export function DataContextProvider(props) {
     try {
       signInWithPopup(auth, provider).then((result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
+        const token = credential?.accessToken;
         setUser(result.user);
 
         const users_collection = collection(db, "users_data");

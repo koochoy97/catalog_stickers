@@ -2,12 +2,20 @@ import { useContext, useState, useRef, useEffect } from "react";
 import { DataContext } from "./Context/DataContext";
 import { useNavigate, useSearchParams } from "react-router";
 
+type DataContextType = {
+  firebase_create_new_password: (
+    actionCode: string,
+    newPassword: string
+  ) => void;
+  loading_reset_password: boolean;
+  reset_success: boolean;
+};
 export function Create_new_password() {
   const {
     firebase_create_new_password,
     loading_reset_password,
     reset_success,
-  } = useContext(DataContext);
+  } = useContext<DataContextType>(DataContext);
   const [hide, setHide] = useState(true);
   const [password, setPassword] = useState("");
 
@@ -15,8 +23,10 @@ export function Create_new_password() {
   const [searchParams] = useSearchParams();
   const action_code = searchParams.get("oobCode");
 
-  const handle_submit = (e) => {
-    firebase_create_new_password(action_code, password);
+  const handle_submit = () => {
+    if (action_code) {
+      firebase_create_new_password(action_code, password);
+    }
   };
 
   useEffect(() => {
@@ -89,7 +99,7 @@ export function Create_new_password() {
 
       <div className="create_account flex flex-col justify-center items-center mt-3">
         <div
-          className="row_1 flex justify-center items-center gap-1 text-sm font-bold cursor-pointer gap-3"
+          className="row_1 flex justify-center items-center  text-sm font-bold cursor-pointer gap-3"
           onClick={() => navigate("/")}
         >
           <img src="./public/back.svg" alt="" />
