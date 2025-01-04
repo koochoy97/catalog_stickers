@@ -28,7 +28,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
-type DataContextType = {
+export type DataContextType = {
   login_user: (email: string, password: string) => Promise<void>;
   check_user: () => void;
   user: User | null;

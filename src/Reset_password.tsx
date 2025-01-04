@@ -1,15 +1,15 @@
 import { useContext, useState, useRef, useEffect } from "react";
-import { DataContext } from "./Context/DataContext";
+import { DataContex } from "./Context/DataContext";
 import { useNavigate } from "react-router";
-
+import { DataContextType } from "./Context/DataContext";
 export function Reset_password() {
   const { user_logged, reset_password, loading_reset_password, reset_success } =
-    useContext(DataContext);
+    useContext<DataContextType>(DataContex);
   const [email, setEmail] = useState("");
 
   let navigate = useNavigate();
 
-  const handle_submit = (e) => {
+  const handle_submit = () => {
     reset_password(email);
   };
 
@@ -71,7 +71,7 @@ export function Reset_password() {
 
       <div className="create_account flex flex-col justify-center items-center mt-3">
         <div
-          className="row_1 flex justify-center items-center gap-1 text-sm font-bold cursor-pointer gap-3"
+          className="row_1 flex justify-center items-center gap-1 text-sm font-bold cursor-pointer"
           onClick={() => navigate("/")}
         >
           <img src="./public/back.svg" alt="" />
