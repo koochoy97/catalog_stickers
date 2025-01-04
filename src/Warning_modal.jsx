@@ -32,7 +32,7 @@ export function Warning_modal(props) {
           onClick={() => delete_user()}
         >
           {loading_auth ? (
-            <img src="./public/loader.gif" alt="" className="w-[20px]" />
+            <img src="/loader.gif" alt="" className="w-[20px]" />
           ) : (
             <span className="flex gap-2 items-center">Yes, Delete Account</span>
           )}

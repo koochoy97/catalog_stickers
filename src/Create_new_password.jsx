@@ -30,7 +30,7 @@ export function Create_new_password() {
 
   return (
     <div className="w-full flex flex-col h-full items-center font-['Plus_Jakarta_Sans'] px-6 max-w-[480px]">
-      <img src="./public/Logo.png" className="w-[120px]" alt="" />
+      <img src="/Logo.png" className="w-[120px]" alt="" />
       <div className="header text-center">
         <h1 className="text-3xl font-bold">Create Your New Password</h1>
         <p className="text-[#475569] font-light mt-2">
@@ -45,7 +45,7 @@ export function Create_new_password() {
           New Password
         </label>
         <div className="border w-full py-3 px-6 rounded-full mt-2 bg-white flex gap-2 items-center">
-          <img src="./public/lock.svg" alt="" />
+          <img src="/lock.svg" alt="" />
 
           <input
             type={`${hide ? "password" : "text"}`}
@@ -57,14 +57,14 @@ export function Create_new_password() {
           />
           {hide ? (
             <img
-              src="./public/hide.svg"
+              src="/hide.svg"
               alt=""
               className="cursor-pointer"
               onClick={() => setHide(false)}
             />
           ) : (
             <img
-              src="./public/unhide.svg"
+              src="/unhide.svg"
               alt=""
               className="cursor-pointer"
               onClick={() => setHide(true)}
@@ -78,12 +78,12 @@ export function Create_new_password() {
         onClick={handle_submit}
       >
         {loading_reset_password ? (
-          <img src="./public/loader.gif" alt="" className="w-[20px]" />
+          <img src="/loader.gif" alt="" className="w-[20px]" />
         ) : (
           <span className="flex gap-2 items-center">
             Reset Password
             <span>
-              <img src="./public/lock_white.svg" alt="" />
+              <img src="/lock_white.svg" alt="" />
             </span>
           </span>
         )}
@@ -94,7 +94,7 @@ export function Create_new_password() {
           className="row_1 flex justify-center items-center  text-sm font-bold cursor-pointer gap-3"
           onClick={() => navigate("/")}
         >
-          <img src="./public/back.svg" alt="" />
+          <img src="/back.svg" alt="" />
           <p className="text-[#4F46E5]">Back to login screen</p>
         </div>
       </div>

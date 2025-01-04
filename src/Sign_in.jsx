@@ -33,7 +33,7 @@ export function Sign_in() {
   if (user_logged === false) {
     return (
       <div className="w-full flex flex-col h-full items-center font-['Plus_Jakarta_Sans'] px-6 max-w-[480px]">
-        <img src="./public/Logo.png" className="w-[120px]" alt="" />
+        <img src="/Logo.png" className="w-[120px]" alt="" />
         <div className="header text-center">
           <h1 className="text-3xl font-bold">Log In to your account</h1>
           <p className="text-[#475569] font-light mt-2">
@@ -46,7 +46,7 @@ export function Sign_in() {
             Email Addres
           </label>
           <div className="border w-full py-3 px-6 rounded-full mt-2 bg-white flex gap-2 items-center">
-            <img src="./public/mail.svg" alt="" />
+            <img src="/mail.svg" alt="" />
             <input
               type="text"
               className="bg-white w-full focus:outline-none"
@@ -63,7 +63,7 @@ export function Sign_in() {
             Password
           </label>
           <div className="border w-full py-3 px-6 rounded-full mt-2 bg-white flex gap-2 items-center">
-            <img src="./public/lock.svg" alt="" />
+            <img src="/lock.svg" alt="" />
 
             <input
               type={`${hide ? "password" : "text"}`}
@@ -75,14 +75,14 @@ export function Sign_in() {
             />
             {hide ? (
               <img
-                src="./public/hide.svg"
+                src="/hide.svg"
                 alt=""
                 className="cursor-pointer"
                 onClick={() => setHide(false)}
               />
             ) : (
               <img
-                src="./public/unhide.svg"
+                src="/unhide.svg"
                 alt=""
                 className="cursor-pointer"
                 onClick={() => setHide(true)}
@@ -96,12 +96,12 @@ export function Sign_in() {
           onClick={handle_submit}
         >
           {loading_auth ? (
-            <img src="./public/loader.gif" alt="" className="w-[20px]" />
+            <img src="/loader.gif" alt="" className="w-[20px]" />
           ) : (
             <span className="flex gap-2 items-center">
               Log In
               <span>
-                <img src="./public/singin.svg" alt="" />
+                <img src="/singin.svg" alt="" />
               </span>
             </span>
           )}
@@ -138,11 +138,7 @@ export function Sign_in() {
           className="w-full mt-3 bg-white border py-3 px-6 rounded-full text-[#1E293B] font-bold flex justify-center items-center"
           onClick={() => google_sign_in()}
         >
-          <img
-            src="./public/google-icon.webp"
-            className="w-[22px] mr-2"
-            alt=""
-          />
+          <img src="/google-icon.webp" className="w-[22px] mr-2" alt="" />
           Sign In With Google
         </button>
       </div>

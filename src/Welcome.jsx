@@ -62,7 +62,7 @@ export function Welcome() {
     return (
       <div className=" flex flex-col justify-center items-center w-[70%]">
         <Warning_modal open_modal={open_modal} setOpen_modal={setOpen_modal} />
-        <img src="./public/Logo.png" className="w-[120px]" alt="" />
+        <img src="/Logo.png" className="w-[120px]" alt="" />
 
         <h1 className="text-3xl font-bold">Welcome, {user_data.full_name}!</h1>
         <div className="data_container w-full flex gap-x-10 flex-wrap my-10">
@@ -78,7 +78,7 @@ export function Welcome() {
                 onChange={(e) => setMail(e.target.value)}
                 disabled
               />
-              <img src="./public/mail.svg" alt="" />
+              <img src="/mail.svg" alt="" />
             </div>
           </div>
 
@@ -106,7 +106,7 @@ export function Welcome() {
                   Reset Password
                   <span className="absolute left-1/2 ">
                     <img
-                      src="./public/loader.gif"
+                      src="/loader.gif"
                       className={`w-[20px] transition-all duration-200 ${
                         loading_reset_password
                           ? "opacity-100 z-50"
@@ -128,7 +128,7 @@ export function Welcome() {
           <span className="flex gap-2 items-center">
             Log Out
             <span>
-              <img src="./public/singin.svg" alt="" />
+              <img src="/singin.svg" alt="" />
             </span>
           </span>
         </button>

@@ -26,7 +26,7 @@ export function Reset_password() {
 
   return (
     <div className="w-full flex flex-col h-full items-center font-['Plus_Jakarta_Sans'] px-6 max-w-[480px]">
-      <img src="./public/Logo.png" className="w-[120px]" alt="" />
+      <img src="/Logo.png" className="w-[120px]" alt="" />
       <div className="header text-center">
         <h1 className="text-3xl font-bold">Reset Your Password</h1>
         <p className="text-[#475569] font-light mt-2">
@@ -40,7 +40,7 @@ export function Reset_password() {
           Email Addres
         </label>
         <div className="border w-full py-3 px-6 rounded-full mt-2 bg-white flex gap-2 items-center">
-          <img src="./public/mail.svg" alt="" />
+          <img src="/mail.svg" alt="" />
           <input
             type="text"
             className="bg-white w-full"
@@ -57,12 +57,12 @@ export function Reset_password() {
         onClick={handle_submit}
       >
         {loading_reset_password ? (
-          <img src="./public/loader.gif" alt="" className="w-[20px]" />
+          <img src="/loader.gif" alt="" className="w-[20px]" />
         ) : (
           <span className="flex gap-2 items-center">
             Reset Password
             <span>
-              <img src="./public/lock_white.svg" alt="" />
+              <img src="/lock_white.svg" alt="" />
             </span>
           </span>
         )}
@@ -73,7 +73,7 @@ export function Reset_password() {
           className="row_1 flex justify-center items-center gap-1 text-sm font-bold cursor-pointer"
           onClick={() => navigate("/")}
         >
-          <img src="./public/back.svg" alt="" />
+          <img src="/back.svg" alt="" />
           <p className="text-[#4F46E5]">Back to login screen</p>
         </div>
       </div>
