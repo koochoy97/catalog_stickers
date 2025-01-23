@@ -7,11 +7,15 @@ const pb = new PocketBase("https://mtb.pockethost.io");
 
 export function DataContextProvider(props) {
   const [stickers_products, setStickers_products] = useState([]);
+  const [loading_stickers_products, setLoading_stickers_products] =
+    useState(true);
   async function get_pocket_base_stickers_products() {
+    setLoading_stickers_products(true);
     try {
       const records = await pb.collection("sticker_products").getFullList({
         sort: "",
       });
+      setLoading_stickers_products(false);
       setStickers_products(records); // Usa los datos como corresponda
       console.log("Sticker products:", records);
       return records;
@@ -23,7 +27,12 @@ export function DataContextProvider(props) {
 
   return (
     <DataContext.Provider
-      value={{ get_pocket_base_stickers_products, stickers_products }}
+      value={{
+        get_pocket_base_stickers_products,
+        stickers_products,
+        loading_stickers_products,
+        setLoading_stickers_products,
+      }}
     >
       {props.children}
     </DataContext.Provider>

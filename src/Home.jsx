@@ -3,12 +3,20 @@ import { Custom_stickers_section } from "./Components/Custom_stickers";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "./Context/DataContext";
 import { Promo_card } from "./Components/Promo_card";
+import { Footer } from "./Components/Footer";
+import { MasonryGrid } from "./Components/Masonry_grid";
 export function Home() {
-  const { get_pocket_base_stickers_products, stickers_products } =
-    useContext(DataContext);
+  const {
+    get_pocket_base_stickers_products,
+    stickers_products,
+    loading_stickers_products,
+    setLoading_stickers_products,
+  } = useContext(DataContext);
 
   useEffect(() => {
     get_pocket_base_stickers_products();
+
+    return () => {};
   }, []);
 
   return (
@@ -38,51 +46,41 @@ export function Home() {
         </div>
         <div className="products_features_container">
           <div className="products_container w-full grid grid-cols-2 gap-4 flex-wrap mt-4 md:grid-cols-6 md:gap-6">
-            {stickers_products.map((item) => {
-              return (
-                <div className="product_item mb-4 ">
-                  <img
-                    src={`https://mtb.pockethost.io/api/files/sticker_products/${item.id}/${item.principal_image}`}
-                    alt=""
-                    className="rounded-md"
-                  />
-                  <div className="summary_container w-full flex flex-col justify-start items-start mt-2">
-                    <p className="text-sm font-normal">{item.nombre}</p>
-                    <div className="row_2  w-full text-sm">
-                      <p className="text-sm font-semibold">{"S/7.00"}</p>
-                      <p className="text-xs cursor-pointer underline">
-                        Ver más
-                      </p>
+            {loading_stickers_products
+              ? // Mostrar placeholders mientras los datos se cargan
+                Array.from({ length: 12 }).map((_, index) => (
+                  <div class="flex w-full flex-col gap-4 ">
+                    <div class="skeleton h-32 w-full"></div>
+                    <div class="skeleton h-4 w-28"></div>
+                    <div class="skeleton h-4 w-full"></div>
+                    <div class="skeleton h-4 w-full"></div>
+                  </div>
+                ))
+              : // Mostrar los productos cuando los datos están cargados
+                stickers_products.map((item) => (
+                  <div className="product_item mb-4" key={item.id}>
+                    <img
+                      src={`https://mtb.pockethost.io/api/files/sticker_products/${item.id}/${item.principal_image}`}
+                      alt={item.nombre}
+                      className="rounded-md"
+                    />
+                    <div className="summary_container w-full flex flex-col justify-start items-start mt-2">
+                      <p className="text-sm font-normal">{item.nombre}</p>
+                      <div className="row_2 w-full text-sm">
+                        <p className="text-sm font-semibold">{"S/7.00"}</p>
+                        <p className="text-xs cursor-pointer underline">
+                          Ver más
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-            {stickers_products.map((item) => {
-              return (
-                <div className="product_item mb-4 ">
-                  <img
-                    src={`https://mtb.pockethost.io/api/files/sticker_products/${item.id}/${item.principal_image}`}
-                    alt=""
-                    className="rounded-md"
-                  />
-                  <div className="summary_container w-full flex flex-col justify-start items-start mt-2">
-                    <p className="text-sm font-normal">{item.nombre}</p>
-                    <div className="row_2  w-full text-sm">
-                      <p className="text-sm font-semibold">{"S/7.00"}</p>
-                      <p className="text-xs cursor-pointer underline">
-                        Ver más
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                ))}
           </div>
 
           <Custom_stickers_section />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
