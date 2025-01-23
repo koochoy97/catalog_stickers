@@ -17,13 +17,13 @@ export function Products_grid() {
   }, []);
 
   return (
-    <div className="products_features_container">
+    <div className="products_features_container w-full">
       <div className="products_container w-full grid grid-cols-2 gap-4 flex-wrap mt-4 md:grid-cols-6 md:gap-6">
         {loading_stickers_products
           ? // Mostrar placeholders mientras los datos se cargan
             Array.from({ length: 12 }).map((_, index) => (
               <div class="flex w-full flex-col gap-4 ">
-                <div class="skeleton h-32 w-full"></div>
+                <div class="skeleton h-40 w-full aspect-square"></div>
                 <div class="skeleton h-4 w-28"></div>
                 <div class="skeleton h-4 w-full"></div>
                 <div class="skeleton h-4 w-full"></div>

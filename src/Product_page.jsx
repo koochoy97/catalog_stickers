@@ -3,7 +3,8 @@ import { Header } from "./Components/Header";
 import { BreadCrump } from "./Components/BreadCrump";
 import { useParams, useLocation } from "react-router";
 import { DataContext } from "./Context/DataContext";
-
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 export function ProductPage() {
   const { get_pocket_base_stickers_products, stickers_products } =
     useContext(DataContext);
@@ -35,19 +36,23 @@ export function ProductPage() {
       key={location.pathname}
     >
       <Header />
-
       <div className="main mt-6 flex flex-col justify-start items-center w-full">
-        <div className="sub_header w-full px-5"></div>
+        <div className="sub_header w-full px-5 "></div>
 
         {/* Mostrar imagen solo si no está cargando */}
         {loading ? (
-          <div class="skeleton h-32 w-full"></div>
+          <div class="flex w-full flex-col gap-4 ">
+            <div class="skeleton w-full aspect-square"></div>
+            <div class="skeleton h-4 w-28"></div>
+            <div class="skeleton h-4 w-full"></div>
+            <div class="skeleton h-4 w-full"></div>
+          </div>
         ) : (
           <>
             <img
               src={`https://mtb.pockethost.io/api/files/sticker_products/${item?.[0]?.id}/${item?.[0]?.principal_image}`}
               alt={item?.[0]?.nombre}
-              className="w-full"
+              className="w-full aspect-square"
             />
             <div className="summary_item text-left w-full mt-6 px-5">
               <BreadCrump />

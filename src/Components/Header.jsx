@@ -3,8 +3,8 @@ import { Link } from "react-router";
 
 export function Header() {
   return (
-    <div className="navbar bg-base-100 px-6 md:px-20">
-      <Link to="/" className="flex-1 cursor-pointer">
+    <div className="navbar bg-base-100 px-6 md:px-20 w-full justify-between items-center flex">
+      <Link to="/" className="flex cursor-pointer ">
         <img src="/images/circle_logo.png" alt="" className="w-12" />
         <p className="font-bold text-2xl px-2">Sprinta</p>
       </Link>
