@@ -3,7 +3,7 @@ export function Custom_stickers_section() {
     <div className="hero bg-[#ECEDE4] mt-10 rounded-lg py-7">
       <div className="hero-content flex-col md:flex-row-reverse md:w-full gap-16">
         <img
-          src="/public/images/house-plans-1.jpeg"
+          src="/images/house-plans-1.jpeg"
           className="w-full md:w-[350px] rounded-lg shadow-2xl"
         />
         <div>
