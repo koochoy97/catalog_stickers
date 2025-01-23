@@ -9,11 +9,19 @@ export function DataContextProvider(props) {
   const [stickers_products, setStickers_products] = useState([]);
   const [loading_stickers_products, setLoading_stickers_products] =
     useState(true);
-  async function get_pocket_base_stickers_products() {
+
+  async function get_pocket_base_stickers_products(
+    field_filter = "",
+    filter_value = ""
+  ) {
     setLoading_stickers_products(true);
+    const filter =
+      field_filter && filter_value ? `${field_filter} = '${filter_value}'` : "";
+
     try {
       const records = await pb.collection("sticker_products").getFullList({
         sort: "",
+        filter: filter,
       });
       setLoading_stickers_products(false);
       setStickers_products(records); // Usa los datos como corresponda
