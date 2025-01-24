@@ -26,7 +26,7 @@ export function Home_categories() {
       </Link>
       <Link
         to={`/category/${"Stickers de Bicicletas"}`}
-        className={`text-xs px-3 py-3 rounded-full bg-black text-white whitespace-nowrap flex-shrink-0
+        className={`text-xs px-3 py-3 rounded-full  text-white whitespace-nowrap flex-shrink-0
                   ${
                     active_category === "Stickers%20de%20Bicicletas"
                       ? "bg-[#BAB09C] text-black font-semibold"
@@ -37,7 +37,7 @@ export function Home_categories() {
       </Link>
       <Link
         to={`/category/${"Stickers Random"}`}
-        className={`text-xs px-3 py-3 rounded-full bg-black text-white whitespace-nowrap flex-shrink-0
+        className={`text-xs px-3 py-3 rounded-full  text-white whitespace-nowrap flex-shrink-0
                   ${
                     active_category === "Stickers%20Random"
                       ? "bg-[#BAB09C] text-black font-semibold"
