@@ -10,13 +10,13 @@ export function Header() {
       </Link>
       <div className="flex-none">
         <ul className="menu menu-horizontal hidden md:flex">
-          <li>
+          <Link to="/about" className="mr-4">
             <a>Sobre nosotros</a>
-          </li>
+          </Link>
 
-          <li>
+          <Link to="/como-comprar">
             <a>¿Cómo pedir?</a>
-          </li>
+          </Link>
         </ul>
         <Mobile_nav_bar />
       </div>

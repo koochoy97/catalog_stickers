@@ -9,8 +9,11 @@ import { Products_grid } from "./Components/Products_grid";
 
 import { Link } from "react-router";
 export function Home() {
-  const { get_pocket_base_stickers_products, get_pocketbase_support_items } =
-    useContext(DataContext);
+  const {
+    get_pocket_base_stickers_products,
+    get_pocketbase_support_items,
+    stickers_products,
+  } = useContext(DataContext);
 
   useEffect(() => {
     get_pocket_base_stickers_products();
@@ -26,13 +29,10 @@ export function Home() {
             La mejor colección de Stickers
           </h1>
           <Home_categories />
-          <Promo_card
-            message="Por la compra de cualquier Kit de Stickers Personalizados o de
-        Bicicletas llévate dos Stickers Random gratis"
-          />
+          <Promo_card message="¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
         </div>
 
-        <Products_grid />
+        <Products_grid data={stickers_products} />
         <Custom_stickers_section />
       </div>
       <Footer />

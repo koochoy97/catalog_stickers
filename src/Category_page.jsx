@@ -20,7 +20,7 @@ export function Category_page() {
 
   const [filtered_products, setFiltered_products] = useState([]);
   useEffect(() => {
-    get_pocket_base_stickers_products("category_name", category_name);
+    get_pocket_base_stickers_products();
 
     return () => {};
   }, []);
@@ -35,7 +35,7 @@ export function Category_page() {
     );
 
     return () => {};
-  }, [stickers_products]);
+  }, [stickers_products, category_name]);
 
   return (
     <div className="flex w-full flex-col justify-between items-center">
@@ -52,7 +52,7 @@ export function Category_page() {
           />
         </div>
 
-        <Products_grid />
+        <Products_grid data={filtered_products} />
         <Custom_stickers_section />
       </div>
       <Footer />

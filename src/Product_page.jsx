@@ -100,7 +100,7 @@ export function ProductPage() {
                   ))}
                 </div>
               </div>
-              <Promo_card message="¡Llévate 2 Stickers Random GRATIS con cualquier Kit!" />
+              <Promo_card message="¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
               <button className="px-8 py-2 rounded-full text-lg bg-black text-white hidden md:block mt-4 w-full">
                 Comprar
               </button>

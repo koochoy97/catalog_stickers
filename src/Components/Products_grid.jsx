@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../Context/DataContext";
 import { Link } from "react-router";
 
-export function Products_grid() {
+export function Products_grid(props) {
   const {
     get_pocket_base_stickers_products,
     stickers_products,
@@ -11,7 +11,7 @@ export function Products_grid() {
   } = useContext(DataContext);
 
   useEffect(() => {
-    get_pocket_base_stickers_products();
+    console.log(props.data);
   }, []); // Dependencias vacías para que solo se ejecute al montar el componente
 
   return (
@@ -28,7 +28,7 @@ export function Products_grid() {
               </div>
             ))
           : // Mostrar los productos cuando los datos están cargados
-            stickers_products.map((item) => (
+            props.data.map((item) => (
               <Link
                 className="product_item mb-4"
                 key={item.id}

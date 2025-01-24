@@ -7,12 +7,12 @@ export function BreadCrump(props) {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link className="product_item" to={`/category/${props.category}`}>
+          <Link className="category" to={`/category/${props.category}`}>
             <a>{props.category}</a>
           </Link>
         </li>
 
-        <li>{props.name}</li>
+        <li className="">{props.name}</li>
       </ul>
     </div>
   );
