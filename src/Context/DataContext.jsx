@@ -10,10 +10,10 @@ export function DataContextProvider(props) {
   const [loading_stickers_products, setLoading_stickers_products] =
     useState(true);
 
-  async function get_pocket_base_stickers_products(
+  let get_pocket_base_stickers_products = async (
     field_filter = "",
     filter_value = ""
-  ) {
+  ) => {
     setLoading_stickers_products(true);
     const filter =
       field_filter && filter_value ? `${field_filter} = '${filter_value}'` : "";
@@ -31,7 +31,7 @@ export function DataContextProvider(props) {
       console.error("Error fetching sticker products:", error);
       throw error;
     }
-  }
+  };
 
   return (
     <DataContext.Provider

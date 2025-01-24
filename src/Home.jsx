@@ -31,7 +31,10 @@ export function Home() {
             La mejor colección de Stickers
           </h1>
           <Home_categories />
-          <Promo_card />
+          <Promo_card
+            message="Por la compra de cualquier Kit de Stickers Personalizados o de
+        Bicicletas llévate dos Stickers Random gratis"
+          />
         </div>
 
         <Products_grid />

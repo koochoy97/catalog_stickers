@@ -11,7 +11,9 @@ export function Products_grid() {
   } = useContext(DataContext);
 
   useEffect(() => {
-    get_pocket_base_stickers_products();
+    if (!stickers_products.length) {
+      get_pocket_base_stickers_products();
+    }
 
     return () => {};
   }, []);
