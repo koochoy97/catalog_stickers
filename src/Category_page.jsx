@@ -6,16 +6,36 @@ import { Promo_card } from "./Components/Promo_card";
 import { Footer } from "./Components/Footer";
 import { Home_categories } from "./Components/Home_categories";
 import { Products_grid } from "./Components/Products_grid";
+import { useParams } from "react-router";
 
 import { Link } from "react-router";
-export function Home() {
-  const { get_pocket_base_stickers_products, get_pocketbase_support_items } =
-    useContext(DataContext);
+export function Category_page() {
+  const { category_name } = useParams();
 
+  const {
+    get_pocket_base_stickers_products,
+    get_pocketbase_support_items,
+    stickers_products,
+  } = useContext(DataContext);
+
+  const [filtered_products, setFiltered_products] = useState([]);
   useEffect(() => {
-    get_pocket_base_stickers_products();
+    get_pocket_base_stickers_products("category_name", category_name);
+
     return () => {};
   }, []);
+
+  useEffect(() => {
+    let temp_filtered_products = [...stickers_products];
+
+    setFiltered_products(
+      temp_filtered_products.filter(
+        (product) => product.category_name === category_name
+      )
+    );
+
+    return () => {};
+  }, [stickers_products]);
 
   return (
     <div className="flex w-full flex-col justify-between items-center">

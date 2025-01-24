@@ -10,11 +10,18 @@ export function DataContextProvider(props) {
   const [loading_stickers_products, setLoading_stickers_products] =
     useState(true);
 
+  const [filteres_stickers_products, setFilteres_stickers_products] = useState(
+    []
+  );
+
+  const [categories, setCategories] = useState([]);
+  const [stickers_variations, setStickers_variations] = useState([]);
+
   let get_pocket_base_stickers_products = async (
     field_filter = "",
     filter_value = ""
   ) => {
-    if (stickers_products.length === 0) {
+    if (stickers_products.length <= 1) {
       setLoading_stickers_products(true);
       const filter =
         field_filter && filter_value
@@ -22,16 +29,40 @@ export function DataContextProvider(props) {
           : "";
 
       try {
-        const records = await pb.collection("sticker_products").getFullList({
-          sort: "",
-          filter: filter,
-        });
+        const records = await pb
+          .collection("stickers_product_view")
+          .getFullList({
+            sort: "",
+            filter: filter,
+          });
         setLoading_stickers_products(false);
         setStickers_products(records); // Usa los datos como corresponda
         console.log("Sticker products:", records);
         return records;
       } catch (error) {
         console.error("Error fetching sticker products:", error);
+        throw error;
+      }
+    }
+  };
+
+  let get_pocketbase_support_items = async (entity) => {
+    if (stickers_variations.length === 0) {
+      console.log("Fetching sticker variations...");
+      try {
+        const records = await pb.collection(entity).getFullList({
+          sort: "",
+        });
+        switch (entity) {
+          case "kit_variations":
+            setStickers_variations(records);
+            console.log("Sticker variations:", records);
+            break;
+          case "categories":
+            setCategories(records);
+        }
+      } catch (error) {
+        console.error("Error fetching sticker variations:", error);
         throw error;
       }
     }
@@ -44,6 +75,10 @@ export function DataContextProvider(props) {
         stickers_products,
         loading_stickers_products,
         setLoading_stickers_products,
+        get_pocketbase_support_items,
+        stickers_variations,
+        categories,
+        filteres_stickers_products,
       }}
     >
       {props.children}

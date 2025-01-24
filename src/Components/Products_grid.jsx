@@ -16,8 +16,6 @@ export function Products_grid() {
 
   return (
     <div className="products_features_container w-full">
-      {stickers_products.length}
-      {loading_stickers_products.toString()}
       <div className="products_container w-full grid grid-cols-2 gap-4 flex-wrap mt-4 md:grid-cols-6 md:gap-6">
         {loading_stickers_products
           ? // Mostrar placeholders mientras los datos se cargan
@@ -44,7 +42,9 @@ export function Products_grid() {
                 <div className="summary_container w-full flex flex-col justify-start items-start mt-2">
                   <p className="text-sm font-normal">{item.nombre}</p>
                   <div className="row_2 w-full text-sm">
-                    <p className="text-sm font-semibold">{"S/7.00"}</p>
+                    <p className="text-sm font-semibold">
+                      {"S/ " + item.min_price + ".00"}
+                    </p>
                     <p className="text-xs cursor-pointer underline">Ver más</p>
                   </div>
                 </div>
