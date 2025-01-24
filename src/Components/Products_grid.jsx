@@ -11,15 +11,13 @@ export function Products_grid() {
   } = useContext(DataContext);
 
   useEffect(() => {
-    if (!stickers_products.length) {
-      get_pocket_base_stickers_products();
-    }
-
-    return () => {};
-  }, []);
+    get_pocket_base_stickers_products();
+  }, []); // Dependencias vacías para que solo se ejecute al montar el componente
 
   return (
     <div className="products_features_container w-full">
+      {stickers_products.length}
+      {loading_stickers_products.toString()}
       <div className="products_container w-full grid grid-cols-2 gap-4 flex-wrap mt-4 md:grid-cols-6 md:gap-6">
         {loading_stickers_products
           ? // Mostrar placeholders mientras los datos se cargan
