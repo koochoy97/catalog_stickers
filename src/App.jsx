@@ -7,6 +7,7 @@ import { Category_page } from "./Category_page";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { About_page } from "./About_page";
 import { Como_comprar_page } from "./Como_comprar_page";
+import { WSP_floating_button } from "./Components/WSP_floating_button";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -20,6 +21,7 @@ function App() {
     <>
       <DataContextProvider>
         <Toaster />
+        <WSP_floating_button />
         <div className="w-full flex justify-center items-center bg-[#F8FAFC]">
           <RouterProvider router={router} />
         </div>

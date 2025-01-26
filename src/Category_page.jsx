@@ -47,7 +47,7 @@ export function Category_page() {
           </h1>
           <Home_categories />
           <Promo_card
-            message="Por la compra de cualquier Kit de Stickers Personalizados o de
+            message="Todo verano 2025:Por la compra de cualquier Kit de Stickers Personalizados o de
         Bicicletas llévate dos Stickers Random gratis"
           />
         </div>

@@ -6,8 +6,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { Promo_card } from "./Components/Promo_card";
 import { BreadCrump } from "./Components/BreadCrump";
 import { Como_pedir_component } from "./Components/Como_pedir_component";
-import { Footer } from "./Components/Footer";
-
+import { Guia_medidas } from "./Components/Guia_medidas_modal";
 export function ProductPage() {
   const {
     get_pocket_base_stickers_products,
@@ -131,9 +130,6 @@ export function ProductPage() {
               <div className="kits_container mt-2">
                 <div className="text-lg font-normal flex justify-between items-center">
                   <p>Kits Disponibles</p>
-                  <p className="text-sm font-semibold text-[#FF596F] cursor-pointer">
-                    Ver guía de medidas
-                  </p>
                 </div>
                 <div className="kits_grid flex gap-4 w-full mt-1">
                   {item?.[0]?.kit_variations?.length > 0 &&
@@ -168,7 +164,18 @@ export function ProductPage() {
                         ))}
                 </div>
               </div>
-              <Promo_card message="¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
+
+              <div className="medidas_container mt-4">
+                <div className="text-lg font-normal flex justify-between items-center">
+                  <p>Medidas Disponibles</p>
+                  <Guia_medidas />
+                </div>
+                <p className="text-sm font-semibold">
+                  2.00cm | 2.50cm | 3.00cm{" "}
+                </p>
+              </div>
+
+              <Promo_card message="Todo verano 2025: ¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
               <button className="px-8 py-2 rounded-full text-lg bg-black text-white hidden md:block mt-4 w-full">
                 Comprar
               </button>

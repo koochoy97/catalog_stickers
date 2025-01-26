@@ -1,7 +1,7 @@
 export function Como_pedir_component() {
   return (
     <div className="como_pedir_section w-full">
-      <h1 className="text-2xl font-semibold w-full text-left">
+      <h1 className="text-xl font-semibold w-full text-left">
         ¿Cómo pedir tus Stickers?
       </h1>
       <p className="mb-2">

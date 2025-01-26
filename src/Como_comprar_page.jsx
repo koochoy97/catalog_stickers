@@ -4,9 +4,9 @@ import { Section_info } from "./Components/Section_info";
 import { Como_pedir_component } from "./Components/Como_pedir_component";
 export function Como_comprar_page() {
   return (
-    <div className="flex w-full flex-col  justify-start items-start h-screen">
+    <div className="flex w-full flex-col justify-start items-start h-screen">
       <Header />
-      <div className="main w-full p-6 flex flex-col h-full justify-start items-center bg-white border-t md:px-20">
+      <div className="main w-full p-6 flex flex-col justify-start items-center bg-white border-t md:px-20">
         <Como_pedir_component />
         <Section_info
           title="¡Pide ya tus Stickers!"
