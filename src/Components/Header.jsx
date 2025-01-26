@@ -1,7 +1,9 @@
 import { Mobile_nav_bar } from "./Mobile_nav_bar";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router-dom";
 
 export function Header() {
+  const location = useLocation(); // Obtén la ruta actual
+
   return (
     <div className="navbar bg-base-100 px-6 md:px-20 w-full justify-between items-center flex">
       <Link to="/" className="flex cursor-pointer ">
@@ -10,13 +12,26 @@ export function Header() {
       </Link>
       <div className="flex-none">
         <ul className="menu menu-horizontal hidden md:flex">
-          <Link to="/about" className="mr-4">
-            <a>Sobre nosotros</a>
-          </Link>
-
-          <Link to="/como-comprar">
-            <a>¿Cómo pedir?</a>
-          </Link>
+          <li>
+            <Link
+              to="/about"
+              className={`mr-4 ${
+                location.pathname === "/about" ? "font-bold" : ""
+              }`}
+            >
+              Sobre nosotros
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/como-comprar"
+              className={`${
+                location.pathname === "/como-comprar" ? "font-bold" : ""
+              }`}
+            >
+              ¿Cómo pedir?
+            </Link>
+          </li>
         </ul>
         <Mobile_nav_bar />
       </div>

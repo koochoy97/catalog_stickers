@@ -1,5 +1,5 @@
 import { Header } from "./Components/Header";
-import { Custom_stickers_section } from "./Components/Custom_stickers";
+import { Section_info } from "./Components/Section_info";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "./Context/DataContext";
 import { Promo_card } from "./Components/Promo_card";
@@ -33,7 +33,13 @@ export function Home() {
         </div>
 
         <Products_grid data={stickers_products} />
-        <Custom_stickers_section />
+        <Section_info
+          title="¿Tienes un modelo propio?"
+          description="Puedes personalizar tus stickers con tus propios diseños y colores!"
+          img="/images/house-plans-1.jpeg"
+          cta="¡Quiero mi Sticker!"
+          link="/como-comprar"
+        />
       </div>
       <Footer />
     </div>

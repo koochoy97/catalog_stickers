@@ -5,6 +5,9 @@ import { DataContext } from "./Context/DataContext";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Promo_card } from "./Components/Promo_card";
 import { BreadCrump } from "./Components/BreadCrump";
+import { Como_pedir_component } from "./Components/Como_pedir_component";
+import { Footer } from "./Components/Footer";
+
 export function ProductPage() {
   const {
     get_pocket_base_stickers_products,
@@ -14,51 +17,52 @@ export function ProductPage() {
   } = useContext(DataContext);
 
   const [item, setItem] = useState([]);
-  const [loading, setLoading] = useState(true); // Estado de carga
+  const [loading, setLoading] = useState(true);
 
   const { productId } = useParams();
-  const location = useLocation(); // Usamos useLocation para detectar cambios en la URL
-  const [imageHeight, setImageHeight] = useState(0); // Guardar altura de la imagen
+  const location = useLocation();
 
   useEffect(() => {
     if (stickers_products.length > 0) {
-      // Solo filtra si hay datos en stickers_products
-      const product = stickers_products.filter(
+      const product = stickers_products.find(
         (sticker) => sticker.id === productId
       );
-      setItem(product);
+      if (product) setItem([product]);
       setLoading(false);
     } else {
       get_pocket_base_stickers_products("id", productId);
-      setItem(stickers_products);
     }
-  }, [productId, stickers_products]);
-
-  useEffect(() => {
-    if (item) {
-      console.log(item);
-    }
-  }, [item]); // Cuando stickers_products cambie, actualiza item
+  }, [productId, stickers_products, get_pocket_base_stickers_products]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     get_pocketbase_support_items("kit_variations");
-  }, []);
+  }, [get_pocketbase_support_items]);
+
+  const formatDescription = (description) => {
+    const lines = description?.split("\n") || [];
+    return {
+      title: lines[0] || "",
+      list: lines.slice(1).filter((line) => line.trim() !== ""), // Filtrar líneas vacías
+    };
+  };
+
+  const descriptionData = formatDescription(item?.[0]?.short_description);
 
   return (
     <div
-      className="flex w-full flex-col justify-start items-center bg-slate-100 pb-40 "
+      className="flex w-full flex-col justify-start items-center bg-slate-100 pb-40"
       key={location.pathname}
     >
       <Header />
 
-      <div className="main flex flex-col justify-start items-start w-full md:flex-row md:justify-center  md:gap-8 md:mt-8">
+      <div className="main flex flex-col justify-start items-start w-full md:flex-row md:justify-center md:gap-8 md:mt-8">
         {loading ? (
-          <div class="flex w-full flex-col gap-4 ">
-            <div class="skeleton w-full aspect-square"></div>
-            <div class="skeleton h-4 w-28"></div>
-            <div class="skeleton h-4 w-full"></div>
-            <div class="skeleton h-4 w-full"></div>
+          <div className="flex w-full flex-col gap-4">
+            <div className="skeleton w-full aspect-square"></div>
+            <div className="skeleton h-4 w-28"></div>
+            <div className="skeleton h-4 w-full"></div>
+            <div className="skeleton h-4 w-full"></div>
           </div>
         ) : (
           <>
@@ -67,7 +71,7 @@ export function ProductPage() {
               alt={item?.[0]?.nombre}
               className="w-full aspect-square md:w-[700px] object-contain"
             />
-            <div className="summary_item text-left w-full mt-6 px-5  md:max-w-[600px]">
+            <div className="summary_item text-left w-full mt-6 px-5 md:max-w-[600px]">
               <BreadCrump
                 category={item?.[0]?.category_name}
                 name={item?.[0]?.nombre}
@@ -86,18 +90,19 @@ export function ProductPage() {
                   </p>
                 </div>
                 <div className="kits_grid flex gap-4 w-full mt-1">
-                  {item?.[0]?.kit_variations?.map((kit) => (
-                    <button
-                      key={kit}
-                      className={`text-md px-6 py-2 rounded-md border-2 font-semibold whitespace-nowrap hover:bg-[#ECEDE4]`}
-                    >
-                      {
-                        stickers_variations.filter(
-                          (variation) => variation.id === kit
-                        )[0]?.nombre
-                      }
-                    </button>
-                  ))}
+                  {item?.[0]?.kit_variations?.map((kit) => {
+                    const variation = stickers_variations.find(
+                      (v) => v.id === kit
+                    );
+                    return (
+                      <button
+                        key={kit}
+                        className="text-md px-6 py-2 rounded-md border-2 font-semibold whitespace-nowrap hover:bg-[#ECEDE4]"
+                      >
+                        {variation?.nombre}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
               <Promo_card message="¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
@@ -108,29 +113,18 @@ export function ProductPage() {
 
               <div className="description_container mt-1">
                 <p className="text-xl font-medium">
-                  Caracteristicas del producto
+                  Características del producto
                 </p>
-
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Molestiae, laudantium perspiciatis optio provident sunt
-                  tempora nesciunt reprehenderit nisi harum mollitia illo
-                  recusandae dicta, quam rem consequuntur accusamus at
-                  consequatur assumenda? Lorem ipsum dolor sit amet, consectetur
-                  adipisicing elit.
-                </p>
-
+                <p>{descriptionData.title}</p>
+                {descriptionData.list.length > 0 && ( // Renderiza la lista solo si hay contenido
+                  <ul className="list-disc ml-6 mt-2">
+                    {descriptionData.list.map((line, index) => (
+                      <li key={index}>{line}</li>
+                    ))}
+                  </ul>
+                )}
                 <div className="divider"></div>
-
-                <p className="text-xl font-medium">¿Cómo pedir?</p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Molestiae, laudantium perspiciatis optio provident sunt
-                  tempora nesciunt reprehenderit nisi harum mollitia illo
-                  recusandae dicta, quam rem consequuntur accusamus at
-                  consequatur assumenda? Lorem ipsum dolor sit amet, consectetur
-                  adipisicing elit.
-                </p>
+                <Como_pedir_component />
               </div>
             </div>
 
