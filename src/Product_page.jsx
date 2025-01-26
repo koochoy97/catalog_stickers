@@ -23,6 +23,30 @@ export function ProductPage() {
   const { productId } = useParams();
   const location = useLocation();
 
+  // Estados para el kit seleccionado y su precio
+  const [kit_selected, set_kit_selected] = useState();
+  const [price, setPrice] = useState(0);
+
+  // Función para encontrar el ID del kit con el precio más bajo
+  const findLowestPriceKit = (variations, item) => {
+    if (!variations || variations.length === 0 || !item?.[0]?.kit_variations)
+      return null;
+
+    // Filtrar las variaciones cuyo ID está en item?.[0]?.kit_variations
+    const filteredVariations = variations.filter((variation) =>
+      item[0].kit_variations.includes(variation.id)
+    );
+
+    if (filteredVariations.length === 0) return null; // Si no hay coincidencias
+
+    // Encontrar la variación con el precio más bajo
+    const lowestPriceKit = filteredVariations.reduce((prev, current) =>
+      prev.price < current.price ? prev : current
+    );
+
+    return lowestPriceKit;
+  };
+
   useEffect(() => {
     if (stickers_products.length > 0) {
       const product = stickers_products.find(
@@ -39,6 +63,25 @@ export function ProductPage() {
     window.scrollTo(0, 0);
     get_pocketbase_support_items("kit_variations");
   }, [get_pocketbase_support_items]);
+
+  // Inicializar el kit seleccionado con el menor precio y actualizar el precio
+  useEffect(() => {
+    if (stickers_variations.length > 0 && item.length > 0) {
+      const lowestPriceKit = findLowestPriceKit(stickers_variations, item);
+      set_kit_selected(lowestPriceKit?.id);
+      setPrice(lowestPriceKit?.price);
+    }
+  }, [stickers_variations, item]);
+
+  // Actualizar el precio dinámicamente según el kit seleccionado
+  useEffect(() => {
+    const selectedKit = stickers_variations.find(
+      (kit) => kit.id === kit_selected
+    );
+    if (selectedKit) {
+      setPrice(selectedKit.price);
+    }
+  }, [kit_selected, stickers_variations]);
 
   const formatDescription = (description) => {
     const lines = description?.split("\n") || [];
@@ -83,9 +126,7 @@ export function ProductPage() {
               <h1 className="text-2xl font-semibold">{item?.[0]?.nombre}</h1>
               <div className="desktop_pricing_container mt-2">
                 <p className="text-sm">Precio</p>
-                <p className="text-2xl font-semibold">
-                  {"S/" + item?.[0]?.min_price + ".00"}
-                </p>
+                <p className="text-2xl font-semibold">{"S/" + price + ".00"}</p>
               </div>
               <div className="kits_container mt-2">
                 <div className="text-lg font-normal flex justify-between items-center">
@@ -105,7 +146,12 @@ export function ProductPage() {
                         return (
                           <button
                             key={kit}
-                            className="text-md px-6 py-2 rounded-md border-2 font-semibold whitespace-nowrap hover:bg-[#ECEDE4]"
+                            className={`text-md px-6 py-2 rounded-md border-2 font-semibold whitespace-nowrap hover:bg-[#ECEDE4] ${
+                              kit_selected === variation?.id
+                                ? "bg-[#ECEDE4] text-black"
+                                : ""
+                            }`}
+                            onClick={() => set_kit_selected(variation?.id)}
                           >
                             {variation?.nombre}
                           </button>
@@ -133,7 +179,7 @@ export function ProductPage() {
                   Características del producto
                 </p>
                 <p>{descriptionData.title}</p>
-                {descriptionData.list.length > 0 && ( // Renderiza la lista solo si hay contenido
+                {descriptionData.list.length > 0 && (
                   <ul className="list-disc ml-6 mt-2">
                     {descriptionData.list.map((line, index) => (
                       <li key={index}>{line}</li>
