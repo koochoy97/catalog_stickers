@@ -9,6 +9,8 @@ export function DataContextProvider(props) {
   const [stickers_products, setStickers_products] = useState([]);
   const [loading_stickers_products, setLoading_stickers_products] =
     useState(true);
+  const [loading_stickers_variations, setLoading_stickers_variations] =
+    useState(true);
 
   const [filteres_stickers_products, setFilteres_stickers_products] = useState(
     []
@@ -48,7 +50,11 @@ export function DataContextProvider(props) {
 
   let get_pocketbase_support_items = async (entity) => {
     if (stickers_variations.length === 0) {
-      console.log("Fetching sticker variations...");
+      switch (entity) {
+        case "kit_variations":
+          setLoading_stickers_variations(true);
+          break;
+      }
       try {
         const records = await pb.collection(entity).getFullList({
           sort: "",
@@ -57,6 +63,7 @@ export function DataContextProvider(props) {
           case "kit_variations":
             setStickers_variations(records);
             console.log("Sticker variations:", records);
+            setLoading_stickers_variations(false);
             break;
           case "categories":
             setCategories(records);
@@ -79,6 +86,7 @@ export function DataContextProvider(props) {
         stickers_variations,
         categories,
         filteres_stickers_products,
+        loading_stickers_variations,
       }}
     >
       {props.children}

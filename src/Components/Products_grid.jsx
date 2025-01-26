@@ -42,10 +42,11 @@ export function Products_grid(props) {
                 <div className="summary_container w-full flex flex-col justify-start items-start mt-2">
                   <p className="text-sm font-normal">{item.nombre}</p>
                   <div className="row_2 w-full text-sm">
+                    <p className="text-xs text-slate-600">Desde:</p>
                     <p className="text-sm font-semibold">
                       {"S/ " + item.min_price + ".00"}
                     </p>
-                    <p className="text-xs cursor-pointer underline">Ver más</p>
+                    <p className="text-sm cursor-pointer underline">Ver más</p>
                   </div>
                 </div>
               </Link>

@@ -14,6 +14,7 @@ export function ProductPage() {
     stickers_products,
     get_pocketbase_support_items,
     stickers_variations,
+    loading_stickers_variations,
   } = useContext(DataContext);
 
   const [item, setItem] = useState([]);
@@ -56,13 +57,15 @@ export function ProductPage() {
     >
       <Header />
 
-      <div className="main flex flex-col justify-start items-start w-full md:flex-row md:justify-center md:gap-8 md:mt-8">
+      <div className="main flex flex-col justify-start items-start w-full md:flex-row md:justify-center md:gap-8 md:mt-8 ">
         {loading ? (
-          <div className="flex w-full flex-col gap-4">
-            <div className="skeleton w-full aspect-square"></div>
-            <div className="skeleton h-4 w-28"></div>
-            <div className="skeleton h-4 w-full"></div>
-            <div className="skeleton h-4 w-full"></div>
+          <div className="flex w-full flex-col gap-4 md:flex-row md-justify-center">
+            <div className="skeleton w-full aspect-square md:w-[700px]"></div>
+            <div className="div md:w-[600px] flex flex-col gap-3 justify-center">
+              <div className="skeleton h-4 w-28 md:w-full"></div>
+              <div className="skeleton h-4 w-full"></div>
+              <div className="skeleton h-4 w-full"></div>
+            </div>
           </div>
         ) : (
           <>
@@ -80,7 +83,9 @@ export function ProductPage() {
               <h1 className="text-2xl font-semibold">{item?.[0]?.nombre}</h1>
               <div className="desktop_pricing_container mt-2">
                 <p className="text-sm">Precio</p>
-                <p className="text-2xl font-semibold">S/7.00</p>
+                <p className="text-2xl font-semibold">
+                  {"S/" + item?.[0]?.min_price + ".00"}
+                </p>
               </div>
               <div className="kits_container mt-2">
                 <div className="text-lg font-normal flex justify-between items-center">
@@ -90,19 +95,31 @@ export function ProductPage() {
                   </p>
                 </div>
                 <div className="kits_grid flex gap-4 w-full mt-1">
-                  {item?.[0]?.kit_variations?.map((kit) => {
-                    const variation = stickers_variations.find(
-                      (v) => v.id === kit
-                    );
-                    return (
-                      <button
-                        key={kit}
-                        className="text-md px-6 py-2 rounded-md border-2 font-semibold whitespace-nowrap hover:bg-[#ECEDE4]"
-                      >
-                        {variation?.nombre}
-                      </button>
-                    );
-                  })}
+                  {item?.[0]?.kit_variations?.length > 0 &&
+                  stickers_variations.length > 0
+                    ? // Renderizar los botones si hay datos disponibles
+                      item[0].kit_variations.map((kit) => {
+                        const variation = stickers_variations.find(
+                          (variation) => variation.id === kit
+                        );
+                        return (
+                          <button
+                            key={kit}
+                            className="text-md px-6 py-2 rounded-md border-2 font-semibold whitespace-nowrap hover:bg-[#ECEDE4]"
+                          >
+                            {variation?.nombre}
+                          </button>
+                        );
+                      })
+                    : // Mostrar Skeleton Loader mientras se cargan los datos
+                      Array(3)
+                        .fill(null)
+                        .map((_, index) => (
+                          <div
+                            key={index}
+                            className="w-24 h-10 bg-gray-300 animate-pulse rounded-md"
+                          ></div>
+                        ))}
                 </div>
               </div>
               <Promo_card message="¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
@@ -126,16 +143,6 @@ export function ProductPage() {
                 <div className="divider"></div>
                 <Como_pedir_component />
               </div>
-            </div>
-
-            <div className="pricing_container flex justify-between items-center w-full fixed bottom-0 left-0 bg-white px-5 py-7 rounded-t-3xl border-t md:hidden">
-              <div>
-                <p className="text-sm">Precio</p>
-                <p className="text-2xl font-semibold">S/7.00</p>
-              </div>
-              <button className="px-8 py-2 rounded-full text-lg bg-black text-white">
-                Comprar
-              </button>
             </div>
           </>
         )}
