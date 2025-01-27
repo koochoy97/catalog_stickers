@@ -20,10 +20,10 @@ export function Mobile_nav_bar() {
           className="drawer-overlay"
         ></label>
         <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-6 text-lg">
-          <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
             <img src="/images/circle_logo.png" className="w-14" alt="" />
             <p className="font-bold text-2xl px-2">Sprinta</p>
-          </div>
+          </Link>
           <div className="divider"></div>
           <li>
             <Link
@@ -43,6 +43,15 @@ export function Mobile_nav_bar() {
               }`}
             >
               ¿Cómo pedir?
+            </Link>
+          </li>
+
+          <li>
+            <Link
+              to="/"
+              className={`${location.pathname === "/" ? "font-bold" : ""}`}
+            >
+              Shop
             </Link>
           </li>
         </ul>

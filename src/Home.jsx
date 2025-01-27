@@ -38,7 +38,7 @@ export function Home() {
           description="Puedes personalizar tus stickers con tus propios diseños y colores!"
           img="/images/house-plans-1.jpeg"
           cta="¡Quiero mi Sticker!"
-          link="/como-comprar"
+          link="https://api.whatsapp.com/send?phone=51959274550&text=%C2%A1Hola!%20Quisiera%20pedir%20un%20sticker%20personalizado"
         />
       </div>
       <Footer />

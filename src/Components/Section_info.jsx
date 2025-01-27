@@ -13,6 +13,7 @@ export function Section_info(props) {
           <Link
             to={props.link}
             className="btn bg-black text-white rounded-full px-4"
+            target="_blank"
           >
             {props.cta}
           </Link>

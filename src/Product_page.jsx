@@ -123,6 +123,9 @@ export function ProductPage() {
               />
 
               <h1 className="text-2xl font-semibold">{item?.[0]?.nombre}</h1>
+              <div className=" md:hidden mb-4">
+                <Promo_card message="Todo verano 2025: ¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
+              </div>
               <div className="desktop_pricing_container mt-2">
                 <p className="text-sm">Precio</p>
                 <p className="text-2xl font-semibold">{"S/" + price + ".00"}</p>
@@ -131,7 +134,7 @@ export function ProductPage() {
                 <div className="text-lg font-normal flex justify-between items-center">
                   <p>Kits Disponibles</p>
                 </div>
-                <div className="kits_grid flex gap-4 w-full mt-1">
+                <div className="kits_grid flex gap-4 w-full mt-1 flex-wrap">
                   {item?.[0]?.kit_variations?.length > 0 &&
                   stickers_variations.length > 0
                     ? // Renderizar los botones si hay datos disponibles
@@ -175,10 +178,24 @@ export function ProductPage() {
                 </p>
               </div>
 
-              <Promo_card message="Todo verano 2025: ¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
-              <button className="px-8 py-2 rounded-full text-lg bg-black text-white hidden md:block mt-4 w-full">
-                Comprar
-              </button>
+              <div className="hidden md:block">
+                <Promo_card message="Todo verano 2025: ¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
+              </div>
+
+              <div className="mt-4 w-full">
+                <a
+                  href={`https://api.whatsapp.com/send?phone=51959274550&text=%C2%A1Hola!%20Quiero%20${
+                    stickers_variations.find(
+                      (variation) => variation.id === kit_selected
+                    )?.value
+                  }%20unidades%20del%20Sticker%20${item?.[0]?.nombre}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block px-8 py-2 rounded-full text-lg bg-black text-white text-center"
+                >
+                  Comprar
+                </a>
+              </div>
               <div className="divider"></div>
 
               <div className="description_container mt-1">
