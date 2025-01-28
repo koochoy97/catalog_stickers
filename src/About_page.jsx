@@ -1,7 +1,17 @@
 import { Header } from "./Components/Header";
 import { Footer } from "./Components/Footer";
+import ReactGA from "react-ga4";
+import { useEffect } from "react";
 
 export function About_page() {
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: location.pathname,
+      title: `Cómo pedir`,
+    });
+  }, [location.pathname]);
+
   return (
     <div className="flex w-full flex-col justify-start items-center h-screen">
       <Header />

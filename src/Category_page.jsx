@@ -7,6 +7,7 @@ import { Footer } from "./Components/Footer";
 import { Home_categories } from "./Components/Home_categories";
 import { Products_grid } from "./Components/Products_grid";
 import { useParams } from "react-router";
+import ReactGA from "react-ga4";
 
 import { Link } from "react-router";
 export function Category_page() {
@@ -36,6 +37,14 @@ export function Category_page() {
 
     return () => {};
   }, [stickers_products, category_name]);
+
+  useEffect(() => {
+    ReactGA.send({
+      hitType: "pageview",
+      page: location.pathname,
+      title: `Category: ${category_name}`, // Solo se ejecuta si el nombre está disponible
+    });
+  }, [location.pathname]);
 
   return (
     <div className="flex w-full flex-col justify-between items-center">

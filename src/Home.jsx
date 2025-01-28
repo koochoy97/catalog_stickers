@@ -6,6 +6,7 @@ import { Promo_card } from "./Components/Promo_card";
 import { Footer } from "./Components/Footer";
 import { Home_categories } from "./Components/Home_categories";
 import { Products_grid } from "./Components/Products_grid";
+import ReactGA from "react-ga4";
 
 import { Link } from "react-router";
 export function Home() {
@@ -17,8 +18,13 @@ export function Home() {
 
   useEffect(() => {
     get_pocket_base_stickers_products();
+    ReactGA.send({
+      hitType: "pageview",
+      page: window.location.pathname,
+      title: `Home`,
+    });
     return () => {};
-  }, []);
+  }, [window.location.pathname]);
 
   return (
     <div className="flex w-full flex-col justify-between items-center">

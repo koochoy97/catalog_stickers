@@ -7,6 +7,8 @@ import { Promo_card } from "./Components/Promo_card";
 import { BreadCrump } from "./Components/BreadCrump";
 import { Como_pedir_component } from "./Components/Como_pedir_component";
 import { Guia_medidas } from "./Components/Guia_medidas_modal";
+import ReactGA from "react-ga4";
+
 export function ProductPage() {
   const {
     get_pocket_base_stickers_products,
@@ -81,6 +83,24 @@ export function ProductPage() {
       setPrice(selectedKit.price);
     }
   }, [kit_selected, stickers_variations]);
+
+  useEffect(() => {
+    if (item?.[0]?.nombre) {
+      ReactGA.send({
+        hitType: "pageview",
+        page: location.pathname,
+        title: `Product: ${item[0].nombre}`, // Solo se ejecuta si el nombre está disponible
+      });
+    }
+  }, [location.pathname, item]);
+
+  const handleBuyClick = (name, variation) => {
+    ReactGA.event({
+      category: "Botón Comprar", // Categoría del evento
+      action: "Click en Comprar", // Acción que se realiza
+      label: `${name} - ${variation}`, // Nombre del producto
+    });
+  };
 
   const formatDescription = (description) => {
     const lines = description?.split("\n") || [];
@@ -192,6 +212,14 @@ export function ProductPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block px-8 py-2 rounded-full text-lg bg-black text-white text-center"
+                  onClick={() => {
+                    handleBuyClick(
+                      item?.[0]?.nombre,
+                      stickers_variations.find(
+                        (variation) => variation.id === kit_selected
+                      )?.nombre
+                    );
+                  }}
                 >
                   Comprar
                 </a>
