@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Header } from "./Components/Header";
 import { Footer } from "./Components/Footer";
 import { Contact_info } from "./Components/Contact_info";
+import { Order_summary } from "./Components/Order_summary";
 
 export function Payment_summary() {
   const [name, setName] = useState("");
@@ -47,6 +48,7 @@ export function Payment_summary() {
           <h1 className="text-lg font-semibold w-full text-left ">
             Resumen de compra
           </h1>
+          <Order_summary />
         </div>
 
         {/* 🔹 Se usa el componente Contact_info y se le pasan los estados como props */}
