@@ -41,16 +41,7 @@ export function Payment_summary() {
 
   return (
     <div className="flex w-full flex-col justify-start items-center h-screen">
-      <Header />
-
       <div className="main w-11/12 flex flex-col justify-start items-center my-4 md:px-20 h-full">
-        <div className="summary_container w-full bg-white rounded-md p-3 mb-4">
-          <h1 className="text-lg font-semibold w-full text-left mb-2">
-            Resumen de compra
-          </h1>
-          <Order_summary />
-        </div>
-
         {/* 🔹 Se usa el componente Contact_info y se le pasan los estados como props */}
         <Contact_info
           name={name}
@@ -63,19 +54,13 @@ export function Payment_summary() {
           isValid={isValid}
         />
 
-        <div className="flex justify-center items-center text-sm gap-4 mt-2 font-light text-slate-500">
-          <p className="flex gap-2">
-            <img src="/images/Lock.svg" alt="" />
-            Pago seguro
-          </p>
-          <p className="flex gap-2">
-            <img src="/images/Secure.svg" alt="" />
-            Datos protegidos
-          </p>
+        <div className="summary_container w-full bg-white rounded-md p-3 mt-4">
+          <h1 className="text-lg font-semibold w-full text-left mb-2">
+            Resumen de compra
+          </h1>
+          <Order_summary />
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

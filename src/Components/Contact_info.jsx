@@ -64,6 +64,17 @@ export function Contact_info({
         >
           Continuar al pago
         </button>
+
+        <div className="flex justify-center items-center text-xs gap-4 mt-4 font-light text-slate-500">
+          <p className="flex gap-2">
+            <img src="/images/Lock.svg" className="w-4" alt="" />
+            Pago seguro
+          </p>
+          <p className="flex gap-2">
+            <img src="/images/Secure.svg" className="w-4" alt="" />
+            Datos protegidos
+          </p>
+        </div>
       </div>
     </div>
   );

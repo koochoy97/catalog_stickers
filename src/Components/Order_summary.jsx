@@ -8,7 +8,7 @@ export function Order_summary() {
       <div className="item flex items-start gap-3 w-full">
         <img
           src="/images/sticker.png"
-          className="w-[50px] rounded-md"
+          className="w-[45px] rounded-md"
           alt="Sticker"
         />
         <div className="flex flex-1 items-start justify-between">
@@ -43,7 +43,7 @@ export function Order_summary() {
       <div className="item flex items-start gap-3 w-full">
         <img
           src="/images/sticker.png"
-          className="w-[50px] rounded-md"
+          className="w-[45px] rounded-md"
           alt="Sticker"
         />
         <div className="flex flex-1 items-start justify-between">
@@ -78,7 +78,7 @@ export function Order_summary() {
       <div className="item flex items-start gap-3 w-full">
         <img
           src="/images/sticker.png"
-          className="w-[50px] rounded-md"
+          className="w-[45px] rounded-md"
           alt="Sticker"
         />
         <div className="flex flex-1 items-start justify-between">
