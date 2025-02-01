@@ -45,7 +45,7 @@ export function Payment_summary() {
 
       <div className="main w-11/12 flex flex-col justify-start items-center my-4 md:px-20 h-full">
         <div className="summary_container w-full bg-white rounded-md p-3 mb-4">
-          <h1 className="text-lg font-semibold w-full text-left ">
+          <h1 className="text-lg font-semibold w-full text-left mb-2">
             Resumen de compra
           </h1>
           <Order_summary />
