@@ -8,6 +8,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { About_page } from "./About_page";
 import { Como_comprar_page } from "./Como_comprar_page";
 import { WSP_floating_button } from "./Components/WSP_floating_button";
+import { Payment_page } from "./Payment";
+import { Payment_summary } from "./Paymet_sumary";
 import ReactGA from "react-ga4";
 
 const router = createBrowserRouter([
@@ -16,6 +18,8 @@ const router = createBrowserRouter([
   { path: "/category/:category_name", element: <Category_page /> },
   { path: "/about", element: <About_page /> },
   { path: "/como-comprar", element: <Como_comprar_page /> },
+  { path: "/payment", element: <Payment_page /> },
+  { path: "/payment_summary", element: <Payment_summary /> },
 ]);
 
 ReactGA.initialize("G-G3X2DKNF63");
