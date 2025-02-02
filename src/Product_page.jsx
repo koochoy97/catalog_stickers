@@ -29,6 +29,8 @@ export function ProductPage() {
   const [kit_selected, set_kit_selected] = useState();
   const [price, setPrice] = useState(0);
 
+  //Estados para llenar Cart (Sticker_nombre, Sticker_apellido, Sticker_Bandera, Product_id)
+
   // Función para encontrar el ID del kit con el precio más bajo
   const findLowestPriceKit = (variations, item) => {
     if (!variations || variations.length === 0 || !item?.[0]?.kit_variations)
@@ -204,6 +206,7 @@ export function ProductPage() {
               </div>
 
               <div className="mt-4 w-full">
+                {/** 
                 <a
                   href={`https://api.whatsapp.com/send?phone=51959274550&text=%C2%A1Hola!%20Quiero%20${
                     stickers_variations.find(
@@ -224,7 +227,14 @@ export function ProductPage() {
                 >
                   Comprar
                 </a>
-                <Sticker_user_info_modal />
+                */}
+                <Sticker_user_info_modal
+                  kit_selected_ID={kit_selected}
+                  kit_selected_value={stickers_variations.find(
+                    (variation) => variation.id === kit_selected
+                  )}
+                  product={item?.[0]}
+                />
               </div>
               <div className="divider"></div>
 

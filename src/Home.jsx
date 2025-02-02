@@ -17,8 +17,6 @@ export function Home() {
     stickers_products,
   } = useContext(DataContext);
 
-  const { test } = useContext(ShoppingCartContext);
-
   useEffect(() => {
     get_pocket_base_stickers_products();
     ReactGA.send({
