@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { Header } from "./Components/Header";
-import { Footer } from "./Components/Footer";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { Direccion_envio_modal } from "./Components/Direccion_envio_modal";
 
@@ -10,7 +8,8 @@ initMercadoPago("TEST-16a3d4c9-3cad-4447-86db-5671b1f27ea2", {
 
 export function Payment_page() {
   const [preferenceId, setPreferenceId] = useState(null);
-  const [loading, setLoading] = useState(true); // Estado para indicar carga
+  const [loading, setLoading] = useState(true);
+  const [selectedOption, setSelectedOption] = useState("envio_domicilio"); // Estado para la selección
 
   useEffect(() => {
     fetch("https://kingway97.pythonanywhere.com/crear_preferencia", {
@@ -30,8 +29,8 @@ export function Payment_page() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setPreferenceId(data.id); // Guardar la preferencia
-        setLoading(false); // Termina la carga
+        setPreferenceId(data.id);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error al obtener la preferencia:", error);
@@ -46,13 +45,17 @@ export function Payment_page() {
 
         <div className="botón_pago_container w-full bg-white rounded-md p-3 mt-4">
           <h2 className="text-lg font-bold mb-4">
-            Selecciona el metodo de envío
+            Selecciona el método de envío
           </h2>
+
+          {/* Opción 1: Envío a domicilio */}
           <div className="shipping_option flex gap-2 items-center justify-between">
             <input
-              type="checkbox"
-              defaultChecked
-              className="checkbox w-3 h-3"
+              type="radio"
+              name="shipping"
+              checked={selectedOption === "envio_domicilio"}
+              onChange={() => setSelectedOption("envio_domicilio")}
+              className="radio w-3 h-3"
             />
             <div>
               <p className="text-md">Envío a domicilio</p>
@@ -65,11 +68,14 @@ export function Payment_page() {
 
           <div className="divider"></div>
 
+          {/* Opción 2: Recojo en Miraflores */}
           <div className="Recojo_option flex gap-2 items-center justify-between mt-2">
             <input
-              type="checkbox"
-              defaultChecked
-              className="checkbox w-3 h-3"
+              type="radio"
+              name="shipping"
+              checked={selectedOption === "recojo_miraflores"}
+              onChange={() => setSelectedOption("recojo_miraflores")}
+              className="radio w-3 h-3"
             />
             <div>
               <p className="text-md">Recojo en Miraflores</p>
@@ -82,12 +88,28 @@ export function Payment_page() {
         </div>
 
         <div className="seleccion_envio w-full bg-white rounded-md p-3 mt-4">
-          <h1 className="text-xl font-bold mb-4">Pagar con Mercado Pago</h1>
+          <div className="summary w-full text-sm">
+            <div className="row_1 flex justify-between">
+              <p>Productos:</p>
+              <p>S/10.00</p>
+            </div>
+
+            <div className="row_2 flex justify-between">
+              <p>Envío:</p>
+              <p>S/5.00</p>
+            </div>
+
+            <div className="row_3 flex justify-between font-semibold">
+              <p>Total:</p>
+              <p>S/15.00</p>
+            </div>
+          </div>
+
           {loading ? (
             <p className="text-gray-500">Cargando pago...</p>
           ) : (
             preferenceId && (
-              <div className="mt-4">
+              <div className="">
                 <Wallet initialization={{ preferenceId }} />
               </div>
             )
