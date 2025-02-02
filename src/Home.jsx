@@ -7,6 +7,7 @@ import { Footer } from "./Components/Footer";
 import { Home_categories } from "./Components/Home_categories";
 import { Products_grid } from "./Components/Products_grid";
 import ReactGA from "react-ga4";
+import { ShoppingCartContext } from "./Context/ShoppingCartContext";
 
 import { Link } from "react-router";
 export function Home() {
@@ -15,6 +16,8 @@ export function Home() {
     get_pocketbase_support_items,
     stickers_products,
   } = useContext(DataContext);
+
+  const { test } = useContext(ShoppingCartContext);
 
   useEffect(() => {
     get_pocket_base_stickers_products();

@@ -4,10 +4,10 @@ export function Mobile_nav_bar() {
   const location = useLocation(); // Obtén la ruta actual
 
   return (
-    <div className="drawer drawer-end md:hidden">
+    <div className="drawer drawer-start md:hidden w-auto">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
-        <label htmlFor="my-drawer-4" className="drawer-button btn">
+        <label htmlFor="my-drawer-4" className="drawer-button">
           <img src="/images/burger_menu.svg" alt="" className="w-8" />
         </label>
       </div>

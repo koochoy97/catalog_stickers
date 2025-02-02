@@ -11,6 +11,7 @@ import { WSP_floating_button } from "./Components/WSP_floating_button";
 import { Payment_page } from "./Payment";
 import { Payment_summary } from "./Paymet_sumary";
 import ReactGA from "react-ga4";
+import { ShoppingCartContextProvider } from "./Context/ShoppingCartContext";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -27,11 +28,13 @@ function App() {
   return (
     <>
       <DataContextProvider>
-        <Toaster />
-        <WSP_floating_button />
-        <div className="w-full flex justify-center items-center bg-[#F8FAFC]">
-          <RouterProvider router={router} />
-        </div>
+        <ShoppingCartContextProvider>
+          <Toaster />
+          <WSP_floating_button />
+          <div className="w-full flex justify-center items-center bg-[#F8FAFC]">
+            <RouterProvider router={router} />
+          </div>
+        </ShoppingCartContextProvider>
       </DataContextProvider>
     </>
   );

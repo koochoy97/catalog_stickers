@@ -8,6 +8,7 @@ import { BreadCrump } from "./Components/BreadCrump";
 import { Como_pedir_component } from "./Components/Como_pedir_component";
 import { Guia_medidas } from "./Components/Guia_medidas_modal";
 import ReactGA from "react-ga4";
+import { Sticker_user_info_modal } from "./Components/Sticker_user_info_modal";
 
 export function ProductPage() {
   const {
@@ -223,6 +224,7 @@ export function ProductPage() {
                 >
                   Comprar
                 </a>
+                <Sticker_user_info_modal />
               </div>
               <div className="divider"></div>
 

@@ -14,12 +14,12 @@ export function Order_summary() {
         <div className="flex flex-1 items-start justify-between">
           {/* Título y descripción */}
           <div className="flex flex-col items-start w-full">
-            <p className="font-semibold">Sticker Classic</p>
+            <p className="font-semibold text-sm">Sticker Classic</p>
             <p
               className={`text-xs text-[#6B7280] font-light overflow-hidden  ${
                 expanded
                   ? "whitespace-normal max-w-full"
-                  : "truncate max-w-[180px]"
+                  : "truncate max-w-[100px]"
               }`}
             >
               3 unidades - 3(S), 4(M), 5(L) - Nombre: Jaime - Apellido: Koochoy
@@ -34,7 +34,7 @@ export function Order_summary() {
           </div>
 
           {/* Precio alineado a la derecha */}
-          <p className="font-semibold text-gray-700 min-w-[80px] text-right">
+          <p className="font-semibold text-sm text-gray-700 min-w-[80px] text-right">
             S/. 15.00
           </p>
         </div>
@@ -49,12 +49,12 @@ export function Order_summary() {
         <div className="flex flex-1 items-start justify-between">
           {/* Título y descripción */}
           <div className="flex flex-col items-start w-full">
-            <p className="font-semibold">Sticker Classic</p>
+            <p className="font-semibold text-sm">Sticker Classic</p>
             <p
               className={`text-xs text-[#6B7280] font-light overflow-hidden  ${
                 expanded
                   ? "whitespace-normal max-w-full"
-                  : "truncate max-w-[180px]"
+                  : "truncate max-w-[100px]"
               }`}
             >
               3 unidades - 3(S), 4(M), 5(L) - Nombre: Jaime - Apellido: Koochoy
@@ -69,7 +69,7 @@ export function Order_summary() {
           </div>
 
           {/* Precio alineado a la derecha */}
-          <p className="font-semibold text-gray-700 min-w-[80px] text-right">
+          <p className="font-semibold text-sm text-gray-700 min-w-[80px] text-right">
             S/. 15.00
           </p>
         </div>
@@ -84,12 +84,12 @@ export function Order_summary() {
         <div className="flex flex-1 items-start justify-between">
           {/* Título y descripción */}
           <div className="flex flex-col items-start w-full">
-            <p className="font-semibold">Sticker Classic</p>
+            <p className="font-semibold text-sm">Sticker Classic</p>
             <p
               className={`text-xs text-[#6B7280] font-light overflow-hidden  ${
                 expanded
                   ? "whitespace-normal max-w-full"
-                  : "truncate max-w-[180px]"
+                  : "truncate max-w-[100px]"
               }`}
             >
               3 unidades - 3(S), 4(M), 5(L) - Nombre: Jaime - Apellido: Koochoy
@@ -104,7 +104,7 @@ export function Order_summary() {
           </div>
 
           {/* Precio alineado a la derecha */}
-          <p className="font-semibold text-gray-700 min-w-[80px] text-right">
+          <p className="font-semibold text-sm text-gray-700 min-w-[80px] text-right">
             S/. 15.00
           </p>
         </div>
