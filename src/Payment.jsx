@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Header } from "./Components/Header";
 import { Footer } from "./Components/Footer";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+import { Direccion_envio_modal } from "./Components/Direccion_envio_modal";
 
 initMercadoPago("TEST-16a3d4c9-3cad-4447-86db-5671b1f27ea2", {
   locale: "es-PE",
@@ -39,21 +40,60 @@ export function Payment_page() {
   }, []);
 
   return (
-    <div className="flex w-full flex-col justify-start items-start h-screen">
-      <Header />
-      <div className="main w-full p-6 flex flex-col justify-start items-center bg-white border-t md:px-20">
-        <h1 className="text-xl font-bold mb-4">Pagar con Mercado Pago</h1>
-        {loading ? (
-          <p className="text-gray-500">Cargando pago...</p>
-        ) : (
-          preferenceId && (
-            <div className="mt-4">
-              <Wallet initialization={{ preferenceId }} />
+    <div className="flex w-full flex-col justify-start items-center h-screen">
+      <div className="main w-11/12 flex flex-col justify-start items-center my-4 md:px-20 h-full">
+        <Direccion_envio_modal />
+
+        <div className="botón_pago_container w-full bg-white rounded-md p-3 mt-4">
+          <h2 className="text-lg font-bold mb-4">
+            Selecciona el metodo de envío
+          </h2>
+          <div className="shipping_option flex gap-2 items-center justify-between">
+            <input
+              type="checkbox"
+              defaultChecked
+              className="checkbox w-3 h-3"
+            />
+            <div>
+              <p className="text-md">Envío a domicilio</p>
+              <p className="text-gray-500 text-sm">
+                Te llega el Viernes 07 de Febrero
+              </p>
             </div>
-          )
-        )}
+            <p className="text-md">S/5.00</p>
+          </div>
+
+          <div className="divider"></div>
+
+          <div className="Recojo_option flex gap-2 items-center justify-between mt-2">
+            <input
+              type="checkbox"
+              defaultChecked
+              className="checkbox w-3 h-3"
+            />
+            <div>
+              <p className="text-md">Recojo en Miraflores</p>
+              <p className="text-gray-500 text-sm">
+                A partir del viernes 07 de Febrero
+              </p>
+            </div>
+            <p className="text-md">S/5.00</p>
+          </div>
+        </div>
+
+        <div className="seleccion_envio w-full bg-white rounded-md p-3 mt-4">
+          <h1 className="text-xl font-bold mb-4">Pagar con Mercado Pago</h1>
+          {loading ? (
+            <p className="text-gray-500">Cargando pago...</p>
+          ) : (
+            preferenceId && (
+              <div className="mt-4">
+                <Wallet initialization={{ preferenceId }} />
+              </div>
+            )
+          )}
+        </div>
       </div>
-      <Footer />
     </div>
   );
 }
