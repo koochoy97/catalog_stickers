@@ -1,7 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Order_summary } from "./Order_summary";
-import { ShoppingCartContext } from "../Context/ShoppingCartContext";
+import { ShoppingCartContext } from "../../Context/ShoppingCartContext";
 import { useContext } from "react";
+import { Total_order } from "./Total_order";
 
 export function Shopping_cart() {
   const location = useLocation(); // Obtén la ruta actual
@@ -36,6 +37,14 @@ export function Shopping_cart() {
           <p className="font-bold text-xl px-2">Carrito de compras</p>
           <div className="divider"></div>
           <Order_summary />
+          <div className="divider"></div>
+          <Total_order />
+          <Link
+            to={`/payment_summary`}
+            className={`text-xs px-3 py-3 rounded-md text-white white space-nowrap w-full text-center flex-shrink-0 bg-black mt-2 font-semibold  `}
+          >
+            Ir al checkout
+          </Link>
         </ul>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 export function Contact_info({
   name,
   setName,
@@ -8,6 +9,7 @@ export function Contact_info({
   setTouched,
   isValid,
 }) {
+  const navigate = useNavigate();
   // Función para limpiar espacios en el teléfono cuando pierde el foco
   const handlePhoneBlur = () => {
     setTouched((prev) => ({ ...prev, phone: true }));
@@ -61,6 +63,9 @@ export function Contact_info({
               : "bg-gray-400 cursor-not-allowed"
           }`}
           disabled={!isValid} // 🔹 Ahora comienza deshabilitado correctamente
+          onClick={() => {
+            navigate("/payment");
+          }}
         >
           Continuar al pago
         </button>

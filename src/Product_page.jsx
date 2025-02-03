@@ -1,14 +1,14 @@
 import { useEffect, useContext, useState } from "react";
-import { Header } from "./Components/Header";
+import { Header } from "./Components/Header/Header";
 import { useParams, useLocation } from "react-router";
 import { DataContext } from "./Context/DataContext";
 import "react-loading-skeleton/dist/skeleton.css";
-import { Promo_card } from "./Components/Promo_card";
-import { BreadCrump } from "./Components/BreadCrump";
-import { Como_pedir_component } from "./Components/Como_pedir_component";
-import { Guia_medidas } from "./Components/Guia_medidas_modal";
+import { Promo_card } from "./Components/Products/Promo_card";
+import { BreadCrump } from "./Components/Products/BreadCrump";
+import { Como_pedir_component } from "./Components/Pages_components/Como_pedir_component";
+import { Guia_medidas } from "./Components/Pages_components/Guia_medidas_modal";
 import ReactGA from "react-ga4";
-import { Sticker_user_info_modal } from "./Components/Sticker_user_info_modal";
+import { Sticker_user_info_modal } from "./Components/Products/Sticker_user_info_modal";
 
 export function ProductPage() {
   const {

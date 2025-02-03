@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { ShoppingCartContext } from "../Context/ShoppingCartContext";
+import { ShoppingCartContext } from "../../Context/ShoppingCartContext";
 import { useNavigate } from "react-router-dom";
 
 export function Sticker_user_info_modal(props) {

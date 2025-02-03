@@ -1,6 +1,6 @@
 import { Mobile_nav_bar } from "./Mobile_nav_bar";
 import { Link, useLocation } from "react-router-dom";
-import { Shopping_cart } from "./Shopping_cart";
+import { Shopping_cart } from "../Shopping_cart/Shopping_cart";
 
 export function Header() {
   const location = useLocation(); // Obtén la ruta actual

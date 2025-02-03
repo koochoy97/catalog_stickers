@@ -1,7 +1,7 @@
-import { Header } from "./Components/Header";
-import { Footer } from "./Components/Footer";
-import { Section_info } from "./Components/Section_info";
-import { Como_pedir_component } from "./Components/Como_pedir_component";
+import { Header } from "./Components/Header/Header";
+import { Footer } from "./Components/Pages_components/Footer";
+import { Section_info } from "./Components/Pages_components/Section_info";
+import { Como_pedir_component } from "./Components/Pages_components/Como_pedir_component";
 import { useEffect } from "react";
 import ReactGA from "react-ga4";
 export function Como_comprar_page() {

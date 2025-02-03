@@ -1,11 +1,11 @@
-import { Header } from "./Components/Header";
-import { Section_info } from "./Components/Section_info";
+import { Header } from "./Components/Header/Header";
+import { Section_info } from "./Components/Pages_components/Section_info";
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "./Context/DataContext";
-import { Promo_card } from "./Components/Promo_card";
-import { Footer } from "./Components/Footer";
-import { Home_categories } from "./Components/Home_categories";
-import { Products_grid } from "./Components/Products_grid";
+import { Promo_card } from "./Components/Products/Promo_card";
+import { Footer } from "./Components/Pages_components/Footer";
+import { Home_categories } from "./Components/Products/Home_categories";
+import { Products_grid } from "./Components/Products/Products_grid";
 import { useParams } from "react-router";
 import ReactGA from "react-ga4";
 

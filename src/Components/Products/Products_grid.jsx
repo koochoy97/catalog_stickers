@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { DataContext } from "../Context/DataContext";
+import { DataContext } from "../../Context/DataContext";
 import { Link } from "react-router";
 
 export function Products_grid(props) {

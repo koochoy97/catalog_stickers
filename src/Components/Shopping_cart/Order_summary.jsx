@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
-import { ShoppingCartContext } from "../Context/ShoppingCartContext";
-import { DataContext } from "../Context/DataContext";
+import { ShoppingCartContext } from "../../Context/ShoppingCartContext";
+import { DataContext } from "../../Context/DataContext";
+import { Total_order } from "./Total_order";
 
 export function Order_summary() {
   // Estado para controlar la expansión de cada item por su id

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
-import { Direccion_envio_modal } from "./Components/Direccion_envio_modal";
+import { Direccion_envio_modal } from "./Components/Checkout/Direccion_envio_modal";
 
 initMercadoPago("TEST-16a3d4c9-3cad-4447-86db-5671b1f27ea2", {
   locale: "es-PE",

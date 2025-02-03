@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
-import { Contact_info } from "./Components/Contact_info";
-import { Order_summary } from "./Components/Order_summary";
+import { Contact_info } from "./Components/Shopping_cart/Contact_info";
+import { Order_summary } from "./Components/Shopping_cart/Order_summary";
 import { ShoppingCartContext } from "./Context/ShoppingCartContext";
-import { DataConnect } from "firebase/data-connect";
+import { Total_order } from "./Components/Shopping_cart/Total_order";
 
 export function Payment_summary() {
   const [name, setName] = useState("");
@@ -42,7 +42,7 @@ export function Payment_summary() {
   }, [name, phone, touched]);
 
   return (
-    <div className="flex w-full flex-col justify-start items-center h-screen">
+    <div className="flex w-full flex-col justify-start items-center  pb-16">
       <div className="main w-11/12 flex flex-col justify-start items-center my-4 md:px-20 h-full">
         {/* 🔹 Se usa el componente Contact_info y se le pasan los estados como props */}
         <Contact_info
@@ -61,6 +61,8 @@ export function Payment_summary() {
             Resumen de compra
           </h1>
           <Order_summary />
+          <div className="divider"></div>
+          <Total_order />
         </div>
       </div>
     </div>
