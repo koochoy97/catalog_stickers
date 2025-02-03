@@ -67,6 +67,8 @@ export function DataContextProvider(props) {
             break;
           case "categories":
             setCategories(records);
+          case "stickers_product_view":
+            setStickers_products(records);
         }
       } catch (error) {
         console.error("Error fetching sticker variations:", error);

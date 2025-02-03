@@ -57,7 +57,7 @@ export function Sticker_user_info_modal(props) {
       sticker_lastname: stickerLastname,
       sticker_bandera: stickerBandera,
       sticker_variation: kit_selected_value,
-      product_id: product?.id,
+      product: product,
       qtyS: inputValues.S,
       qtyM: inputValues.M,
       qtyL: inputValues.L,
