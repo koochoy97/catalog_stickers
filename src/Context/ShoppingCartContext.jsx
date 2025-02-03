@@ -1,46 +1,71 @@
 import { createContext, useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid"; // Si decides usar uuid
+import { v4 as uuidv4 } from "uuid"; // Para generar IDs únicos
 
 // Crear el contexto
 export const ShoppingCartContext = createContext("");
 
 // Componente del proveedor del contexto
 export function ShoppingCartContextProvider(props) {
-  const [carts, setCarts] = useState(() => {
-    const savedCarts = localStorage.getItem("carts");
-    return savedCarts ? JSON.parse(savedCarts) : [];
+  // Estado para el carrito (id y estado with_products)
+  const [cart, setCart] = useState(() => {
+    const savedCart = localStorage.getItem("cart");
+    return savedCart ? JSON.parse(savedCart) : null;
   });
 
+  // Estado para los detalles del carrito (productos agregados)
   const [cartDetails, setCartDetails] = useState(() => {
     const savedCartDetails = localStorage.getItem("cartDetails");
     return savedCartDetails ? JSON.parse(savedCartDetails) : [];
   });
 
-  // Función para crear un nuevo carrito y sus detalles
-  const createUnified_cart = (cartData, detailsData) => {
-    const sessionId = uuidv4(); // Generar un ID único para la sesión
+  // Función para agregar un producto al carrito
+  const addProductToCart = (productData) => {
+    let sessionId;
 
-    // Crear el nuevo carrito
-    const newCart = {
-      id: sessionId,
-      ...cartData,
+    // Si ya existe un carrito, usamos su ID
+    if (cart) {
+      sessionId = cart.id;
+    } else {
+      // Si no existe, creamos un nuevo carrito con un ID único y with_products en false
+      sessionId = uuidv4();
+      const newCart = { id: sessionId, with_products: false }; // Inicialmente sin productos
+      setCart(newCart);
+    }
+
+    // Crear el detalle del carrito (producto agregado)
+    const newCartDetail = {
+      id: uuidv4(), // ID único para el cart_detail
+      cartId: sessionId, // Asociar el detalle al carrito
+      ...productData, // Datos del producto (id, nombre, cantidad, precio, etc.)
     };
 
-    // Crear los detalles del carrito
-    const newCartDetails = {
-      cartId: sessionId,
-      ...detailsData,
-    };
+    // Actualizar los detalles del carrito
+    setCartDetails((prevDetails) => [...prevDetails, newCartDetail]);
 
-    // Actualizar el estado
-    setCarts((prevCarts) => [...prevCarts, newCart]);
-    setCartDetails((prevDetails) => [...prevDetails, newCartDetails]);
+    // Actualizar el estado del carrito (with_products a true)
+    setCart((prevCart) => ({ ...prevCart, with_products: true }));
+  };
+
+  // Función para eliminar un producto del carrito
+  const removeProductFromCart = (id) => {
+    // Filtrar los detalles del carrito para eliminar el producto
+    const updatedCartDetails = cartDetails.filter((detail) => detail.id !== id);
+
+    // Actualizar los detalles del carrito
+    setCartDetails(updatedCartDetails);
+
+    // Actualizar el estado del carrito (with_products a false si no hay productos)
+    if (updatedCartDetails.length === 0) {
+      setCart((prevCart) => ({ ...prevCart, with_products: false }));
+    }
   };
 
   // Guardar los datos en el localStorage cuando cambian
   useEffect(() => {
-    localStorage.setItem("carts", JSON.stringify(carts));
-  }, [carts]);
+    if (cart) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart]);
 
   useEffect(() => {
     localStorage.setItem("cartDetails", JSON.stringify(cartDetails));
@@ -49,11 +74,12 @@ export function ShoppingCartContextProvider(props) {
   return (
     <ShoppingCartContext.Provider
       value={{
-        carts,
-        setCarts,
+        cart,
+        setCart,
         cartDetails,
         setCartDetails,
-        createUnified_cart,
+        addProductToCart,
+        removeProductFromCart, // Nueva función para eliminar productos
       }}
     >
       {props.children}

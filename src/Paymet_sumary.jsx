@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { Header } from "./Components/Header";
-import { Footer } from "./Components/Footer";
+import { useEffect, useState, useContext } from "react";
 import { Contact_info } from "./Components/Contact_info";
 import { Order_summary } from "./Components/Order_summary";
+import { ShoppingCartContext } from "./Context/ShoppingCartContext";
+import { DataConnect } from "firebase/data-connect";
 
 export function Payment_summary() {
   const [name, setName] = useState("");
@@ -10,6 +10,8 @@ export function Payment_summary() {
   const [errors, setErrors] = useState({ name: "", phone: "" });
   const [isValid, setIsValid] = useState(false);
   const [touched, setTouched] = useState({ name: false, phone: false });
+
+  const { cartDetails, cart } = useContext(ShoppingCartContext);
 
   // Validar los campos en tiempo real
   useEffect(() => {
