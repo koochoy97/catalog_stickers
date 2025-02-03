@@ -66,6 +66,33 @@ export function Sticker_user_info_modal(props) {
     navigate("/payment_summary");
   };
 
+  const handle_requiered_fields = () => {
+    let exeptions = {
+      lastname: false,
+      bandera: false,
+    };
+    if (
+      product.nombre === "Simple" ||
+      product.nombre === "Red" ||
+      product.nombre === "Octógono"
+    ) {
+      exeptions.lastname = false;
+      exeptions.bandera = false;
+    } else if (
+      product.nombre === "Street" ||
+      product.nombre === "Fast" ||
+      product.nombre === "Scholar"
+    ) {
+      exeptions.lastname = true;
+      exeptions.bandera = false;
+    } else {
+      exeptions.lastname = true;
+      exeptions.bandera = true;
+    }
+
+    return exeptions;
+  };
+
   return (
     <>
       {/* Botón para abrir el modal */}
@@ -89,39 +116,52 @@ export function Sticker_user_info_modal(props) {
             <h3 className="font-bold text-lg mb-3">Personaliza tu Sticker</h3>
 
             <div className="flex flex-col gap-3">
-              {/* Input para el nombre */}
-              <input
-                type="text"
-                placeholder="Nombre"
-                className="input input-bordered w-full"
-                value={stickerName}
-                onChange={(e) => setStickerName(e.target.value)}
-              />
+              {product.category_name === "Stickers Personalizados" ? (
+                <div className="custom_stickers_forms w-full flex flex-col gap-3">
+                  {/* Input para el nombre */}
 
-              {/* Input para el apellido */}
-              <input
-                type="text"
-                placeholder="Apellido"
-                className="input input-bordered w-full"
-                value={stickerLastname}
-                onChange={(e) => setStickerLastname(e.target.value)}
-              />
-
-              {/* Select para la bandera */}
-              <select
-                className="select select-bordered w-full"
-                value={stickerBandera}
-                onChange={(e) => setStickerBandera(e.target.value)}
-              >
-                <option disabled value="">
-                  Elige tu bandera
-                </option>
-                <option value="Perú">Perú</option>
-                <option value="Venezuela">Venezuela</option>
-                <option value="Colombia">Colombia</option>
-                <option value="Brazil">Brazil</option>
-                <option value="Chile">Chile</option>
-              </select>
+                  <input
+                    type="text"
+                    placeholder="Nombre"
+                    className="input input-bordered w-full"
+                    value={stickerName}
+                    onChange={(e) => setStickerName(e.target.value)}
+                  />
+                  {/* Input para el apellido */}
+                  <input
+                    type="text"
+                    placeholder="Apellido"
+                    className={`input input-bordered w-full ${
+                      handle_requiered_fields().lastname === false
+                        ? "hidden"
+                        : "block"
+                    } `}
+                    value={stickerLastname}
+                    onChange={(e) => setStickerLastname(e.target.value)}
+                  />
+                  {/* Select para la bandera */}
+                  <select
+                    className={`select select-bordered w-full ${
+                      handle_requiered_fields().bandera === false
+                        ? "hidden"
+                        : "block"
+                    }`}
+                    value={stickerBandera}
+                    onChange={(e) => setStickerBandera(e.target.value)}
+                  >
+                    <option disabled value="">
+                      Elige tu bandera
+                    </option>
+                    <option value="Perú">Perú</option>
+                    <option value="Venezuela">Venezuela</option>
+                    <option value="Colombia">Colombia</option>
+                    <option value="Brazil">Brazil</option>
+                    <option value="Chile">Chile</option>
+                  </select>
+                </div>
+              ) : (
+                ""
+              )}
 
               {/* Selección de tallas */}
               <div>
