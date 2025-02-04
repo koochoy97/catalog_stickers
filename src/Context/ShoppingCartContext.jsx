@@ -18,7 +18,18 @@ export function ShoppingCartContextProvider(props) {
     return savedCartDetails ? JSON.parse(savedCartDetails) : [];
   });
 
+  // Estado para el total del carrito
   const [shopping_cart_total, setShopping_cart_total] = useState(0);
+
+  // Estado para el nombre de usuario en la sesión
+  const [nombre_user_session, setNombreUserSession] = useState(() => {
+    return localStorage.getItem("nombre_user_session") || "";
+  });
+
+  // Estado para el teléfono de usuario en la sesión
+  const [phone_user_session, setPhoneUserSession] = useState(() => {
+    return localStorage.getItem("phone_user_session") || "";
+  });
 
   useEffect(() => {
     let total = 0;
@@ -38,7 +49,7 @@ export function ShoppingCartContextProvider(props) {
     } else {
       // Si no existe, creamos un nuevo carrito con un ID único y with_products en false
       sessionId = uuidv4();
-      const newCart = { id: sessionId, with_products: false }; // Inicialmente sin productos
+      const newCart = { id: sessionId, with_products: false };
       setCart(newCart);
     }
 
@@ -81,6 +92,14 @@ export function ShoppingCartContextProvider(props) {
     localStorage.setItem("cartDetails", JSON.stringify(cartDetails));
   }, [cartDetails]);
 
+  useEffect(() => {
+    localStorage.setItem("nombre_user_session", nombre_user_session);
+  }, [nombre_user_session]);
+
+  useEffect(() => {
+    localStorage.setItem("phone_user_session", phone_user_session);
+  }, [phone_user_session]);
+
   return (
     <ShoppingCartContext.Provider
       value={{
@@ -90,7 +109,11 @@ export function ShoppingCartContextProvider(props) {
         setCartDetails,
         addProductToCart,
         removeProductFromCart,
-        shopping_cart_total, // Nueva función para eliminar productos
+        shopping_cart_total,
+        nombre_user_session,
+        setNombreUserSession,
+        phone_user_session,
+        setPhoneUserSession,
       }}
     >
       {props.children}

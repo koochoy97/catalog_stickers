@@ -1,4 +1,7 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { ShoppingCartContext } from "../../Context/ShoppingCartContext";
+
 export function Contact_info({
   name,
   setName,
@@ -10,10 +13,20 @@ export function Contact_info({
   isValid,
 }) {
   const navigate = useNavigate();
+  const { setNombreUserSession, setPhoneUserSession } =
+    useContext(ShoppingCartContext);
+
   // Función para limpiar espacios en el teléfono cuando pierde el foco
   const handlePhoneBlur = () => {
     setTouched((prev) => ({ ...prev, phone: true }));
     setPhone(phone.replace(/\s/g, "")); // Elimina todos los espacios en blanco
+  };
+
+  // Función para manejar el clic en el botón de continuar
+  const handleContinue = () => {
+    setNombreUserSession(name);
+    setPhoneUserSession(phone);
+    navigate("/payment");
   };
 
   return (
@@ -44,7 +57,7 @@ export function Contact_info({
             <span className="label-text">Número de teléfono</span>
           </div>
           <input
-            type="text"
+            type="number"
             placeholder="Número de teléfono"
             className="input input-bordered w-full"
             value={phone}
@@ -62,10 +75,8 @@ export function Contact_info({
               ? "bg-blue-500 hover:bg-blue-700"
               : "bg-gray-400 cursor-not-allowed"
           }`}
-          disabled={!isValid} // 🔹 Ahora comienza deshabilitado correctamente
-          onClick={() => {
-            navigate("/payment");
-          }}
+          disabled={!isValid}
+          onClick={handleContinue}
         >
           Continuar al pago
         </button>
