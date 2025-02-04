@@ -10,46 +10,65 @@ initMercadoPago("TEST-16a3d4c9-3cad-4447-86db-5671b1f27ea2", {
 export function Payment_page() {
   const [preferenceId, setPreferenceId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [shipping_cost, setShippingCost] = useState(5); // Valor inicial de envío a domicilio
 
-  const { shopping_cart_total } = useContext(ShoppingCartContext);
-  const [shipping_cost, setShippingCost] = useState(0);
+  const {
+    shopping_cart_total,
+    nombre_user_session,
+    phone_user_session,
+    direccion,
+    detalle,
+    referencia,
+    distrito,
+  } = useContext(ShoppingCartContext);
 
-  const [selectedOption, setSelectedOption] = useState("envio_domicilio"); // Estado para la selección
+  const [selectedOption, setSelectedOption] = useState("envio_domicilio");
+
+  // Función para cambiar el costo de envío según la opción elegida
+  const handleShippingOptionChange = (option) => {
+    setSelectedOption(option);
+    setShippingCost(option === "envio_domicilio" ? 5 : 0);
+  };
 
   useEffect(() => {
-    fetch("https://kingway97.pythonanywhere.com/crear_preferencia", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        title: "Sticker Personalizado",
-        quantity: 1,
-        unit_price: 50.0,
-        name: "Juan Pérez",
-        email: "juan.perez@email.com",
-        phone: "987654321",
-        order_id: "ORD-12345",
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setPreferenceId(data.id);
-        setLoading(false);
+    if (shopping_cart_total > 0) {
+      // Solo ejecutar si hay un monto válido
+      setLoading(true);
+      fetch("https://kingway97.pythonanywhere.com/crear_preferencia", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: [
+            {
+              title: "Producto",
+              quantity: 1,
+              unit_price: shopping_cart_total,
+              currency_id: "PEN",
+            },
+          ],
+          payer: {
+            email: "cliente@email.com",
+          },
+          shipments: {
+            cost: shipping_cost,
+          },
+        }),
       })
-      .catch((error) => {
-        console.error("Error al obtener la preferencia:", error);
-        setLoading(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (selectedOption === "envio_domicilio") {
-      setShippingCost(5);
-    } else {
-      setShippingCost(0);
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.id) {
+            setPreferenceId(data.id);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          setLoading(false);
+        });
     }
-  }, [selectedOption]);
+  }, [shopping_cart_total, shipping_cost]); // Se actualiza si cambia el total o el costo de envío
 
   return (
     <div className="flex w-full flex-col justify-start items-center h-screen">
@@ -67,7 +86,7 @@ export function Payment_page() {
               type="radio"
               name="shipping"
               checked={selectedOption === "envio_domicilio"}
-              onChange={() => setSelectedOption("envio_domicilio")}
+              onChange={() => handleShippingOptionChange("envio_domicilio")}
               className="radio w-3 h-3"
             />
             <div>
@@ -87,7 +106,7 @@ export function Payment_page() {
               type="radio"
               name="shipping"
               checked={selectedOption === "recojo_miraflores"}
-              onChange={() => setSelectedOption("recojo_miraflores")}
+              onChange={() => handleShippingOptionChange("recojo_miraflores")}
               className="radio w-3 h-3"
             />
             <div>
@@ -122,7 +141,7 @@ export function Payment_page() {
             <p className="text-gray-500">Cargando pago...</p>
           ) : (
             preferenceId && (
-              <div className="">
+              <div className="mt-4">
                 <Wallet initialization={{ preferenceId }} />
               </div>
             )
