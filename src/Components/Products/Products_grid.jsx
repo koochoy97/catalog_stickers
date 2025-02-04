@@ -20,7 +20,7 @@ export function Products_grid(props) {
         {loading_stickers_products
           ? // Mostrar placeholders mientras los datos se cargan
             Array.from({ length: 12 }).map((_, index) => (
-              <div class="flex w-full flex-col gap-4 ">
+              <div class="flex w-full flex-col gap-4 " key={index}>
                 <div class="skeleton h-40 w-full aspect-square"></div>
                 <div class="skeleton h-4 w-28"></div>
                 <div class="skeleton h-4 w-full"></div>

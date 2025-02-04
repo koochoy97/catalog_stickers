@@ -56,6 +56,34 @@ export function ShoppingCartContextProvider(props) {
     setShopping_cart_total(total);
   }, [cartDetails]);
 
+  // Función para agregar un producto al carrito
+  const addProductToCart = (productData) => {
+    let sessionId;
+    if (cart) {
+      sessionId = cart.id;
+    } else {
+      sessionId = uuidv4();
+      const newCart = { id: sessionId, with_products: false };
+      setCart(newCart);
+    }
+    const newCartDetail = {
+      id: uuidv4(),
+      cartId: sessionId,
+      ...productData,
+    };
+    setCartDetails((prevDetails) => [...prevDetails, newCartDetail]);
+    setCart((prevCart) => ({ ...prevCart, with_products: true }));
+  };
+
+  // Función para eliminar un producto del carrito
+  const removeProductFromCart = (id) => {
+    const updatedCartDetails = cartDetails.filter((detail) => detail.id !== id);
+    setCartDetails(updatedCartDetails);
+    if (updatedCartDetails.length === 0) {
+      setCart((prevCart) => ({ ...prevCart, with_products: false }));
+    }
+  };
+
   // Guardar los datos en el localStorage cuando cambian
   useEffect(() => {
     if (cart) {
@@ -98,6 +126,8 @@ export function ShoppingCartContextProvider(props) {
         setCart,
         cartDetails,
         setCartDetails,
+        addProductToCart,
+        removeProductFromCart,
         shopping_cart_total,
         nombre_user_session,
         setNombreUserSession,
