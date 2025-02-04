@@ -68,7 +68,7 @@ export function Order_summary() {
                 {/* Precio alineado a la derecha */}
                 <div className="flex flex-col items-end">
                   <p className="font-semibold text-sm text-gray-700 min-w-[80px] text-right">
-                    S/. 15.00
+                    {"S/" + item.sticker_variation.price + ".00"}
                   </p>
                   <img
                     src="/images/trash.svg"

@@ -18,6 +18,16 @@ export function ShoppingCartContextProvider(props) {
     return savedCartDetails ? JSON.parse(savedCartDetails) : [];
   });
 
+  const [shopping_cart_total, setShopping_cart_total] = useState(0);
+
+  useEffect(() => {
+    let total = 0;
+    cartDetails?.forEach((detail) => {
+      total += detail.sticker_variation.price;
+    });
+    setShopping_cart_total(total);
+  }, [cartDetails]);
+
   // Función para agregar un producto al carrito
   const addProductToCart = (productData) => {
     let sessionId;
@@ -79,7 +89,8 @@ export function ShoppingCartContextProvider(props) {
         cartDetails,
         setCartDetails,
         addProductToCart,
-        removeProductFromCart, // Nueva función para eliminar productos
+        removeProductFromCart,
+        shopping_cart_total, // Nueva función para eliminar productos
       }}
     >
       {props.children}
