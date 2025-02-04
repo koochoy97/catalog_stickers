@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { Direccion_envio_modal } from "./Components/Checkout/Direccion_envio_modal";
+import { ShoppingCartContext } from "./Context/ShoppingCartContext";
 
 initMercadoPago("TEST-16a3d4c9-3cad-4447-86db-5671b1f27ea2", {
   locale: "es-PE",
@@ -9,6 +10,10 @@ initMercadoPago("TEST-16a3d4c9-3cad-4447-86db-5671b1f27ea2", {
 export function Payment_page() {
   const [preferenceId, setPreferenceId] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const { shopping_cart_total } = useContext(ShoppingCartContext);
+  const [shipping_cost, setShippingCost] = useState(0);
+
   const [selectedOption, setSelectedOption] = useState("envio_domicilio"); // Estado para la selección
 
   useEffect(() => {
@@ -37,6 +42,14 @@ export function Payment_page() {
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    if (selectedOption === "envio_domicilio") {
+      setShippingCost(5);
+    } else {
+      setShippingCost(0);
+    }
+  }, [selectedOption]);
 
   return (
     <div className="flex w-full flex-col justify-start items-center h-screen">
@@ -83,7 +96,7 @@ export function Payment_page() {
                 A partir del viernes 07 de Febrero
               </p>
             </div>
-            <p className="text-md">S/5.00</p>
+            <p className="text-md text-green-700">Gratis</p>
           </div>
         </div>
 
@@ -91,17 +104,17 @@ export function Payment_page() {
           <div className="summary w-full text-sm">
             <div className="row_1 flex justify-between">
               <p>Productos:</p>
-              <p>S/10.00</p>
+              <p>{"S/" + shopping_cart_total + ".00"}</p>
             </div>
 
             <div className="row_2 flex justify-between">
               <p>Envío:</p>
-              <p>S/5.00</p>
+              <p>{"S/" + shipping_cost + ".00"}</p>
             </div>
 
             <div className="row_3 flex justify-between font-semibold">
               <p>Total:</p>
-              <p>S/15.00</p>
+              <p>{"S/" + (shopping_cart_total + shipping_cost) + ".00"}</p>
             </div>
           </div>
 

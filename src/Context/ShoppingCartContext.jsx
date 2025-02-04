@@ -2,7 +2,7 @@ import { createContext, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid"; // Para generar IDs únicos
 
 // Crear el contexto
-export const ShoppingCartContext = createContext("");
+export const ShoppingCartContext = createContext(" ");
 
 // Componente del proveedor del contexto
 export function ShoppingCartContextProvider(props) {
@@ -31,6 +31,23 @@ export function ShoppingCartContextProvider(props) {
     return localStorage.getItem("phone_user_session") || "";
   });
 
+  // Estado para la dirección del usuario en la sesión (cada campo como variable independiente)
+  const [direccion, setDireccion] = useState(() => {
+    return localStorage.getItem("direccion") || "";
+  });
+
+  const [detalle, setDetalle] = useState(() => {
+    return localStorage.getItem("detalle") || "";
+  });
+
+  const [distrito, setDistrito] = useState(() => {
+    return localStorage.getItem("distrito") || "";
+  });
+
+  const [referencia, setReferencia] = useState(() => {
+    return localStorage.getItem("referencia") || "";
+  });
+
   useEffect(() => {
     let total = 0;
     cartDetails?.forEach((detail) => {
@@ -38,48 +55,6 @@ export function ShoppingCartContextProvider(props) {
     });
     setShopping_cart_total(total);
   }, [cartDetails]);
-
-  // Función para agregar un producto al carrito
-  const addProductToCart = (productData) => {
-    let sessionId;
-
-    // Si ya existe un carrito, usamos su ID
-    if (cart) {
-      sessionId = cart.id;
-    } else {
-      // Si no existe, creamos un nuevo carrito con un ID único y with_products en false
-      sessionId = uuidv4();
-      const newCart = { id: sessionId, with_products: false };
-      setCart(newCart);
-    }
-
-    // Crear el detalle del carrito (producto agregado)
-    const newCartDetail = {
-      id: uuidv4(), // ID único para el cart_detail
-      cartId: sessionId, // Asociar el detalle al carrito
-      ...productData, // Datos del producto (id, nombre, cantidad, precio, etc.)
-    };
-
-    // Actualizar los detalles del carrito
-    setCartDetails((prevDetails) => [...prevDetails, newCartDetail]);
-
-    // Actualizar el estado del carrito (with_products a true)
-    setCart((prevCart) => ({ ...prevCart, with_products: true }));
-  };
-
-  // Función para eliminar un producto del carrito
-  const removeProductFromCart = (id) => {
-    // Filtrar los detalles del carrito para eliminar el producto
-    const updatedCartDetails = cartDetails.filter((detail) => detail.id !== id);
-
-    // Actualizar los detalles del carrito
-    setCartDetails(updatedCartDetails);
-
-    // Actualizar el estado del carrito (with_products a false si no hay productos)
-    if (updatedCartDetails.length === 0) {
-      setCart((prevCart) => ({ ...prevCart, with_products: false }));
-    }
-  };
 
   // Guardar los datos en el localStorage cuando cambian
   useEffect(() => {
@@ -100,6 +75,22 @@ export function ShoppingCartContextProvider(props) {
     localStorage.setItem("phone_user_session", phone_user_session);
   }, [phone_user_session]);
 
+  useEffect(() => {
+    localStorage.setItem("direccion", direccion);
+  }, [direccion]);
+
+  useEffect(() => {
+    localStorage.setItem("detalle", detalle);
+  }, [detalle]);
+
+  useEffect(() => {
+    localStorage.setItem("distrito", distrito);
+  }, [distrito]);
+
+  useEffect(() => {
+    localStorage.setItem("referencia", referencia);
+  }, [referencia]);
+
   return (
     <ShoppingCartContext.Provider
       value={{
@@ -107,13 +98,19 @@ export function ShoppingCartContextProvider(props) {
         setCart,
         cartDetails,
         setCartDetails,
-        addProductToCart,
-        removeProductFromCart,
         shopping_cart_total,
         nombre_user_session,
         setNombreUserSession,
         phone_user_session,
         setPhoneUserSession,
+        direccion,
+        setDireccion,
+        detalle,
+        setDetalle,
+        distrito,
+        setDistrito,
+        referencia,
+        setReferencia,
       }}
     >
       {props.children}

@@ -1,26 +1,68 @@
+import { useContext, useState, useEffect } from "react";
+import { ShoppingCartContext } from "../../Context/ShoppingCartContext";
+
 export function Direccion_envio_modal() {
+  const {
+    setDireccion,
+    setDetalle,
+    setDistrito,
+    setReferencia,
+    direccion,
+    detalle,
+    distrito,
+    referencia,
+  } = useContext(ShoppingCartContext);
+
+  const [localDireccion, setLocalDireccion] = useState("");
+  const [localDetalle, setLocalDetalle] = useState("");
+  const [localDistrito, setLocalDistrito] = useState("");
+  const [localReferencia, setLocalReferencia] = useState("");
+
+  useEffect(() => {
+    setLocalDireccion(direccion || "");
+    setLocalDetalle(detalle || "");
+    setLocalDistrito(distrito || "");
+    setLocalReferencia(referencia || "");
+  }, [direccion, detalle, distrito, referencia]);
+
+  const handleSaveAddress = () => {
+    setDireccion(localDireccion);
+    setDetalle(localDetalle);
+    setDistrito(localDistrito);
+    setReferencia(localReferencia);
+    document.getElementById("my_modal_3").close();
+  };
+
   return (
     <>
-      {/* You can open the modal using document.getElementById('ID').showModal() method */}
       <div
-        className="boton_direccion w-full bg-white rounded-md p-3 mt-4 flex gap-1 items-center justify-between cursor-pointer"
+        className="boton_direccion w-full bg-white rounded-md p-3 mt-4 flex  items-center justify-between cursor-pointer gap-3"
         onClick={() => document.getElementById("my_modal_3").showModal()}
       >
         <img src="/images/gps_icon.svg" className="w-6" alt="" />
 
         <div className="text-left font-normal text-sm">
-          <p className="row_1">Direción - Calle Piura 541 Miraflores</p>
-          <p className="row_2">541 E Miraflores</p>
+          {direccion ? (
+            <p className="row_1">
+              {direccion +
+                " - " +
+                detalle +
+                " - " +
+                distrito +
+                " - " +
+                referencia}
+            </p>
+          ) : (
+            "Ingresa tu direccion"
+          )}
         </div>
 
         <img src="/images/right_arrow.svg" alt="" className="w-4" />
       </div>
 
-      {/* Contenido de modal */}
       <dialog id="my_modal_3" className="modal">
         <div className="modal-box h-full">
           <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
             </button>
@@ -30,27 +72,37 @@ export function Direccion_envio_modal() {
                 type="text"
                 placeholder="Dirección"
                 className="input input-bordered w-full"
+                value={localDireccion}
+                onChange={(e) => setLocalDireccion(e.target.value)}
               />
 
               <input
                 type="text"
                 placeholder="Casa, apartamento, etc. (Opcional)"
                 className="input input-bordered w-full"
+                value={localDetalle}
+                onChange={(e) => setLocalDetalle(e.target.value)}
               />
 
               <input
                 type="text"
                 placeholder="Distrito"
                 className="input input-bordered w-full"
+                value={localDistrito}
+                onChange={(e) => setLocalDistrito(e.target.value)}
               />
 
               <textarea
                 className="textarea textarea-bordered"
-                placeholder="Refencia"
+                placeholder="Referencia"
+                value={localReferencia}
+                onChange={(e) => setLocalReferencia(e.target.value)}
               ></textarea>
 
               <button
-                className={`mt-4 px-4 py-2 text-white font-semibold rounded w-full bg-blue-500 hover:bg-blue-700>`}
+                className="mt-4 px-4 py-2 text-white font-semibold rounded w-full bg-blue-500 hover:bg-blue-700"
+                type="button"
+                onClick={handleSaveAddress}
               >
                 Continuar al pago
               </button>
