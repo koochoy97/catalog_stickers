@@ -14,6 +14,7 @@ export function Payment_page() {
 
   const {
     shopping_cart_total,
+    cart, // Asegúrate de que cart tenga el ID que necesitamos
     nombre_user_session,
     phone_user_session,
     direccion,
@@ -54,6 +55,7 @@ export function Payment_page() {
           shipments: {
             cost: shipping_cost,
           },
+          carrito_id: cart.id, // Pasamos el ID del carrito
         }),
       })
         .then((response) => response.json())
@@ -68,7 +70,7 @@ export function Payment_page() {
           setLoading(false);
         });
     }
-  }, [shopping_cart_total, shipping_cost]); // Se actualiza si cambia el total o el costo de envío
+  }, [shopping_cart_total, shipping_cost, cart.id]); // Añadimos cart.id como dependencia
 
   return (
     <div className="flex w-full flex-col justify-start items-center h-screen">
@@ -82,19 +84,22 @@ export function Payment_page() {
 
           {/* Opción 1: Envío a domicilio */}
           <div className="shipping_option flex gap-2 items-center justify-between">
-            <input
-              type="radio"
-              name="shipping"
-              checked={selectedOption === "envio_domicilio"}
-              onChange={() => handleShippingOptionChange("envio_domicilio")}
-              className="radio w-3 h-3"
-            />
-            <div>
-              <p className="text-md">Envío a domicilio</p>
-              <p className="text-gray-500 text-sm">
-                Te llega el Viernes 07 de Febrero
-              </p>
+            <div className="flex gap-4 items-center">
+              <input
+                type="radio"
+                name="shipping"
+                checked={selectedOption === "envio_domicilio"}
+                onChange={() => handleShippingOptionChange("envio_domicilio")}
+                className="radio w-3 h-3"
+              />
+              <div>
+                <p className="text-md">Envío a domicilio</p>
+                <p className="text-gray-500 text-sm">
+                  Te llega el Viernes 07 de Febrero
+                </p>
+              </div>
             </div>
+
             <p className="text-md">S/5.00</p>
           </div>
 
@@ -102,18 +107,21 @@ export function Payment_page() {
 
           {/* Opción 2: Recojo en Miraflores */}
           <div className="Recojo_option flex gap-2 items-center justify-between mt-2">
-            <input
-              type="radio"
-              name="shipping"
-              checked={selectedOption === "recojo_miraflores"}
-              onChange={() => handleShippingOptionChange("recojo_miraflores")}
-              className="radio w-3 h-3"
-            />
-            <div>
-              <p className="text-md">Recojo en Miraflores</p>
-              <p className="text-gray-500 text-sm">
-                A partir del viernes 07 de Febrero
-              </p>
+            <div className="flex gap-4 items-center">
+              {" "}
+              <input
+                type="radio"
+                name="shipping"
+                checked={selectedOption === "recojo_miraflores"}
+                onChange={() => handleShippingOptionChange("recojo_miraflores")}
+                className="radio w-3 h-3"
+              />
+              <div>
+                <p className="text-md">Recojo en Miraflores</p>
+                <p className="text-gray-500 text-sm">
+                  A partir del viernes 07 de Febrero
+                </p>
+              </div>
             </div>
             <p className="text-md text-green-700">Gratis</p>
           </div>

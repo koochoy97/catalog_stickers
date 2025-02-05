@@ -36,25 +36,27 @@ export function Direccion_envio_modal() {
   return (
     <>
       <div
-        className="boton_direccion w-full bg-white rounded-md p-3 mt-4 flex  items-center justify-between cursor-pointer gap-3"
+        className="boton_direccion w-full bg-white rounded-md p-3 mt-4 flex  items-center justify-between cursor-pointer gap-3 lg:justify-between "
         onClick={() => document.getElementById("my_modal_3").showModal()}
       >
-        <img src="/images/gps_icon.svg" className="w-6" alt="" />
-
-        <div className="text-left font-normal text-sm">
-          {direccion ? (
-            <p className="row_1">
-              {direccion +
-                " - " +
-                detalle +
-                " - " +
-                distrito +
-                " - " +
-                referencia}
-            </p>
-          ) : (
-            "Ingresa tu direccion"
-          )}
+        <div className="flex gap-4 items-center">
+          {" "}
+          <img src="/images/gps_icon.svg" className="w-6" alt="" />
+          <div className="text-left font-normal text-sm">
+            {direccion ? (
+              <p className="row_1">
+                {direccion +
+                  " - " +
+                  detalle +
+                  " - " +
+                  distrito +
+                  " - " +
+                  referencia}
+              </p>
+            ) : (
+              "Ingresa tu direccion"
+            )}
+          </div>
         </div>
 
         <img src="/images/right_arrow.svg" alt="" className="w-4" />

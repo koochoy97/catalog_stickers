@@ -12,6 +12,7 @@ import { Payment_page } from "./Payment";
 import { Payment_summary } from "./Paymet_sumary";
 import ReactGA from "react-ga4";
 import { ShoppingCartContextProvider } from "./Context/ShoppingCartContext";
+import { Success_page } from "./Success_page";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
   { path: "/como-comprar", element: <Como_comprar_page /> },
   { path: "/payment", element: <Payment_page /> },
   { path: "/payment_summary", element: <Payment_summary /> },
+  { path: "/success", element: <Success_page /> },
 ]);
 
 ReactGA.initialize("G-G3X2DKNF63");

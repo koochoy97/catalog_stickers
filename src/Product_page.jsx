@@ -122,12 +122,12 @@ export function ProductPage() {
     >
       <Header />
 
-      <div className="main flex flex-col justify-start items-start w-full md:flex-row md:justify-center md:gap-8 md:mt-8 ">
+      <div className="main flex flex-col justify-start items-start w-full lg:flex-row lg:justify-center lg:gap-8 lg:mt-8 ">
         {loading ? (
-          <div className="flex w-full flex-col gap-4 md:flex-row md-justify-center">
-            <div className="skeleton w-full aspect-square md:w-[700px]"></div>
-            <div className="div md:w-[600px] flex flex-col gap-3 justify-center">
-              <div className="skeleton h-4 w-28 md:w-full"></div>
+          <div className="flex w-full flex-col gap-4 lg:flex-row md-justify-center">
+            <div className="skeleton w-full aspect-square lg:w-[700px]"></div>
+            <div className="div lg:w-[600px] flex flex-col gap-3 justify-center">
+              <div className="skeleton h-4 w-28 lg:w-full"></div>
               <div className="skeleton h-4 w-full"></div>
               <div className="skeleton h-4 w-full"></div>
             </div>
@@ -137,16 +137,16 @@ export function ProductPage() {
             <img
               src={`https://mtb.pockethost.io/api/files/sticker_products/${item?.[0]?.id}/${item?.[0]?.principal_image}`}
               alt={item?.[0]?.nombre}
-              className="w-full aspect-square md:w-[700px] object-contain"
+              className="w-full aspect-square lg:w-[600px] object-contain"
             />
-            <div className="summary_item text-left w-full mt-6 px-5 md:max-w-[600px]">
+            <div className="summary_item text-left w-full mt-6 px-5 lg:max-w-[600px]">
               <BreadCrump
                 category={item?.[0]?.category_name}
                 name={item?.[0]?.nombre}
               />
 
               <h1 className="text-2xl font-semibold">{item?.[0]?.nombre}</h1>
-              <div className=" md:hidden mb-4">
+              <div className=" lg:hidden mb-4">
                 <Promo_card message="Todo verano 2025: ¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
               </div>
               <div className="desktop_pricing_container mt-2">
@@ -201,7 +201,7 @@ export function ProductPage() {
                 </p>
               </div>
 
-              <div className="hidden md:block">
+              <div className="hidden lg:block">
                 <Promo_card message="Todo verano 2025: ¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
               </div>
 

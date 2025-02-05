@@ -96,7 +96,7 @@ export function Sticker_user_info_modal(props) {
   return (
     <>
       {/* Botón para abrir el modal */}
-      <div className="fixed bottom-0 left-0 w-full bg-white border-t p-2 py-6 md:static md:bg-transparent md:border-0 md:p-0">
+      <div className="fixed bottom-0 left-0 w-full bg-white border-t p-2 py-6 lg:static lg:bg-transparent lg:border-0 lg:p-0">
         <button
           className="boton_direccion block px-8 py-2 rounded-full text-lg bg-black text-white text-center w-full"
           onClick={() => document.getElementById("my_modal_3").showModal()}
@@ -107,7 +107,7 @@ export function Sticker_user_info_modal(props) {
 
       {/* Contenido del modal */}
       <dialog id="my_modal_3" className="modal">
-        <div className="modal-box h-full">
+        <div className="modal-box h-full lg:w-[800px] max-w-4xl">
           <form method="dialog">
             {/* Botón para cerrar el modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
