@@ -6,9 +6,10 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { Promo_card } from "./Components/Products/Promo_card";
 import { BreadCrump } from "./Components/Products/BreadCrump";
 import { Como_pedir_component } from "./Components/Pages_components/Como_pedir_component";
-import { Guia_medidas } from "./Components/Pages_components/Guia_medidas_modal";
+import { Guia_medidas } from "./Components/Pages_components/Guia_medidas_modal"; // Importamos Guia_medidas
 import ReactGA from "react-ga4";
 import { Sticker_user_info_modal } from "./Components/Products/Sticker_user_info_modal";
+import { KitsGrid } from "./Components/Products/Kits_grid"; // Importamos KitsGrid
 
 export function ProductPage() {
   const {
@@ -29,28 +30,6 @@ export function ProductPage() {
   const [kit_selected, set_kit_selected] = useState();
   const [price, setPrice] = useState(0);
 
-  //Estados para llenar Cart (Sticker_nombre, Sticker_apellido, Sticker_Bandera, Product_id)
-
-  // Función para encontrar el ID del kit con el precio más bajo
-  const findLowestPriceKit = (variations, item) => {
-    if (!variations || variations.length === 0 || !item?.[0]?.kit_variations)
-      return null;
-
-    // Filtrar las variaciones cuyo ID está en item?.[0]?.kit_variations
-    const filteredVariations = variations.filter((variation) =>
-      item[0].kit_variations.includes(variation.id)
-    );
-
-    if (filteredVariations.length === 0) return null; // Si no hay coincidencias
-
-    // Encontrar la variación con el precio más bajo
-    const lowestPriceKit = filteredVariations.reduce((prev, current) =>
-      prev.price < current.price ? prev : current
-    );
-
-    return lowestPriceKit;
-  };
-
   useEffect(() => {
     if (stickers_products.length > 0) {
       const product = stickers_products.find(
@@ -68,7 +47,23 @@ export function ProductPage() {
     get_pocketbase_support_items("kit_variations");
   }, [get_pocketbase_support_items]);
 
-  // Inicializar el kit seleccionado con el menor precio y actualizar el precio
+  const findLowestPriceKit = (variations, item) => {
+    if (!variations || variations.length === 0 || !item?.[0]?.kit_variations)
+      return null;
+
+    const filteredVariations = variations.filter((variation) =>
+      item[0].kit_variations.includes(variation.id)
+    );
+
+    if (filteredVariations.length === 0) return null;
+
+    const lowestPriceKit = filteredVariations.reduce((prev, current) =>
+      prev.price < current.price ? prev : current
+    );
+
+    return lowestPriceKit;
+  };
+
   useEffect(() => {
     if (stickers_variations.length > 0 && item.length > 0) {
       const lowestPriceKit = findLowestPriceKit(stickers_variations, item);
@@ -77,7 +72,6 @@ export function ProductPage() {
     }
   }, [stickers_variations, item]);
 
-  // Actualizar el precio dinámicamente según el kit seleccionado
   useEffect(() => {
     const selectedKit = stickers_variations.find(
       (kit) => kit.id === kit_selected
@@ -92,16 +86,16 @@ export function ProductPage() {
       ReactGA.send({
         hitType: "pageview",
         page: location.pathname,
-        title: `Product: ${item[0].nombre}`, // Solo se ejecuta si el nombre está disponible
+        title: `Product: ${item[0].nombre}`,
       });
     }
   }, [location.pathname, item]);
 
   const handleBuyClick = (name, variation) => {
     ReactGA.event({
-      category: "Botón Comprar", // Categoría del evento
-      action: "Click en Comprar", // Acción que se realiza
-      label: `${name} - ${variation}`, // Nombre del producto
+      category: "Botón Comprar",
+      action: "Click en Comprar",
+      label: `${name} - ${variation}`,
     });
   };
 
@@ -109,7 +103,7 @@ export function ProductPage() {
     const lines = description?.split("\n") || [];
     return {
       title: lines[0] || "",
-      list: lines.slice(1).filter((line) => line.trim() !== ""), // Filtrar líneas vacías
+      list: lines.slice(1).filter((line) => line.trim() !== ""),
     };
   };
 
@@ -144,90 +138,24 @@ export function ProductPage() {
                 category={item?.[0]?.category_name}
                 name={item?.[0]?.nombre}
               />
-
               <h1 className="text-2xl font-semibold">{item?.[0]?.nombre}</h1>
-              <div className=" lg:hidden mb-4">
+              <div className="lg:hidden mb-4">
                 <Promo_card message="Todo verano 2025: ¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
               </div>
               <div className="desktop_pricing_container mt-2">
                 <p className="text-sm">Precio</p>
                 <p className="text-2xl font-semibold">{"S/" + price + ".00"}</p>
               </div>
-              <div className="kits_container mt-2">
-                <div className="text-lg font-normal flex justify-between items-center">
-                  <p>Kits Disponibles</p>
-                </div>
-                <div className="kits_grid flex gap-4 w-full mt-1 flex-wrap">
-                  {item?.[0]?.kit_variations?.length > 0 &&
-                  stickers_variations.length > 0
-                    ? // Renderizar los botones si hay datos disponibles
-                      item[0].kit_variations.map((kit) => {
-                        const variation = stickers_variations.find(
-                          (variation) => variation.id === kit
-                        );
-                        return (
-                          <button
-                            key={kit}
-                            className={`text-md px-6 py-2 rounded-md border-2 font-semibold whitespace-nowrap hover:bg-[#ECEDE4] ${
-                              kit_selected === variation?.id
-                                ? "bg-[#ECEDE4] text-black"
-                                : ""
-                            }`}
-                            onClick={() => set_kit_selected(variation?.id)}
-                          >
-                            {variation?.nombre}
-                          </button>
-                        );
-                      })
-                    : // Mostrar Skeleton Loader mientras se cargan los datos
-                      Array(3)
-                        .fill(null)
-                        .map((_, index) => (
-                          <div
-                            key={index}
-                            className="w-24 h-10 bg-gray-300 animate-pulse rounded-md"
-                          ></div>
-                        ))}
-                </div>
-              </div>
 
-              <div className="medidas_container mt-4">
-                <div className="text-lg font-normal flex justify-between items-center">
-                  <p>Medidas Disponibles</p>
-                  <Guia_medidas />
-                </div>
-                <p className="text-sm font-semibold">
-                  2.00cm | 2.50cm | 3.00cm{" "}
-                </p>
-              </div>
-
-              <div className="hidden lg:block">
-                <Promo_card message="Todo verano 2025: ¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
-              </div>
+              {/* Aquí usamos el nuevo componente KitsGrid */}
+              <KitsGrid
+                kit_variations={item?.[0]?.kit_variations}
+                stickers_variations={stickers_variations}
+                kit_selected={kit_selected}
+                set_kit_selected={set_kit_selected}
+              />
 
               <div className="mt-4 w-full">
-                {/** 
-                <a
-                  href={`https://api.whatsapp.com/send?phone=51959274550&text=%C2%A1Hola!%20Quiero%20${
-                    stickers_variations.find(
-                      (variation) => variation.id === kit_selected
-                    )?.value
-                  }%20unidades%20del%20Sticker%20${item?.[0]?.nombre}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block px-8 py-2 rounded-full text-lg bg-black text-white text-center"
-                  onClick={() => {
-                    handleBuyClick(
-                      item?.[0]?.nombre,
-                      stickers_variations.find(
-                        (variation) => variation.id === kit_selected
-                      )?.nombre
-                    );
-                  }}
-                >
-                  Comprar
-                </a>
-                */}
                 <Sticker_user_info_modal
                   kit_selected_ID={kit_selected}
                   kit_selected_value={stickers_variations.find(
@@ -236,6 +164,23 @@ export function ProductPage() {
                   product={item?.[0]}
                 />
               </div>
+              <div className="divider"></div>
+
+              {/* Aquí está la sección para la Guia de Medidas */}
+              <div className="medidas_container mt-4">
+                <div className="text-lg font-normal flex justify-between items-center">
+                  <p>Medidas Disponibles</p>
+                  <Guia_medidas /> {/* Componente Guia_medidas aquí */}
+                </div>
+                <p className="text-sm font-semibold">
+                  2.00cm | 2.50cm | 3.00cm
+                </p>
+              </div>
+
+              <div className="hidden lg:block">
+                <Promo_card message="Todo verano 2025: ¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
+              </div>
+
               <div className="divider"></div>
 
               <div className="description_container mt-1">
