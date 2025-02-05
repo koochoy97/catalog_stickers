@@ -50,7 +50,7 @@ export function Payment_page() {
             },
           ],
           payer: {
-            email: "cliente@email.com",
+            email: "jaim23koochoy@gmail.com",
           },
           shipments: {
             cost: shipping_cost,
