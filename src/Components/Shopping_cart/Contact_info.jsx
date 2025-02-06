@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCartContext } from "../../Context/ShoppingCartContext";
+import { Promo_card } from "../Products/Promo_card";
+import { Select_free_gig } from "../../Select_free_gig";
 
 export function Contact_info({
   name,
@@ -13,7 +15,7 @@ export function Contact_info({
   isValid,
 }) {
   const navigate = useNavigate();
-  const { setNombreUserSession, setPhoneUserSession } =
+  const { setNombreUserSession, setPhoneUserSession, cartDetails } =
     useContext(ShoppingCartContext);
 
   // Función para limpiar espacios en el teléfono cuando pierde el foco
@@ -29,9 +31,14 @@ export function Contact_info({
     navigate("/payment");
   };
 
+  // Verificamos si hay productos de la categoría "Stickers Personalizados"
+  const hasStickersPersonalizados = cartDetails?.find(
+    (item) => item.product.category_name === "Stickers Personalizados"
+  );
+
   return (
-    <div className="contact_container w-full bg-white rounded-md p-3 flex flex-col justify-center items-center ">
-      <h2 className="text-lg font-semibold w-full text-left ">
+    <div className="contact_container w-full bg-white rounded-md p-3 flex flex-col justify-center items-center">
+      <h2 className="text-lg font-semibold w-full text-left">
         Información de contacto
       </h2>
       <div className="form w-full">
@@ -69,17 +76,23 @@ export function Contact_info({
           )}
         </label>
 
-        <button
-          className={`mt-4 px-4 py-2 text-white font-semibold rounded w-full ${
-            isValid
-              ? "bg-blue-500 hover:bg-blue-700"
-              : "bg-gray-400 cursor-not-allowed"
-          }`}
-          disabled={!isValid}
-          onClick={handleContinue}
-        >
-          Continuar al pago
-        </button>
+        {/* Si hay Stickers Personalizados en el carrito, mostramos el botón del modal */}
+        {hasStickersPersonalizados ? (
+          <Select_free_gig isValid={isValid} />
+        ) : (
+          // Si no hay Stickers Personalizados, mostramos el botón de continuar al pago
+          <button
+            className={`mt-4 px-4 py-2 text-white font-semibold rounded w-full ${
+              isValid
+                ? "bg-blue-500 hover:bg-blue-700"
+                : "bg-gray-400 cursor-not-allowed"
+            }`}
+            disabled={!isValid}
+            onClick={handleContinue}
+          >
+            Continuar al pago
+          </button>
+        )}
 
         <div className="flex justify-center items-center text-xs gap-4 mt-4 font-light text-slate-500">
           <p className="flex gap-2">

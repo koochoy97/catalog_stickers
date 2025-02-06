@@ -3,6 +3,8 @@ import { Contact_info } from "./Components/Shopping_cart/Contact_info";
 import { Order_summary } from "./Components/Shopping_cart/Order_summary";
 import { ShoppingCartContext } from "./Context/ShoppingCartContext";
 import { Total_order } from "./Components/Shopping_cart/Total_order";
+import { Promo_card } from "./Components/Products/Promo_card";
+import { DataContext } from "./Context/DataContext";
 
 export function Payment_summary() {
   const [name, setName] = useState("");
@@ -12,6 +14,7 @@ export function Payment_summary() {
   const [touched, setTouched] = useState({ name: false, phone: false });
 
   const { cartDetails, cart } = useContext(ShoppingCartContext);
+  const { loading_stickers_products } = useContext(DataContext);
 
   // Validar los campos en tiempo real
   useEffect(() => {
@@ -55,6 +58,14 @@ export function Payment_summary() {
           setTouched={setTouched}
           isValid={isValid}
         />
+
+        {cartDetails.find(
+          (item) => item.product.category_name === "Stickers Personalizados"
+        ) ? (
+          <Promo_card message="Podrás elegir tus Stickers gratuitos al darle a Continuar Pago" />
+        ) : (
+          ""
+        )}
 
         <div className="summary_container w-full bg-white rounded-md p-3 mt-4 lg:mt-0 lg:w-[55%]">
           <h1 className="text-lg font-semibold w-full text-left mb-2 ">
