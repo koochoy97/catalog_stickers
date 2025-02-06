@@ -1,5 +1,5 @@
 import React from "react";
-import { Products_grid } from "./Components/Products/Products_grid";
+import { Products_grid_free_gig } from "./Components/Checkout/Products_grid_free_gig";
 import { useEffect, useState, useContext } from "react";
 import { DataContext } from "./Context/DataContext";
 
@@ -9,6 +9,10 @@ export function Select_free_gig({ isValid }) {
     useContext(DataContext);
 
   const [active_grid, setActive_grid] = useState(false);
+
+  const [active_sticker, setActive_sticker] = useState("");
+  const [active_sticker_1, setActive_sticker_1] = useState([]);
+  const [active_sticker_2, setActive_sticker_2] = useState([]);
 
   useEffect(() => {
     if (stickers_products.length <= 1) {
@@ -36,8 +40,19 @@ export function Select_free_gig({ isValid }) {
     );
   }, [stickers_products]);
 
-  const handle_click = () => {
-    setActive_grid(true);
+  const handle_click = (sticker) => {
+    setActive_grid((prevState) => !prevState);
+    setActive_sticker(sticker);
+  };
+
+  const handle_item_click = (e) => {
+    console.log(e);
+    if (active_sticker === "Sticker 1") {
+      setActive_sticker_1(e);
+    } else {
+      setActive_sticker_2(e);
+    }
+    setActive_grid(false);
   };
 
   return (
@@ -62,14 +77,34 @@ export function Select_free_gig({ isValid }) {
           <div className="flex items-center justify-between gap-3 mt-2">
             <button
               className="w-full h-12 border rounded-lg flex items-center justify-center gap-2"
-              onClick={handle_click}
+              onClick={() => {
+                handle_click("Sticker 1");
+              }}
             >
-              Sticker 1
-              <img src="/images/down_arrow.svg" alt="" className="w-3" />
+              {active_sticker_1.nombre ? (
+                active_sticker_1.nombre
+              ) : (
+                <>
+                  <p>Sticker 1</p>
+                  <img src="/images/down_arrow.svg" alt="" className="w-3" />
+                </>
+              )}
             </button>
-            <button className="w-full h-12 border rounded-lg flex items-center justify-center gap-2">
-              Sticker 1
-              <img src="/images/down_arrow.svg" alt="" className="w-3" />
+
+            <button
+              className="w-full h-12 border rounded-lg flex items-center justify-center gap-2"
+              onClick={() => {
+                handle_click("Sticker 2");
+              }}
+            >
+              {active_sticker_2.nombre ? (
+                active_sticker_2.nombre
+              ) : (
+                <>
+                  <p>Sticker 2</p>
+                  <img src="/images/down_arrow.svg" alt="" className="w-3" />
+                </>
+              )}
             </button>
           </div>
           <div
@@ -77,7 +112,15 @@ export function Select_free_gig({ isValid }) {
               active_grid ? "h-96 overflow-auto" : "h-0 overflow-hidden"
             }`}
           >
-            <Products_grid data={filtered_products} />
+            <Products_grid_free_gig
+              data={filtered_products}
+              send_click_signal={handle_item_click}
+              active_sticker={
+                active_sticker === "Sticker 1"
+                  ? active_sticker_1
+                  : active_sticker_2
+              }
+            />
           </div>
 
           <div className="w-full mt-4">
