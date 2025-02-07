@@ -2,17 +2,24 @@ import React from "react";
 import { Products_grid_free_gig } from "./Components/Checkout/Products_grid_free_gig";
 import { useEffect, useState, useContext } from "react";
 import { DataContext } from "./Context/DataContext";
+import { useNavigate } from "react-router-dom";
+import { ShoppingCartContext } from "./Context/ShoppingCartContext";
 
 export function Select_free_gig({ isValid }) {
   const [filtered_products, setFiltered_products] = useState([]);
   const { stickers_products, get_pocketbase_support_items } =
     useContext(DataContext);
 
+  const { addProductToCart, removeProductFromCart, cartDetails } =
+    useContext(ShoppingCartContext);
+
   const [active_grid, setActive_grid] = useState(false);
 
   const [active_sticker, setActive_sticker] = useState("");
   const [active_sticker_1, setActive_sticker_1] = useState([]);
   const [active_sticker_2, setActive_sticker_2] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (stickers_products.length <= 1) {
@@ -26,6 +33,12 @@ export function Select_free_gig({ isValid }) {
         (product) => product.category_name === "Stickers Random"
       )
     );
+
+    cartDetails.forEach((detail) => {
+      if (detail.sticker_variation.price === 0) {
+        removeProductFromCart(detail.id);
+      }
+    });
 
     return () => {};
   }, []);
@@ -53,6 +66,20 @@ export function Select_free_gig({ isValid }) {
       setActive_sticker_2(e);
     }
     setActive_grid(false);
+  };
+
+  const handle_continue_payment = () => {
+    addProductToCart({
+      sticker_name: active_sticker_1.nombre,
+      sticker_lastname: "",
+      sticker_bandera: "",
+      sticker_variation: { price: 0 },
+      product: active_sticker_1,
+      qtyS: 0,
+      qtyM: 0,
+      qtyL: 1,
+    });
+    navigate("/payment");
   };
 
   return (
@@ -124,7 +151,11 @@ export function Select_free_gig({ isValid }) {
           </div>
 
           <div className="w-full mt-4">
-            <button className="bg-black text-white py-2 px-3 rounded-md w-full">
+            <button
+              className="bg-black text-white py-2 px-3 rounded-md w-full disabled:bg-gray-400 disabled:cursor-not-allowed"
+              disabled={!active_sticker_1.nombre || !active_sticker_2.nombre}
+              onClick={handle_continue_payment}
+            >
               Continuar compra
             </button>
           </div>

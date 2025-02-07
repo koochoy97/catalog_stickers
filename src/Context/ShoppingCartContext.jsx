@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid"; // Para generar IDs únicos
+import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 
 // Crear el contexto
 export const ShoppingCartContext = createContext(" ");

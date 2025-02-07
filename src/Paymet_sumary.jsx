@@ -14,7 +14,6 @@ export function Payment_summary() {
   const [touched, setTouched] = useState({ name: false, phone: false });
 
   const { cartDetails, cart } = useContext(ShoppingCartContext);
-  const { loading_stickers_products } = useContext(DataContext);
 
   // Validar los campos en tiempo real
   useEffect(() => {
