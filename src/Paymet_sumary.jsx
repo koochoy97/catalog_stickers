@@ -44,8 +44,8 @@ export function Payment_summary() {
   }, [name, phone, touched]);
 
   return (
-    <div className="flex w-full flex-col justify-start items-center pb-16 lg:items-center h-screen">
-      <div className="main w-11/12 flex flex-col justify-start items-center my-4 lg:px-20 h-full lg:flex-row lg:gap-6 lg:items-center  ">
+    <div className="flex w-full flex-col justify-start items-center pb-16 lg:items-start h-screen">
+      <div className="main w-11/12 flex flex-col justify-start items-center my-4 lg:px-20 h-full lg:flex-row lg:gap-6 lg:items-start lg:mt-20  ">
         {/* 🔹 Se usa el componente Contact_info y se le pasan los estados como props */}
         <Contact_info
           name={name}

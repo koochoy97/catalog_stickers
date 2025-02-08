@@ -83,6 +83,21 @@ export function Payment_page() {
     setIsFormValid(e);
   };
 
+  // Función para calcular la fecha de envío
+  const calculateShippingDate = () => {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+
+    if (dayOfWeek <= 3 && today.getHours() < 12) {
+      today.setDate(today.getDate() + (5 - dayOfWeek)); // El siguiente viernes
+    } else {
+      today.setDate(today.getDate() + (12 - dayOfWeek)); // El viernes de la próxima semana
+    }
+
+    const options = { weekday: "long", day: "2-digit", month: "long" };
+    return today.toLocaleDateString("es-ES", options);
+  };
+
   return (
     <div className="flex w-full flex-col justify-start items-center h-screen">
       <div className="main w-11/12 flex flex-col justify-start items-center my-4 md:px-20 h-full">
@@ -114,7 +129,7 @@ export function Payment_page() {
               <div>
                 <p className="text-md">Envío a domicilio</p>
                 <p className="text-gray-500 text-sm">
-                  Te llega el Viernes 07 de Febrero
+                  Te llega el {calculateShippingDate()}
                 </p>
               </div>
             </div>
@@ -127,7 +142,6 @@ export function Payment_page() {
           {/* Opción 2: Recojo en Miraflores */}
           <div className="Recojo_option flex gap-2 items-center justify-between mt-2">
             <div className="flex gap-4 items-center">
-              {" "}
               <input
                 type="radio"
                 name="shipping"
@@ -138,7 +152,7 @@ export function Payment_page() {
               <div>
                 <p className="text-md">Recojo en Miraflores</p>
                 <p className="text-gray-500 text-sm">
-                  A partir del viernes 07 de Febrero
+                  A partir del {calculateShippingDate()}
                 </p>
               </div>
             </div>
@@ -164,22 +178,10 @@ export function Payment_page() {
             </div>
           </div>
 
-          {/*
-          {loading ? (
-            // Skeleton Loader mientras se cargan los datos
-            <div className="skeleton-loader w-full h-16 bg-gray-300 animate-pulse rounded-md" />
-          ) : (
-            preferenceId && (
-              <div className="mt-4">
-                <Wallet initialization={{ preferenceId }} />
-              </div>
-            )
-          )}*/}
-
           {loading ? <div className="skeleton w-full h-12 "></div> : ""}
           <button
             className="w-full bg-blue-500 text-white rounded-md p-2 mt-4 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={!isFormValid}
+            disabled={!isFormValid && selectedOption === "envio_domicilio"}
             onClick={() => {
               if (meli_url) {
                 window.location.href = meli_url; // Redirige al link de MercadoPago
@@ -189,6 +191,13 @@ export function Payment_page() {
             <img src="/images/mercado_pago.png" className="w-8" alt="" />
             Pagar con Mercado Pago
           </button>
+          {!isFormValid && selectedOption === "envio_domicilio" ? (
+            <p className="w-full text-center text-xs text-red-600">
+              Debes ingresar tu dirección de envío
+            </p>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

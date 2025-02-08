@@ -46,13 +46,9 @@ export function Success_page() {
           <p className="text-lg text-gray-700 mb-2">
             Gracias por tu compra. Tu pago ha sido aprobado.
           </p>
-          <p className="text-sm text-gray-600">
-            <strong>ID de pago:</strong> {paymentId}
-            {carritoId}
-          </p>
 
           {/* Botón para regresar al inicio */}
-          <h2>¿Deseas recibir el </h2>
+          <h2>¿Deseas recibir el resumen de tu compra a tu correo?</h2>
           <div className="mt-4 flex h-12 gap-2">
             <input
               type="text"
