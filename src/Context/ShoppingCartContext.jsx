@@ -92,6 +92,13 @@ export function ShoppingCartContextProvider(props) {
     }
   }, [cart]);
 
+  // En tu ShoppingCartContext
+  const removeMultipleProductsFromCart = (productIds) => {
+    setCartDetails((prevCartDetails) =>
+      prevCartDetails.filter((detail) => !productIds.includes(detail.id))
+    );
+  };
+
   useEffect(() => {
     localStorage.setItem("cartDetails", JSON.stringify(cartDetails));
   }, [cartDetails]);
@@ -142,6 +149,7 @@ export function ShoppingCartContextProvider(props) {
         setDistrito,
         referencia,
         setReferencia,
+        removeMultipleProductsFromCart,
       }}
     >
       {props.children}

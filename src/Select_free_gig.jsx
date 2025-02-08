@@ -9,8 +9,12 @@ export function Select_free_gig({ isValid }) {
   const [filtered_products, setFiltered_products] = useState([]);
   const { stickers_products, get_pocketbase_support_items } =
     useContext(DataContext);
-  const { addProductToCart, removeProductFromCart, cartDetails } =
-    useContext(ShoppingCartContext);
+  const {
+    addProductToCart,
+    removeProductFromCart,
+    cartDetails,
+    removeMultipleProductsFromCart,
+  } = useContext(ShoppingCartContext);
 
   const [active_grid, setActive_grid] = useState(false);
   const [active_sticker_type, setActive_sticker_type] = useState(""); // "Sticker 1" o "Sticker 2"
@@ -37,11 +41,19 @@ export function Select_free_gig({ isValid }) {
       )
     );
 
-    cartDetails.forEach((detail) => {
-      if (detail.sticker_variation.price === 0) {
-        removeProductFromCart(detail.id);
-      }
-    });
+    // Filtrar productos gratuitos
+    const freeProducts = cartDetails.filter(
+      (detail) => detail.sticker_variation.price === 0
+    );
+    console.log("Productos gratuitos encontrados:", freeProducts);
+
+    // Obtener los IDs de los productos gratuitos
+    const freeProductIds = freeProducts.map((detail) => detail.id);
+
+    // Eliminar todos los productos gratuitos de una sola vez
+    if (freeProductIds.length > 0) {
+      removeMultipleProductsFromCart(freeProductIds);
+    }
   }, []);
 
   useEffect(() => {
