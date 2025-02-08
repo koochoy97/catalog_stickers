@@ -172,13 +172,17 @@ export function ProductPage() {
                   <p>Medidas Disponibles</p>
                   <Guia_medidas /> {/* Componente Guia_medidas aquí */}
                 </div>
-                <p className="text-sm font-semibold">
-                  2.00cm | 2.50cm | 3.00cm
+                <p className="text-sm font-semibold mb-2">
+                  {item?.[0]?.size_s +
+                    " | " +
+                    item?.[0]?.size_m +
+                    " | " +
+                    item?.[0]?.size_l}
                 </p>
               </div>
 
               <div className="hidden lg:block">
-                <Promo_card message="Todo verano 2025: ¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
+                <Promo_card message="Todo verano 2025: ¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!*" />
               </div>
 
               <div className="divider"></div>

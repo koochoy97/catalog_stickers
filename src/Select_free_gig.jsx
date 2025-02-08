@@ -9,15 +9,19 @@ export function Select_free_gig({ isValid }) {
   const [filtered_products, setFiltered_products] = useState([]);
   const { stickers_products, get_pocketbase_support_items } =
     useContext(DataContext);
-
   const { addProductToCart, removeProductFromCart, cartDetails } =
     useContext(ShoppingCartContext);
 
   const [active_grid, setActive_grid] = useState(false);
-
-  const [active_sticker, setActive_sticker] = useState("");
-  const [active_sticker_1, setActive_sticker_1] = useState([]);
-  const [active_sticker_2, setActive_sticker_2] = useState([]);
+  const [active_sticker_type, setActive_sticker_type] = useState(""); // "Sticker 1" o "Sticker 2"
+  const [sticker1Selection, setSticker1Selection] = useState({
+    product: null,
+    size: "",
+  });
+  const [sticker2Selection, setSticker2Selection] = useState({
+    product: null,
+    size: "",
+  });
 
   const navigate = useNavigate();
 
@@ -27,7 +31,6 @@ export function Select_free_gig({ isValid }) {
     }
 
     let temp_filtered_products = [...stickers_products];
-
     setFiltered_products(
       temp_filtered_products.filter(
         (product) => product.category_name === "Stickers Random"
@@ -39,13 +42,10 @@ export function Select_free_gig({ isValid }) {
         removeProductFromCart(detail.id);
       }
     });
-
-    return () => {};
   }, []);
 
   useEffect(() => {
     let temp_filtered_products = [...stickers_products];
-
     setFiltered_products(
       temp_filtered_products.filter(
         (product) => product.category_name === "Stickers Random"
@@ -53,32 +53,66 @@ export function Select_free_gig({ isValid }) {
     );
   }, [stickers_products]);
 
-  const handle_click = (sticker) => {
+  const handle_click = (stickerType) => {
     setActive_grid((prevState) => !prevState);
-    setActive_sticker(sticker);
+    setActive_sticker_type(stickerType);
   };
 
-  const handle_item_click = (e) => {
-    console.log(e);
-    if (active_sticker === "Sticker 1") {
-      setActive_sticker_1(e);
+  const handle_item_click = (product) => {
+    if (active_sticker_type === "Sticker 1") {
+      setSticker1Selection((prev) => ({
+        product: product,
+        size: "S", // Set default size S
+      }));
     } else {
-      setActive_sticker_2(e);
+      setSticker2Selection((prev) => ({
+        product: product,
+        size: "S", // Set default size S
+      }));
     }
+  };
+
+  const handle_selection_confirm = () => {
     setActive_grid(false);
+  };
+
+  const handle_size_change = (size) => {
+    if (active_sticker_type === "Sticker 1") {
+      setSticker1Selection((prev) => ({
+        ...prev,
+        size: size,
+      }));
+    } else {
+      setSticker2Selection((prev) => ({
+        ...prev,
+        size: size,
+      }));
+    }
   };
 
   const handle_continue_payment = () => {
     addProductToCart({
-      sticker_name: active_sticker_1.nombre,
+      sticker_name: sticker1Selection.product.nombre,
       sticker_lastname: "",
       sticker_bandera: "",
       sticker_variation: { price: 0 },
-      product: active_sticker_1,
-      qtyS: 0,
-      qtyM: 0,
-      qtyL: 1,
+      product: sticker1Selection.product,
+      qtyS: sticker1Selection.size === "S" ? 1 : 0,
+      qtyM: sticker1Selection.size === "M" ? 1 : 0,
+      qtyL: sticker1Selection.size === "L" ? 1 : 0,
     });
+
+    addProductToCart({
+      sticker_name: sticker2Selection.product.nombre,
+      sticker_lastname: "",
+      sticker_bandera: "",
+      sticker_variation: { price: 0 },
+      product: sticker2Selection.product,
+      qtyS: sticker2Selection.size === "S" ? 1 : 0,
+      qtyM: sticker2Selection.size === "M" ? 1 : 0,
+      qtyL: sticker2Selection.size === "L" ? 1 : 0,
+    });
+
     navigate("/payment");
   };
 
@@ -96,7 +130,7 @@ export function Select_free_gig({ isValid }) {
         Continuar Compra
       </button>
       <dialog id="my_modal_2" className="modal w-full">
-        <div className="modal-box h-[800px] p-6 md:p-10">
+        <div className="modal-box h-[800px] p-6 md:p-10 lg:w-full lg:max-w-[900px]">
           <h2 className="text-xl font-medium">
             Selecciona tus Stickers gratuitos
           </h2>
@@ -104,12 +138,10 @@ export function Select_free_gig({ isValid }) {
           <div className="flex items-center justify-between gap-3 mt-2">
             <button
               className="w-full h-12 border rounded-lg flex items-center justify-center gap-2"
-              onClick={() => {
-                handle_click("Sticker 1");
-              }}
+              onClick={() => handle_click("Sticker 1")}
             >
-              {active_sticker_1.nombre ? (
-                active_sticker_1.nombre
+              {sticker1Selection.product ? (
+                `${sticker1Selection.product.nombre} - ${sticker1Selection.size}`
               ) : (
                 <>
                   <p>Sticker 1</p>
@@ -120,12 +152,10 @@ export function Select_free_gig({ isValid }) {
 
             <button
               className="w-full h-12 border rounded-lg flex items-center justify-center gap-2"
-              onClick={() => {
-                handle_click("Sticker 2");
-              }}
+              onClick={() => handle_click("Sticker 2")}
             >
-              {active_sticker_2.nombre ? (
-                active_sticker_2.nombre
+              {sticker2Selection.product ? (
+                `${sticker2Selection.product.nombre} - ${sticker2Selection.size}`
               ) : (
                 <>
                   <p>Sticker 2</p>
@@ -134,26 +164,39 @@ export function Select_free_gig({ isValid }) {
               )}
             </button>
           </div>
+
           <div
-            className={` transition-all ${
+            className={`transition-all ${
               active_grid ? "h-96 overflow-auto" : "h-0 overflow-hidden"
             }`}
           >
             <Products_grid_free_gig
               data={filtered_products}
               send_click_signal={handle_item_click}
-              active_sticker={
-                active_sticker === "Sticker 1"
-                  ? active_sticker_1
-                  : active_sticker_2
+              confirm_selection={handle_selection_confirm}
+              active_product={
+                active_sticker_type === "Sticker 1"
+                  ? sticker1Selection.product
+                  : sticker2Selection.product
               }
+              active_size={
+                active_sticker_type === "Sticker 1"
+                  ? sticker1Selection.size
+                  : sticker2Selection.size
+              }
+              handle_size_change={handle_size_change}
             />
           </div>
 
           <div className="w-full mt-4">
             <button
               className="bg-black text-white py-2 px-3 rounded-md w-full disabled:bg-gray-400 disabled:cursor-not-allowed"
-              disabled={!active_sticker_1.nombre || !active_sticker_2.nombre}
+              disabled={
+                !sticker1Selection.product ||
+                !sticker1Selection.size ||
+                !sticker2Selection.product ||
+                !sticker2Selection.size
+              }
               onClick={handle_continue_payment}
             >
               Continuar compra

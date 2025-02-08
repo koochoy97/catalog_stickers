@@ -36,7 +36,9 @@ export function Home() {
             La mejor colección de Stickers
           </h1>
           <Home_categories />
-          <Promo_card message="Todo Verano 2025: ¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!" />
+          <div className="w-full mt-4">
+            <Promo_card message="Todo Verano 2025: ¡Llévate 2 Stickers Random GRATIS con cualquier Kit Personalizado o de Bicicletas!*" />
+          </div>
         </div>
 
         <Products_grid data={stickers_products} />

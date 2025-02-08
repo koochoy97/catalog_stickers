@@ -46,25 +46,29 @@ export function Payment_summary() {
   return (
     <div className="flex w-full flex-col justify-start items-center pb-16 lg:items-start h-screen">
       <div className="main w-11/12 flex flex-col justify-start items-center my-4 lg:px-20 h-full lg:flex-row lg:gap-6 lg:items-start lg:mt-20  ">
-        {/* 🔹 Se usa el componente Contact_info y se le pasan los estados como props */}
-        <Contact_info
-          name={name}
-          setName={setName}
-          phone={phone}
-          setPhone={setPhone}
-          errors={errors}
-          touched={touched}
-          setTouched={setTouched}
-          isValid={isValid}
-        />
+        <div className="w-full">
+          {cartDetails.find(
+            (item) =>
+              item.product.category_name === "Stickers Personalizados" ||
+              item.product.category_name === "Stickers de Bicicletas"
+          ) ? (
+            <Promo_card message="Podrás elegir tus Stickers gratuitos al darle a Continuar Pago" />
+          ) : (
+            ""
+          )}
 
-        {cartDetails.find(
-          (item) => item.product.category_name === "Stickers Personalizados"
-        ) ? (
-          <Promo_card message="Podrás elegir tus Stickers gratuitos al darle a Continuar Pago" />
-        ) : (
-          ""
-        )}
+          {/* 🔹 Se usa el componente Contact_info y se le pasan los estados como props */}
+          <Contact_info
+            name={name}
+            setName={setName}
+            phone={phone}
+            setPhone={setPhone}
+            errors={errors}
+            touched={touched}
+            setTouched={setTouched}
+            isValid={isValid}
+          />
+        </div>
 
         <div className="summary_container w-full bg-white rounded-md p-3 mt-4 lg:mt-0 lg:w-[55%]">
           <h1 className="text-lg font-semibold w-full text-left mb-2 ">

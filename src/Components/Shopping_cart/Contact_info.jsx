@@ -33,7 +33,9 @@ export function Contact_info({
 
   // Verificamos si hay productos de la categoría "Stickers Personalizados"
   const hasStickersPersonalizados = cartDetails?.find(
-    (item) => item.product.category_name === "Stickers Personalizados"
+    (item) =>
+      item.product.category_name === "Stickers Personalizados" ||
+      item.product.category_name === "Stickers de Bicicletas"
   );
 
   return (
