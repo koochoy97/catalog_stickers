@@ -12,6 +12,10 @@ export function Payment_page() {
   const [loading, setLoading] = useState(true);
   const [shipping_cost, setShippingCost] = useState(5); // Valor inicial de envío a domicilio
 
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  const [meli_url, setMeli_url] = useState("");
+
   const {
     shopping_cart_total,
     cart, // Asegúrate de que cart tenga el ID que necesitamos
@@ -62,6 +66,8 @@ export function Payment_page() {
         .then((data) => {
           if (data.id) {
             setPreferenceId(data.id);
+            console.log(data);
+            setMeli_url(data.init_point);
           }
           setLoading(false);
         })
@@ -72,10 +78,23 @@ export function Payment_page() {
     }
   }, [shopping_cart_total, shipping_cost, cart.id]); // Añadimos cart.id como dependencia
 
+  const handle_direccion_modal = (e) => {
+    //Estado viene del hijo
+    setIsFormValid(e);
+  };
+
   return (
     <div className="flex w-full flex-col justify-start items-center h-screen">
       <div className="main w-11/12 flex flex-col justify-start items-center my-4 md:px-20 h-full">
-        <Direccion_envio_modal />
+        <div
+          className={` w-full ${
+            selectedOption === "envio_domicilio" ? "block" : "hidden"
+          }`}
+        >
+          <Direccion_envio_modal
+            send_direccion_modal={handle_direccion_modal}
+          />
+        </div>
 
         <div className="botón_pago_container w-full bg-white rounded-md p-3 mt-4">
           <h2 className="text-lg font-bold mb-4">
@@ -145,15 +164,31 @@ export function Payment_page() {
             </div>
           </div>
 
+          {/*
           {loading ? (
-            <p className="text-gray-500">Cargando pago...</p>
+            // Skeleton Loader mientras se cargan los datos
+            <div className="skeleton-loader w-full h-16 bg-gray-300 animate-pulse rounded-md" />
           ) : (
             preferenceId && (
               <div className="mt-4">
                 <Wallet initialization={{ preferenceId }} />
               </div>
             )
-          )}
+          )}*/}
+
+          {loading ? <div className="skeleton w-full h-12 "></div> : ""}
+          <button
+            className="w-full bg-blue-500 text-white rounded-md p-2 mt-4 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!isFormValid}
+            onClick={() => {
+              if (meli_url) {
+                window.location.href = meli_url; // Redirige al link de MercadoPago
+              }
+            }}
+          >
+            <img src="/images/mercado_pago.png" className="w-8" alt="" />
+            Pagar con Mercado Pago
+          </button>
         </div>
       </div>
     </div>
