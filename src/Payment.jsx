@@ -3,7 +3,7 @@ import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { Direccion_envio_modal } from "./Components/Checkout/Direccion_envio_modal";
 import { ShoppingCartContext } from "./Context/ShoppingCartContext";
 
-initMercadoPago("TEST-16a3d4c9-3cad-4447-86db-5671b1f27ea2", {
+initMercadoPago("APP_USR-fdf7bbe7-5434-4da3-9e74-1de75a6f8b3f", {
   locale: "es-PE",
 });
 
@@ -19,6 +19,7 @@ export function Payment_page() {
   const {
     shopping_cart_total,
     cart, // Asegúrate de que cart tenga el ID que necesitamos
+    cartDetails,
     nombre_user_session,
     phone_user_session,
     direccion,
@@ -36,8 +37,15 @@ export function Payment_page() {
   };
 
   useEffect(() => {
+    // Create items array outside of the fetch call
+    const items_details = cartDetails.map((detail) => ({
+      title: detail.product.id,
+      unit_price: detail.sticker_variation.price,
+    }));
+
+    console.log("Items being sent:", items_details); // Debug log
+
     if (shopping_cart_total > 0) {
-      // Solo ejecutar si hay un monto válido
       setLoading(true);
       fetch("https://kingway97.pythonanywhere.com/crear_preferencia", {
         method: "POST",
@@ -47,36 +55,38 @@ export function Payment_page() {
         body: JSON.stringify({
           items: [
             {
-              title: "Producto",
+              title: "Productos",
               quantity: 1,
               unit_price: shopping_cart_total,
               currency_id: "PEN",
             },
-          ],
+          ], // Use the items array directly
           payer: {
             email: "jaim23koochoy@gmail.com",
           },
           shipments: {
             cost: shipping_cost,
           },
-          carrito_id: cart.id, // Pasamos el ID del carrito
+          carrito_id: cart.id,
+          external_reference: cart.id,
+          //aditional_data: cart.id,
         }),
       })
         .then((response) => response.json())
         .then((data) => {
           if (data.id) {
             setPreferenceId(data.id);
-            console.log(data);
+            console.log("Preference created:", data);
             setMeli_url(data.init_point);
           }
           setLoading(false);
         })
         .catch((error) => {
-          console.error("Error:", error);
+          console.error("Error creating preference:", error);
           setLoading(false);
         });
     }
-  }, [shopping_cart_total, shipping_cost, cart.id]); // Añadimos cart.id como dependencia
+  }, [shopping_cart_total, shipping_cost, cart.id, cartDetails]);
 
   const handle_direccion_modal = (e) => {
     //Estado viene del hijo
@@ -106,6 +116,7 @@ export function Payment_page() {
             selectedOption === "envio_domicilio" ? "block" : "hidden"
           }`}
         >
+          {cart.id}
           <Direccion_envio_modal
             send_direccion_modal={handle_direccion_modal}
           />
