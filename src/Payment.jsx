@@ -20,12 +20,9 @@ export function Payment_page() {
     shopping_cart_total,
     cart, // Asegúrate de que cart tenga el ID que necesitamos
     cartDetails,
-    nombre_user_session,
-    phone_user_session,
-    direccion,
-    detalle,
-    referencia,
-    distrito,
+    createCart,
+    DB_cart_id,
+    DB_cart_details,
   } = useContext(ShoppingCartContext);
 
   const [selectedOption, setSelectedOption] = useState("envio_domicilio");
@@ -68,8 +65,8 @@ export function Payment_page() {
             cost: shipping_cost,
           },
           carrito_id: cart.id,
-          external_reference: cart.id,
-          //aditional_data: cart.id,
+          //external_reference: cart.id,
+          external_reference: DB_cart_id,
         }),
       })
         .then((response) => response.json())
@@ -86,7 +83,14 @@ export function Payment_page() {
           setLoading(false);
         });
     }
-  }, [shopping_cart_total, shipping_cost, cart.id, cartDetails]);
+  }, [
+    shopping_cart_total,
+    shipping_cost,
+    cart.id,
+    cartDetails,
+    DB_cart_details,
+    DB_cart_id,
+  ]);
 
   const handle_direccion_modal = (e) => {
     //Estado viene del hijo
@@ -107,6 +111,25 @@ export function Payment_page() {
     const options = { weekday: "long", day: "2-digit", month: "long" };
     return today.toLocaleDateString("es-ES", options);
   };
+  // Modificación de handle_checkout() para esperar la creación del carrito y sus detalles
+  const handle_checkout = async () => {
+    console.log("⏳ Creando carrito...");
+
+    createCart();
+  };
+
+  useEffect(() => {
+    // Comprobamos si `DB_cart_id` está disponible antes de redirigir
+    console.log("DB_cart_id:", DB_cart_id);
+    if (meli_url && DB_cart_id && DB_cart_details) {
+      console.log("🔗 Redirigiendo a MercadoPago:", meli_url);
+      window.location.href = meli_url; // Redirigir al checkout de MercadoPago
+    } else {
+      console.error(
+        "⚠️ Error: No se pudo crear el carrito o `meli_url` no está definido."
+      );
+    }
+  }, [DB_cart_id, DB_cart_details]);
 
   return (
     <div className="flex w-full flex-col justify-start items-center h-screen">
@@ -194,9 +217,7 @@ export function Payment_page() {
             className="w-full bg-blue-500 text-white rounded-md p-2 mt-4 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={!isFormValid && selectedOption === "envio_domicilio"}
             onClick={() => {
-              if (meli_url) {
-                window.location.href = meli_url; // Redirige al link de MercadoPago
-              }
+              handle_checkout();
             }}
           >
             <img src="/images/mercado_pago.png" className="w-8" alt="" />

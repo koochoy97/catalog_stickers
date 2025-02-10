@@ -1,6 +1,9 @@
 import { createContext, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid"; // Para generar IDs únicos
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+import PocketBase from "pocketbase";
+
+const pb = new PocketBase("https://mtb.pockethost.io");
 
 // Crear el contexto
 export const ShoppingCartContext = createContext(" ");
@@ -48,6 +51,10 @@ export function ShoppingCartContextProvider(props) {
   const [referencia, setReferencia] = useState(() => {
     return localStorage.getItem("referencia") || "";
   });
+
+  const [DB_cart_id, setDB_cart_id] = useState("");
+
+  const [DB_cart_details, setDB_cart_details] = useState("");
 
   useEffect(() => {
     let total = 0;
@@ -98,6 +105,61 @@ export function ShoppingCartContextProvider(props) {
       prevCartDetails.filter((detail) => !productIds.includes(detail.id))
     );
   };
+
+  async function createCart() {
+    const data = {
+      cart_id: cart.id,
+      status: "En checkout",
+      user_name: nombre_user_session,
+      user_phone: phone_user_session,
+      payment_id: "",
+      direccion: `${direccion} - ${detalle} - ${distrito} - ${referencia}`,
+    };
+
+    try {
+      const record = await pb.collection("carts").create(data);
+
+      // ✅ Establecer DB_cart_id aquí después de la creación del carrito
+      setDB_cart_id(record.id);
+
+      console.log("✅ Carrito creado exitosamente:", record);
+
+      // Asegúrate de que los detalles del carrito se creen después de la creación
+      await Promise.all(
+        cartDetails.map((detail) => createCartDetail(record.id, detail))
+      );
+    } catch (error) {
+      console.error("❌ Error al crear el carrito:", error);
+    }
+  }
+
+  async function createCartDetail(id_relation, data) {
+    const payload = {
+      nombre: data.sticker_name,
+      apellido: data.sticker_lastname,
+      bandera: data.bandera,
+      kit_variation: data.sticker_variation.id || "",
+      product_id: data.product.id,
+      id_relation: id_relation,
+      cart_id: cart.id,
+      qty_S: data.qtyS,
+      qty_M: data.qtyM,
+      qty_L: data.qtyL,
+    };
+
+    const record = await pb.collection("cart_details").create(payload, {
+      $autoCancel: false,
+    });
+
+    if (record) {
+      console.log("✅ Detalle de carrito creado exitosamente:", record); // 🚀 Se imprime apenas se obtiene el record
+      setDB_cart_details(record);
+    } else {
+      console.log("⚠️ Error: No se pudo crear el detalle de carrito.");
+    }
+
+    return record;
+  }
 
   useEffect(() => {
     localStorage.setItem("cartDetails", JSON.stringify(cartDetails));
@@ -150,6 +212,9 @@ export function ShoppingCartContextProvider(props) {
         referencia,
         setReferencia,
         removeMultipleProductsFromCart,
+        createCart,
+        DB_cart_id,
+        DB_cart_details,
       }}
     >
       {props.children}
