@@ -106,6 +106,7 @@ export function ShoppingCartContextProvider(props) {
     );
   };
 
+  //Función para crear el carrito en la base de datos
   async function createCart() {
     const data = {
       cart_id: cart.id,
@@ -166,11 +167,11 @@ export function ShoppingCartContextProvider(props) {
   }, [cartDetails]);
 
   useEffect(() => {
-    localStorage.setItem("nombre_user_session", nombre_user_session);
+    //localStorage.setItem("nombre_user_session", nombre_user_session);
   }, [nombre_user_session]);
 
   useEffect(() => {
-    localStorage.setItem("phone_user_session", phone_user_session);
+    //localStorage.setItem("phone_user_session", phone_user_session);
   }, [phone_user_session]);
 
   useEffect(() => {
