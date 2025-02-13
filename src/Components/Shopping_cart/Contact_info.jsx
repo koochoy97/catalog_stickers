@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCartContext } from "../../Context/ShoppingCartContext";
 import { Promo_card } from "../Products/Promo_card";
@@ -37,6 +37,11 @@ export function Contact_info({
       item.product.category_name === "Stickers Personalizados" ||
       item.product.category_name === "Stickers de Bicicletas"
   );
+
+  useEffect(() => {
+    setNombreUserSession("");
+    setPhoneUserSession("");
+  }, []);
 
   return (
     <div className="contact_container w-full bg-white rounded-md p-3 flex flex-col justify-center items-center">
@@ -80,7 +85,7 @@ export function Contact_info({
 
         {/* Si hay Stickers Personalizados en el carrito, mostramos el botón del modal */}
         {hasStickersPersonalizados ? (
-          <Select_free_gig isValid={isValid} />
+          <Select_free_gig isValid={isValid} name={name} phone={phone} />
         ) : (
           // Si no hay Stickers Personalizados, mostramos el botón de continuar al pago
           <button

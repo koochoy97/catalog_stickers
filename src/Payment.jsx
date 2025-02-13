@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { Direccion_envio_modal } from "./Components/Checkout/Direccion_envio_modal";
 import { ShoppingCartContext } from "./Context/ShoppingCartContext";
@@ -16,6 +17,8 @@ export function Payment_page() {
 
   const [meli_url, setMeli_url] = useState("");
 
+  const navigate = useNavigate();
+
   const {
     shopping_cart_total,
     cart, // Asegúrate de que cart tenga el ID que necesitamos
@@ -23,6 +26,8 @@ export function Payment_page() {
     createCart,
     DB_cart_id,
     DB_cart_details,
+    nombre_user_session,
+    phone_user_session,
   } = useContext(ShoppingCartContext);
 
   const [selectedOption, setSelectedOption] = useState("envio_domicilio");
@@ -32,6 +37,12 @@ export function Payment_page() {
     setSelectedOption(option);
     setShippingCost(option === "envio_domicilio" ? 5 : 0);
   };
+
+  useEffect(() => {
+    if (!nombre_user_session && !phone_user_session) {
+      navigate("/payment_summary");
+    }
+  }, []);
 
   useEffect(() => {
     // Create items array outside of the fetch call

@@ -162,16 +162,43 @@ export function ShoppingCartContextProvider(props) {
     return record;
   }
 
+  async function check_cart_inDB(cart_id) {
+    console.log(cart_id);
+    try {
+      const records = await pb.collection("carts").getList(1, 50, {
+        filter: `cart_id="${cart_id}"`,
+      });
+      if (records.items.length > 0 && records.items[0].status === "Pagado") {
+        console.log(records.items[0]);
+        setCart(null);
+        setCartDetails([]);
+      } else {
+        console.log("El carrito no existe en la base de datos");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      return null;
+    }
+  }
+
+  useEffect(() => {
+    check_cart_inDB(cart?.id);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
   useEffect(() => {
     localStorage.setItem("cartDetails", JSON.stringify(cartDetails));
   }, [cartDetails]);
 
   useEffect(() => {
-    //localStorage.setItem("nombre_user_session", nombre_user_session);
+    localStorage.setItem("nombre_user_session", nombre_user_session);
   }, [nombre_user_session]);
 
   useEffect(() => {
-    //localStorage.setItem("phone_user_session", phone_user_session);
+    localStorage.setItem("phone_user_session", phone_user_session);
   }, [phone_user_session]);
 
   useEffect(() => {

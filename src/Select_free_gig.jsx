@@ -5,7 +5,7 @@ import { DataContext } from "./Context/DataContext";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCartContext } from "./Context/ShoppingCartContext";
 
-export function Select_free_gig({ isValid }) {
+export function Select_free_gig({ isValid, name, phone }) {
   const [filtered_products, setFiltered_products] = useState([]);
   const { stickers_products, get_pocketbase_support_items } =
     useContext(DataContext);
@@ -14,6 +14,8 @@ export function Select_free_gig({ isValid }) {
     removeProductFromCart,
     cartDetails,
     removeMultipleProductsFromCart,
+    setNombreUserSession,
+    setPhoneUserSession,
   } = useContext(ShoppingCartContext);
 
   const [active_grid, setActive_grid] = useState(false);
@@ -124,6 +126,9 @@ export function Select_free_gig({ isValid }) {
       qtyM: sticker2Selection.size === "M" ? 1 : 0,
       qtyL: sticker2Selection.size === "L" ? 1 : 0,
     });
+
+    setNombreUserSession(name);
+    setPhoneUserSession(phone);
 
     navigate("/payment");
   };
