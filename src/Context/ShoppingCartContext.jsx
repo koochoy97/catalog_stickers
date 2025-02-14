@@ -106,8 +106,8 @@ export function ShoppingCartContextProvider(props) {
     );
   };
 
-  //Función para crear el carrito en la base de datos
   async function createCart() {
+    console.log("RAAAAAAAAAA");
     const data = {
       cart_id: cart.id,
       status: "En checkout",
@@ -118,19 +118,45 @@ export function ShoppingCartContextProvider(props) {
     };
 
     try {
-      const record = await pb.collection("carts").create(data);
+      const existingCart = await pb.collection("carts").getList(1, 50, {
+        filter: `cart_id="${cart.id}"`,
+      });
 
-      // ✅ Establecer DB_cart_id aquí después de la creación del carrito
-      setDB_cart_id(record.id);
+      if (existingCart.items.length > 0) {
+        const record = await pb
+          .collection("carts")
+          .update(existingCart.items[0].id, {
+            user_name: nombre_user_session,
+            user_phone: phone_user_session,
+          });
+        setDB_cart_id(record.id);
+        console.log("✅ Carrito actualizado exitosamente:", record);
 
-      console.log("✅ Carrito creado exitosamente:", record);
+        // Eliminar todos los detalles del carrito en la base de datos
+        const cartDetailsToDelete = await pb
+          .collection("cart_details")
+          .getList(1, 50, {
+            filter: `cart_id="${cart.id}"`,
+          });
 
-      // Asegúrate de que los detalles del carrito se creen después de la creación
-      await Promise.all(
-        cartDetails.map((detail) => createCartDetail(record.id, detail))
-      );
+        for (let detail of cartDetailsToDelete.items) {
+          await pb.collection("cart_details").delete(detail.id);
+        }
+
+        // Subir nuevamente los detalles del carrito
+        await Promise.all(
+          cartDetails.map((detail) => createCartDetail(record.id, detail))
+        );
+      } else {
+        const record = await pb.collection("carts").create(data);
+        setDB_cart_id(record.id);
+        console.log("✅ Carrito creado exitosamente:", record);
+        await Promise.all(
+          cartDetails.map((detail) => createCartDetail(record.id, detail))
+        );
+      }
     } catch (error) {
-      console.error("❌ Error al crear el carrito:", error);
+      console.error("❌ Error al manejar el carrito:", error);
     }
   }
 
