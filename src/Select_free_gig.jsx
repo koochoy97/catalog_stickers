@@ -106,7 +106,7 @@ export function Select_free_gig({ isValid, name, phone }) {
 
   const handle_continue_payment = () => {
     addProductToCart({
-      sticker_name: sticker1Selection.product.nombre,
+      sticker_name: "",
       sticker_lastname: "",
       sticker_bandera: "",
       sticker_variation: { price: 0 },
@@ -117,7 +117,7 @@ export function Select_free_gig({ isValid, name, phone }) {
     });
 
     addProductToCart({
-      sticker_name: sticker2Selection.product.nombre,
+      sticker_name: "",
       sticker_lastname: "",
       sticker_bandera: "",
       sticker_variation: { price: 0 },

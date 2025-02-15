@@ -178,7 +178,12 @@ export function Sticker_user_info_modal(props) {
                     key={size}
                     className="flex items-center justify-between p-2 border rounded-lg"
                   >
-                    <span className="font-medium">{size}</span>
+                    <span className="font-medium">
+                      {size +
+                        " (" +
+                        product[`size_${size.toLowerCase()}`] +
+                        ")"}
+                    </span>
                     <div className="flex items-center gap-2">
                       {/* Botón para disminuir */}
                       <button

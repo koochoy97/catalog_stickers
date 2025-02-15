@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid"; // Para generar IDs únicos
-import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import PocketBase from "pocketbase";
 
 const pb = new PocketBase("https://mtb.pockethost.io");
@@ -56,6 +55,13 @@ export function ShoppingCartContextProvider(props) {
 
   const [DB_cart_details, setDB_cart_details] = useState("");
 
+  const [fecha_entrega, setFechaEntrega] = useState("");
+
+  const [tipo_entrega, setTipoEntrega] = useState("");
+
+  const [succes_items, setSuccesItems] = useState();
+  const [summaryCart, setSummaryCart] = useState();
+
   useEffect(() => {
     let total = 0;
     cartDetails?.forEach((detail) => {
@@ -107,7 +113,6 @@ export function ShoppingCartContextProvider(props) {
   };
 
   async function createCart() {
-    console.log("RAAAAAAAAAA");
     const data = {
       cart_id: cart.id,
       status: "En checkout",
@@ -115,6 +120,8 @@ export function ShoppingCartContextProvider(props) {
       user_phone: phone_user_session,
       payment_id: "",
       direccion: `${direccion} - ${detalle} - ${distrito} - ${referencia}`,
+      fecha_entrega: fecha_entrega,
+      tipo_envio: tipo_entrega,
     };
 
     try {
@@ -128,6 +135,8 @@ export function ShoppingCartContextProvider(props) {
           .update(existingCart.items[0].id, {
             user_name: nombre_user_session,
             user_phone: phone_user_session,
+            fecha_entrega: fecha_entrega,
+            tipo_envio: tipo_entrega,
           });
         setDB_cart_id(record.id);
         console.log("✅ Carrito actualizado exitosamente:", record);
@@ -207,6 +216,22 @@ export function ShoppingCartContextProvider(props) {
     }
   }
 
+  async function get_cart_details_succes(payment_id) {
+    // fetch a paginated records list
+    const resultList = await pb.collection("view_cart_details").getList(1, 50, {
+      filter: `payment_id = "${payment_id}"`,
+    });
+    setSuccesItems(resultList.items);
+
+    const cart_succes = await pb.collection("summary_carts").getList(1, 50, {
+      filter: `payment_id = "${payment_id}"`,
+    });
+
+    setSummaryCart(cart_succes.items[0]);
+
+    return resultList;
+  }
+
   useEffect(() => {
     check_cart_inDB(cart?.id);
   }, []);
@@ -269,6 +294,13 @@ export function ShoppingCartContextProvider(props) {
         createCart,
         DB_cart_id,
         DB_cart_details,
+        setFechaEntrega,
+        setTipoEntrega,
+        tipo_entrega,
+        fecha_entrega,
+        get_cart_details_succes,
+        succes_items,
+        summaryCart,
       }}
     >
       {props.children}

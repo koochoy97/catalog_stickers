@@ -28,6 +28,10 @@ export function Payment_page() {
     DB_cart_details,
     nombre_user_session,
     phone_user_session,
+    setFechaEntrega,
+    setTipoEntrega,
+    tipo_entrega,
+    fecha_entrega,
   } = useContext(ShoppingCartContext);
 
   const [selectedOption, setSelectedOption] = useState("envio_domicilio");
@@ -36,12 +40,17 @@ export function Payment_page() {
   const handleShippingOptionChange = (option) => {
     setSelectedOption(option);
     setShippingCost(option === "envio_domicilio" ? 5 : 0);
+
+    setTipoEntrega(option);
+    setFechaEntrega(calculateShippingDate());
   };
 
   useEffect(() => {
     if (!nombre_user_session && !phone_user_session) {
       navigate("/payment_summary");
     }
+
+    setTipoEntrega(selectedOption);
   }, []);
 
   useEffect(() => {
@@ -108,7 +117,6 @@ export function Payment_page() {
     setIsFormValid(e);
   };
 
-  // Función para calcular la fecha de envío
   const calculateShippingDate = () => {
     const today = new Date();
     const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
@@ -120,7 +128,17 @@ export function Payment_page() {
     }
 
     const options = { weekday: "long", day: "2-digit", month: "long" };
-    return today.toLocaleDateString("es-ES", options);
+    const formattedDate = today.toLocaleDateString("es-ES", options); // Formato para mostrar al cliente
+
+    // Formato para control interno (dd/mm/yyyy)
+    const day = today.getDate().toString().padStart(2, "0");
+    const month = (today.getMonth() + 1).toString().padStart(2, "0");
+    const year = today.getFullYear();
+    const internalDate = `${day}/${month}/${year}`;
+
+    setFechaEntrega(internalDate); // Establece la fecha en el formato dd/mm/yyyy
+
+    return formattedDate; // Retorna la fecha en el formato para el cliente
   };
   // Modificación de handle_checkout() para esperar la creación del carrito y sus detalles
   const handle_checkout = async () => {
@@ -151,6 +169,7 @@ export function Payment_page() {
           }`}
         >
           {cart.id}
+
           <Direccion_envio_modal
             send_direccion_modal={handle_direccion_modal}
           />
