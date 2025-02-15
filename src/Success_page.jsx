@@ -52,7 +52,6 @@ export function Success_page() {
     return (
       <div className="flex flex-col items-center justify-start min-h-screen  w-full">
         <Header />
-        {JSON.stringify(summaryCart)}
         <div className="bg-white rounded-lg  p-10 mt-8 w-11/12 lg:w-[900px]">
           <div className="flex justify-center mb-4 lg:justify-start">
             <span className=" text-4xl">✔️</span>
@@ -68,11 +67,12 @@ export function Success_page() {
               <div className="text-sm">
                 <p>Nombre: {summaryCart?.user_name}</p>
                 <p>Teléfono: {summaryCart?.user_phone}</p>
-                {summaryCart?.direccion
+                {summaryCart?.tipo_envio !== "recojo_miraflores"
                   ? "Dirección de envío: " + summaryCart?.direccion
                   : "Recojo en Miraflores"}
                 <p>
-                  Fecha de {summaryCart?.direccion ? "Entrega: " : "Recojo: "}{" "}
+                  Fecha de{" "}
+                  {summaryCart?.direccion !== "---" ? "Entrega: " : "Recojo: "}{" "}
                   {summaryCart?.fecha_entrega}
                 </p>
               </div>

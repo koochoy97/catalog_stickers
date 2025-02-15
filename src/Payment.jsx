@@ -49,6 +49,9 @@ export function Payment_page() {
     if (!nombre_user_session && !phone_user_session) {
       navigate("/payment_summary");
     }
+    if (!cart) {
+      navitage("/");
+    }
 
     setTipoEntrega(selectedOption);
   }, []);
