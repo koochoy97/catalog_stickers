@@ -50,7 +50,7 @@ export function Payment_page() {
       navigate("/payment_summary");
     }
     if (!cart) {
-      navitage("/");
+      navigate("/");
     }
 
     setTipoEntrega(selectedOption);
@@ -87,8 +87,8 @@ export function Payment_page() {
           shipments: {
             cost: shipping_cost,
           },
-          carrito_id: cart.id,
-          //external_reference: cart.id,
+          carrito_id: cart?.id,
+          //external_reference: cart?.id,
           external_reference: DB_cart_id,
         }),
       })
@@ -109,7 +109,7 @@ export function Payment_page() {
   }, [
     shopping_cart_total,
     shipping_cost,
-    cart.id,
+    cart?.id,
     cartDetails,
     DB_cart_details,
     DB_cart_id,
@@ -171,7 +171,7 @@ export function Payment_page() {
             selectedOption === "envio_domicilio" ? "block" : "hidden"
           }`}
         >
-          {cart.id}
+          {cart?.id}
 
           <Direccion_envio_modal
             send_direccion_modal={handle_direccion_modal}
