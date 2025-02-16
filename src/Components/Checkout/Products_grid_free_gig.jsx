@@ -54,7 +54,7 @@ export function Products_grid_free_gig({
                     <>
                       <div className="flex gap-2 mt-2">
                         <button
-                          className={`border rounded-sm px-1 py-1 text-sm ${getSizeClass(
+                          className={`border rounded-sm px-1 py-1 text-xs ${getSizeClass(
                             "S"
                           )}`}
                           onClick={(e) => {
@@ -65,7 +65,7 @@ export function Products_grid_free_gig({
                           S: {item.size_s}
                         </button>
                         <button
-                          className={`border rounded-sm px-1 py-1 text-sm ${getSizeClass(
+                          className={`border rounded-sm px-1 py-1 text-xs ${getSizeClass(
                             "M"
                           )}`}
                           onClick={(e) => {
@@ -76,7 +76,7 @@ export function Products_grid_free_gig({
                           M: {item.size_m}
                         </button>
                         <button
-                          className={`border rounded-sm px-1 py-1 text-sm ${getSizeClass(
+                          className={`border rounded-sm px-1 py-1 text-xs ${getSizeClass(
                             "L"
                           )}`}
                           onClick={(e) => {

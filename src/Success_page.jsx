@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas-pro";
 import { ShoppingCartContext } from "./Context/ShoppingCartContext";
 import { useNavigate } from "react-router-dom";
 import { Header } from "./Components/Header/Header";
@@ -14,7 +16,7 @@ export function Success_page() {
     get_cart_details_succes,
     succes_items,
     summaryCart,
-  } = useContext(ShoppingCartContext); // Usamos las funciones del contexto para limpiar el carrito
+  } = useContext(ShoppingCartContext);
   const [carritoId, setCarritoId] = useState("");
   const Navigate = useNavigate();
   const params = new URLSearchParams(window.location.search);
@@ -24,44 +26,79 @@ export function Success_page() {
     const paymentStatus = params.get("status");
     const paymentId = params.get("payment_id");
     const payerEmail = params.get("payer_email");
-    const carritoId = params.get("carrito_id"); // Obtener el ID del carrito de la URL
+    const carritoId = params.get("carrito_id");
 
     setPaymentStatus(paymentStatus);
     setPaymentId(paymentId);
     setPayerEmail(payerEmail);
     setCarritoId(carritoId);
 
-    // Si el pago fue exitoso y se recibió un carrito_id en la URL, limpiar el carrito
-    console.log("Pago aprobado, limpiando carrito con ID:", carritoId);
-    // Limpiar el carrito del localStorage y en el contexto
+    // Limpiar carrito si el pago fue exitoso
     localStorage.removeItem("cart");
     localStorage.removeItem("cartDetails");
-    setCart(null); // Limpiamos el carrito en el contexto
-    setCartDetails([]); // Limpiamos los detalles del carrito en el contexto
+    setCart(null);
+    setCartDetails([]);
   }, []);
 
   useEffect(() => {
     if (paymentId) {
-      console.log("hola");
-      console.log(paymentId);
       get_cart_details_succes(paymentId);
     }
   }, [paymentId]);
 
-  if (paymentStatus === "approved" /*&& cart*/) {
+  const generatePDF = () => {
+    const element = document.getElementById("summary-container"); // Seleccionamos el contenedor
+
+    // Usamos html2canvas para tomar una captura del contenedor
+    html2canvas(element, {
+      scale: 2, // Mejor resolución
+      logging: true, // Para ver detalles en consola si necesitas debugging
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/jpeg"); // Convertir el canvas a una imagen
+
+      // Crear el PDF con la imagen
+      const pdf = new jsPDF("p", "mm", "a4"); // Crear el PDF
+      const pageWidth = pdf.internal.pageSize.getWidth();
+
+      // Agregar la imagen del resumen
+      pdf.addImage(imgData, "JPEG", 10, 70, 190, 0); // Añadir la imagen al PDF
+
+      // Agregar el logo en la esquina superior derecha
+      const logo = "images/circle_logo.png"; // Asegúrate de usar la ruta correcta
+      pdf.addImage(logo, "PNG", pageWidth - 50, 10, 40, 40); // Logo en esquina superior derecha
+
+      // Agregar el símbolo de verificación donde estaba el logo
+      pdf.setFontSize(24); // Tamaño grande para el símbolo
+      pdf.text("OK", 10, 30); // Posicionado donde estaba el logo antes
+
+      // Agregar texto adicional (Pago Exitoso y Gracias por tu compra)
+      pdf.setFontSize(18);
+      pdf.text("Pago Exitoso", 10, 55);
+      pdf.setFontSize(12);
+      pdf.text("Gracias por tu compra. Tu pago ha sido aprobado.", 10, 65);
+
+      // Guardamos el archivo PDF
+      pdf.save("resumen-compra.pdf"); // Descargar el PDF
+    });
+  };
+
+  if (paymentStatus === "approved") {
     return (
       <div className="flex flex-col items-center justify-start min-h-screen  w-full">
         <Header />
-        <div className="bg-white rounded-lg  p-10 mt-8 w-11/12 lg:w-[900px]">
+        <div className="bg-white rounded-lg p-10 mt-8 w-11/12 lg:w-[900px]">
           <div className="flex justify-center mb-4 lg:justify-start">
             <span className=" text-4xl">✔️</span>
           </div>
-          <h1 className="text-3xl font-semibold  mb-3">Pago Exitoso</h1>
+          <h1 className="text-3xl font-semibold mb-3">Pago Exitoso</h1>
           <p className="text-lg text-gray-700 mb-2">
             Gracias por tu compra. Tu pago ha sido aprobado.
           </p>
 
-          <div className="payment_summar bg-slate-100 p-4 rounded mt-4">
+          <div
+            className="payment_summar bg-slate-100 p-4 rounded mt-4"
+            id="summary-container"
+          >
             <div className="row_1">
               <p className="text-lg font-medium">Payment ID: {paymentId}</p>
               <div className="text-sm">
@@ -81,7 +118,7 @@ export function Success_page() {
 
             {/*Items del cart */}
             {succes_items?.map((item) => (
-              <div className="item mb-4">
+              <div className="item mb-4" key={item.product_id}>
                 <p className="font-medium text-lg">{item.product_nombre}</p>
                 <div className="flex justify-between">
                   <p className="text-sm text-gray-700">
@@ -119,18 +156,13 @@ export function Success_page() {
             </div>
           </div>
 
-          {/* Botón para regresar al inicio */}
-          <h2>¿Deseas recibir el resumen de tu compra a tu correo?</h2>
-
-          <div className="mt-4 flex h-12 gap-2">
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input input-bordered w-full max-w-xs"
-            />
-
-            <button className="text-white bg-black hover:bg-slate-800 px-6 py-2 rounded-lg h-full ">
-              Enviar
+          {/* Botón para generar PDF */}
+          <div className="mt-6">
+            <button
+              className="text-white bg-black hover:bg-slate-800 px-4 py-2 rounded-md"
+              onClick={generatePDF}
+            >
+              Descargar como PDF
             </button>
           </div>
 

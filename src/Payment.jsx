@@ -171,8 +171,6 @@ export function Payment_page() {
             selectedOption === "envio_domicilio" ? "block" : "hidden"
           }`}
         >
-          {cart?.id}
-
           <Direccion_envio_modal
             send_direccion_modal={handle_direccion_modal}
           />
