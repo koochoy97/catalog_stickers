@@ -195,8 +195,6 @@ export function Payment_page() {
   return (
     <div className="flex w-full flex-col justify-start items-center h-screen">
       <div className="main w-11/12 flex flex-col justify-start items-center my-4 md:px-20 h-full">
-        {"DB_cart_id: " + DB_cart_id}
-        {"DB_cart_details: " + DB_cart_details}
         <div
           className={`w-full ${
             selectedOption === "envio_domicilio" ? "block" : "hidden"

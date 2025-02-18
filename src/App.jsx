@@ -13,6 +13,8 @@ import { Payment_summary } from "./Paymet_sumary";
 import ReactGA from "react-ga4";
 import { ShoppingCartContextProvider } from "./Context/ShoppingCartContext";
 import { Success_page } from "./Success_page";
+import { useEffect } from "react";
+import { hotjar } from "@hotjar/browser";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -27,6 +29,10 @@ const router = createBrowserRouter([
 
 ReactGA.initialize("G-G3X2DKNF63");
 function App() {
+  useEffect(() => {
+    hotjar.initialize(5308416, 6);
+  }, []);
+
   return (
     <>
       <DataContextProvider>

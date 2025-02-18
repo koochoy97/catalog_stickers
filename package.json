@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@hotjar/browser": "^1.0.9",
     "@mercadopago/sdk-react": "^0.0.23",
     "firebase": "^11.1.0",
     "html2canvas-pro": "^1.5.8",
