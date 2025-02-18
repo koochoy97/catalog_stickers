@@ -59,23 +59,20 @@ export function Success_page() {
       // Crear el PDF con la imagen
       const pdf = new jsPDF("p", "mm", "a4"); // Crear el PDF
       const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
 
-      // Agregar la imagen del resumen
-      pdf.addImage(imgData, "JPEG", 10, 70, 190, 0); // Añadir la imagen al PDF
-
-      // Agregar el logo en la esquina superior derecha
+      // Agregar el logo en la parte superior
       const logo = "images/circle_logo.png"; // Asegúrate de usar la ruta correcta
-      pdf.addImage(logo, "PNG", pageWidth - 50, 10, 40, 40); // Logo en esquina superior derecha
+      pdf.addImage(logo, "PNG", pageWidth - 50, 10, 20, 20); // Logo en esquina superior derecha
 
-      // Agregar el símbolo de verificación donde estaba el logo
-      pdf.setFontSize(24); // Tamaño grande para el símbolo
-      pdf.text("OK", 10, 30); // Posicionado donde estaba el logo antes
-
-      // Agregar texto adicional (Pago Exitoso y Gracias por tu compra)
+      // Agregar texto adicional (Pago Exitoso y Gracias por tu compra) justo debajo del logo
       pdf.setFontSize(18);
-      pdf.text("Pago Exitoso", 10, 55);
+      pdf.text("Pago Exitoso", 10, 30); // Texto para el título "Pago Exitoso"
       pdf.setFontSize(12);
-      pdf.text("Gracias por tu compra. Tu pago ha sido aprobado.", 10, 65);
+      pdf.text("Gracias por tu compra. Tu pago ha sido aprobado.", 10, 40); // Texto para "Gracias por tu compra"
+
+      // Agregar la imagen del resumen capturada desde html2canvas
+      pdf.addImage(imgData, "JPEG", 10, 50, 190, 0); // Añadir la imagen del resumen al PDF, con espacio suficiente para el texto
 
       // Guardamos el archivo PDF
       pdf.save("resumen-compra.pdf"); // Descargar el PDF
@@ -140,19 +137,28 @@ export function Success_page() {
             {/*Subtotal */}
             <div className="font-medium text-lg border-t pt-2 flex justify-between">
               <p>Subtotal</p>
-              <p className="font-normal text-sm">{"S/" + 8 + ".00"}</p>
+              <p className="font-normal text-sm">
+                {"S/" + summaryCart?.total_price + ".00"}
+              </p>
             </div>
 
             {/*Envio */}
             <div className="font-medium text-lg pt-1 flex justify-between">
               <p>Envío</p>
-              <p className="font-normal text-sm">{"S/" + 8 + ".00"}</p>
+              <p className="font-normal text-sm">
+                {"S/" +
+                  (summaryCart?.tipo_envio !== "recojo_miraflores" ? 5 : 0) +
+                  ".00"}
+              </p>
             </div>
 
             {/*Total */}
             <div className="font-medium text-lg border-t pt-3 flex justify-between">
               <p>Total</p>
-              <p className="font-medium">{"S/" + 8 + ".00"}</p>
+              {"S/" +
+                (summaryCart?.total_price +
+                  (summaryCart?.tipo_envio !== "recojo_miraflores" ? 5 : 0)) +
+                ".00"}
             </div>
           </div>
 

@@ -207,6 +207,14 @@ export function ShoppingCartContextProvider(props) {
         console.log(records.items[0]);
         setCart(null);
         setCartDetails([]);
+      }
+      if (
+        records.items.length > 0 &&
+        records.items[0].status === "En checkout"
+      ) {
+        console.log("El carrito existe en la base de datos");
+        setDB_cart_id(records.items[0].id);
+        setDB_cart_details(records.items[0]);
       } else {
         console.log("El carrito no existe en la base de datos");
       }
@@ -301,6 +309,7 @@ export function ShoppingCartContextProvider(props) {
         get_cart_details_succes,
         succes_items,
         summaryCart,
+        check_cart_inDB,
       }}
     >
       {props.children}
