@@ -224,15 +224,15 @@ export function ShoppingCartContextProvider(props) {
     }
   }
 
-  async function get_cart_details_succes(payment_id) {
+  async function get_cart_details_succes(external_reference) {
     // fetch a paginated records list
     const resultList = await pb.collection("view_cart_details").getList(1, 50, {
-      filter: `payment_id = "${payment_id}"`,
+      filter: `id = "${external_reference}"`,
     });
     setSuccesItems(resultList.items);
 
     const cart_succes = await pb.collection("summary_carts").getList(1, 50, {
-      filter: `payment_id = "${payment_id}"`,
+      filter: `id = "${external_reference}"`,
     });
 
     setSummaryCart(cart_succes.items[0]);

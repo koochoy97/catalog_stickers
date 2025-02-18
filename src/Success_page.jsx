@@ -9,6 +9,7 @@ export function Success_page() {
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [paymentId, setPaymentId] = useState(null);
   const [payerEmail, setPayerEmail] = useState(null);
+  const [external_reference, setExternalReference] = useState(null);
   const {
     setCart,
     setCartDetails,
@@ -27,11 +28,13 @@ export function Success_page() {
     const paymentId = params.get("payment_id");
     const payerEmail = params.get("payer_email");
     const carritoId = params.get("carrito_id");
+    const externalReference = params.get("external_reference");
 
     setPaymentStatus(paymentStatus);
     setPaymentId(paymentId);
     setPayerEmail(payerEmail);
     setCarritoId(carritoId);
+    setExternalReference(externalReference);
 
     // Limpiar carrito si el pago fue exitoso
     localStorage.removeItem("cart");
@@ -41,10 +44,10 @@ export function Success_page() {
   }, []);
 
   useEffect(() => {
-    if (paymentId) {
-      get_cart_details_succes(paymentId);
+    if (external_reference) {
+      get_cart_details_succes(external_reference);
     }
-  }, [paymentId]);
+  }, [external_reference]);
 
   const generatePDF = () => {
     const element = document.getElementById("summary-container"); // Seleccionamos el contenedor
@@ -87,7 +90,11 @@ export function Success_page() {
           <div className="flex justify-center mb-4 lg:justify-start">
             <span className=" text-4xl">✔️</span>
           </div>
-          <h1 className="text-3xl font-semibold mb-3">Pago Exitoso</h1>
+          <h1 className="text-3xl font-semibold mb-3">
+            {summaryCart?.status != "Pagado"
+              ? "Procesando Pago"
+              : "Pago Exitoso"}
+          </h1>
           <p className="text-lg text-gray-700 mb-2">
             Gracias por tu compra. Tu pago ha sido aprobado.
           </p>

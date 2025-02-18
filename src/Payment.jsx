@@ -272,8 +272,6 @@ export function Payment_page() {
             </div>
           </div>
 
-          {loading && <div className="skeleton w-full h-12"></div>}
-
           <button
             className="w-full bg-blue-500 text-white rounded-md p-2 mt-4 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={
