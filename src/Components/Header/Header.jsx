@@ -40,7 +40,6 @@ export function Header() {
           </li>
         </ul>
       </div>
-      <Shopping_cart />
     </div>
   );
 }

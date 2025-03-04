@@ -155,14 +155,16 @@ export function ProductPage() {
                 set_kit_selected={set_kit_selected}
               />
 
-              <div className="mt-4 w-full">
-                <Sticker_user_info_modal
-                  kit_selected_ID={kit_selected}
-                  kit_selected_value={stickers_variations.find(
-                    (variation) => variation.id === kit_selected
-                  )}
-                  product={item?.[0]}
-                />
+              <div className="fixed bottom-0 left-0 w-full bg-base-100 p-4 border-t flex justify-between items-center lg:static lg:border-none lg:mt-4 lg:bg-transparent lg:p-0">
+                <button
+                  className="bg-black text-white py-2 px-2 rounded-full w-full hover:bg-slate-600"
+                  onClick={() => {
+                    const url = `https://wa.me/51959274550?text=Hola,%20estoy%20interesado%20en%20el%20Sticker%20${item?.[0]?.nombre}`;
+                    window.open(url, "_blank");
+                  }}
+                >
+                  Comprar
+                </button>
               </div>
               <div className="divider"></div>
 
